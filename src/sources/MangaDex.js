@@ -57,6 +57,8 @@ export default class MangaDex {
         case "recently_updated":
           section.items = this.parseRecentlyUpdatedMangaSectionTiles($);
           break;
+        default:
+          break;
       }
 
       return section;
@@ -109,12 +111,6 @@ export default class MangaDex {
       let id = idStr.match(/(\d+)(?=\/)/);
 
       let caption = title.find(".car-caption p:nth-child(2)");
-      let obj = {
-        name: caption.find("a").text(),
-        group: "",
-        time: Date.parse(caption.find("span").attr("title") ?? " "),
-        langCode: "",
-      };
       let updateTime = caption.find("span").text();
       newManga.push(
         createMangaTile({

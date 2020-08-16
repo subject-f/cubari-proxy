@@ -84,10 +84,9 @@ export default class App extends Component {
             <div className="navbar-brand">
               <div className="navbar-item navbar-logo">
                 <a href="/">
-                  <img src="https://guya.moe/static/logo_small.png" />
+                  <img src="https://guya.moe/static/logo_small.png" alt="logo" />
                 </a>
               </div>
-
               <a
                 role="button"
                 className="navbar-burger"

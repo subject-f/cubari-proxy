@@ -31,7 +31,7 @@ export default class MangaCard extends PureComponent {
           <div className="manga card-image">
             <a href={this.props.mangaUrlizer(this.props.slug)}>
               <figure className="image">
-                <img data-src={this.props.coverUrl} />
+                <img data-src={this.props.coverUrl} alt={this.props.slug} />
               </figure>
             </a>
           </div>
