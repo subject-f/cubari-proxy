@@ -26,10 +26,17 @@ export default class MangaCard extends PureComponent {
 
   render() {
     return (
-      <div className="column is-6-mobile is-3-tablet is-2-desktop" ref={this.ref}>
+      <div
+        className="column is-6-mobile is-3-tablet is-2-desktop"
+        ref={this.ref}
+      >
         <div className="manga card">
           <div className="manga card-image">
-            <a href={this.props.mangaUrlizer(this.props.slug)}>
+            <a
+              href={this.props.mangaUrlizer(this.props.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <figure className="image">
                 <img data-src={this.props.coverUrl} alt={this.props.slug} />
               </figure>
@@ -39,7 +46,11 @@ export default class MangaCard extends PureComponent {
             <div className="media">
               <div className="media-content">
                 <p className="title is-5">
-                  <a href={this.props.mangaUrlizer(this.props.slug)}>
+                  <a
+                    href={this.props.mangaUrlizer(this.props.slug)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {this.props.mangaTitle}
                   </a>
                 </p>

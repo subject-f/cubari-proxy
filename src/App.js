@@ -87,6 +87,7 @@ export default class App extends Component {
                   <img src="https://guya.moe/static/logo_small.png" alt="logo" />
                 </a>
               </div>
+              {/* eslint-disable-next-line */}
               <a
                 role="button"
                 className="navbar-burger"
