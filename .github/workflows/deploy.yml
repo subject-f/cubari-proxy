@@ -1,0 +1,28 @@
+name: Deploy to GH Pages
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install node v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: build
+        run: |
+          npm install
+          npm run build
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.DEPLOY_GH_PAGES }}
+          publish_branch: gh-pages
+          publish_dir: ./build
