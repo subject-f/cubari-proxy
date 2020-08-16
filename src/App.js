@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { HashRouter, Router, Switch, Route, Link } from "react-router-dom";
+import { HashRouter, Switch, Route, Link } from "react-router-dom";
 import Discover from "./containers/Discover.js";
 import Search from "./containers/Search.js";
 // import History from "./containers/History.js";
