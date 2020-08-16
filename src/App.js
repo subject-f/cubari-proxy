@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { HashRouter, Router, Switch, Route, Link } from "react-router-dom";
 import Discover from "./containers/Discover.js";
 import Search from "./containers/Search.js";
 // import History from "./containers/History.js";
@@ -74,7 +74,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Router>
+      <HashRouter>
         <nav
           className="navbar is-light"
           role="navigation"
@@ -83,9 +83,9 @@ export default class App extends Component {
           <div className="container">
             <div className="navbar-brand">
               <div className="navbar-item navbar-logo">
-                <a href="/">
+                <Link href="/">
                   <img src="https://guya.moe/static/logo_small.png" alt="logo" />
-                </a>
+                </Link>
               </div>
               {/* eslint-disable-next-line */}
               <a
@@ -141,7 +141,7 @@ export default class App extends Component {
             </Switch>
           </div>
         </div>
-      </Router>
+      </HashRouter>
     );
   }
 }
