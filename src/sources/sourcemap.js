@@ -9,7 +9,7 @@ const sourcemap = {
   Guya: new Guya(),
 };
 
-if (hentai) {
+if (hentai || window.location.search.includes("hentai")) {
   sourcemap["NHentai"] = new NHentai();
 }
 
