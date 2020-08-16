@@ -66,7 +66,7 @@ export default class Search extends PureComponent {
       )
     );
     return (
-      <div className="columns is-multiline">
+      <div className="columns is-mobile is-multiline">
         <section className="hero column is-full">
           <div className="hero-body">
             <div className="container">
