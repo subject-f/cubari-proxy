@@ -2,24 +2,11 @@ import React, { PureComponent } from "react";
 import observer from "../utils/observer";
 import { insert } from "../utils/history";
 
-const MAX_DESC_LENGTH = 128;
-
 export default class MangaCard extends PureComponent {
   constructor(props) {
     super(props);
     this.ref = React.createRef();
   }
-
-  trimDescription = (desc) => {
-    if (desc) {
-      return (
-        desc.slice(0, MAX_DESC_LENGTH) +
-        (desc.length > MAX_DESC_LENGTH ? "..." : "")
-      );
-    } else {
-      return "";
-    }
-  };
 
   saveToHistory = (e) => {
     if (e.button === 0 || e.button === 1) {
