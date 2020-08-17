@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import observer from "../utils/observer";
+import { insert } from "../utils/history";
 
 const MAX_DESC_LENGTH = 128;
 
@@ -20,6 +21,17 @@ export default class MangaCard extends PureComponent {
     }
   };
 
+  saveToHistory = (e) => {
+    if (e.button === 0 || e.button === 1) {
+      insert(
+        this.props.mangaUrlizer(this.props.slug),
+        this.props.mangaTitle,
+        this.props.mangaUrlizer(this.props.slug),
+        this.props.coverUrl
+      );
+    }
+  };
+
   componentDidMount = () => {
     observer.observe(this.ref.current);
   };
@@ -36,6 +48,7 @@ export default class MangaCard extends PureComponent {
               href={this.props.mangaUrlizer(this.props.slug)}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseDown={this.saveToHistory}
             >
               <figure className="image">
                 <img data-src={this.props.coverUrl} alt={this.props.slug} />
@@ -50,6 +63,7 @@ export default class MangaCard extends PureComponent {
                     href={this.props.mangaUrlizer(this.props.slug)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onMouseDown={this.saveToHistory}
                   >
                     {this.props.mangaTitle}
                   </a>

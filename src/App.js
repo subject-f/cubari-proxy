@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { HashRouter, Switch, Route, Link } from "react-router-dom";
 import Discover from "./containers/Discover.js";
 import Search from "./containers/Search.js";
-// import History from "./containers/History.js";
+import History from "./containers/History.js";
 // import Settings from "./containers/Settings.js";
 import PageNotFound from "./containers/PageNotFound.js";
 import sourcemap from "./sources/sourcemap.js";
@@ -108,9 +108,9 @@ export default class App extends Component {
                 <Link className="navbar-item ni" to="/search">
                   Search
                 </Link>
-                {/* <Link className="navbar-item ni" to="/history">
+                <Link className="navbar-item ni" to="/history">
                   History
-                </Link> */}
+                </Link>
               </div>
               {/* <div className="navbar-end">
                 <Link className="navbar-item ni" to="/settings">
@@ -129,10 +129,10 @@ export default class App extends Component {
               <Route exact path="/search">
                 <Search sources={this.sources} />
               </Route>
-              {/* <Route exact path="/history">
+              <Route exact path="/history">
                 <History />
               </Route>
-              <Route exact path="/settings">
+              {/* <Route exact path="/settings">
                 <Settings />
               </Route> */}
               <Route>
