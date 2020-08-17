@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 export default class Settings extends PureComponent {
   render() {
     return (
-      <div className="columns is-multiline">
+      <div className="columns is-mobile is-multiline">
         <section className="hero column is-full">
           <div className="hero-body">
             <div className="container">
