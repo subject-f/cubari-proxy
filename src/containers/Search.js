@@ -85,7 +85,7 @@ export default class Search extends PureComponent {
         </section>
         {items}
         {this.state.searching ? (
-          <progress className="progress is-small is-dark"></progress>
+          <progress className="progress is-small"></progress>
         ) : undefined}
       </div>
     );

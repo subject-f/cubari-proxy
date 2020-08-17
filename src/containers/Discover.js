@@ -40,7 +40,7 @@ export default class Discover extends PureComponent {
         {this.props.discover.size ? (
           items
         ) : (
-          <progress className="progress is-small is-dark"></progress>
+          <progress className="progress is-small"></progress>
         )}
       </div>
     );

@@ -13,17 +13,23 @@ code {
 }
 
 .manga.card-image {
-  height: 240px;
-  max-height: 240px;
+  height: 65%;
+  max-height: 65%;
   overflow: hidden;
 }
 
 .manga.card {
-  height: 360px;
+  height: 100%;
 }
 
 .manga.card .manga.card-content {
-  max-height: 110px; /* Leave some padding */
+  padding: 18px 12px 12px 12px;
+  margin-top: -6px;
+  max-height: 110px;
+  overflow: hidden;
+}
+
+.manga.card .manga.card-content .title {
   overflow: hidden;
 }
 

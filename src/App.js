@@ -76,7 +76,7 @@ export default class App extends Component {
     return (
       <HashRouter>
         <nav
-          className="navbar is-light"
+          className="navbar is-dark"
           role="navigation"
           aria-label="main navigation"
         >
