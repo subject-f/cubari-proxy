@@ -169,4 +169,8 @@ export default class NHentai {
   getMangaUrl(slug) {
     return `https://guya.moe/g/${slug}/`;
   }
+
+  getSourceName() {
+    return "NHentai";
+  }
 }

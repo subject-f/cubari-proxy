@@ -71,4 +71,8 @@ export default class Guya {
   getMangaUrl(slug) {
     return `https://guya.moe/read/manga/${slug}/`;
   }
+
+  getSourceName() {
+    return "Guya";
+  }
 }

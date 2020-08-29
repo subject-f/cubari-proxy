@@ -167,4 +167,8 @@ export default class Manganelo {
   getMangaUrl(slug) {
     return `https://guya.moe/mb/https://manganelo.com/manga/${slug}/`;
   }
+
+  getSourceName() {
+    return "Manganelo";
+  }
 }

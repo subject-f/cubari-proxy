@@ -56,6 +56,7 @@ export default class App extends Component {
             source
               .getHomePageSections(e, homeSection.sections)
               .forEach((section) => {
+                section.title = `${source.getSourceName()} - ${section.title}`;
                 section.source = source;
                 section.mangaUrlizer = source.getMangaUrl;
                 this.setState({

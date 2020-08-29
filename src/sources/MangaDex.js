@@ -246,4 +246,8 @@ export default class MangaDex {
   getMangaUrl(slug) {
     return `https://guya.moe/title/${slug}/`;
   }
+
+  getSourceName() {
+    return "MangaDex";
+  }
 }
