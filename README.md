@@ -1,4 +1,4 @@
-# Cubari Proxy
+# Cubari Proxy  
 
 ```javascript
 localStorage.setItem("hentai", true);
