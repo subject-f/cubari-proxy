@@ -1,5 +1,5 @@
 import MangaDex from "./MangaDex";
-import Guya from "./Guya";
+import Cubari from "./Cubari";
 import NHentai from "./NHentai";
 import Manganelo from "./Manganelo";
 
@@ -11,7 +11,7 @@ if (hentai || window.location.search.includes("hentai")) {
   sourcemap["NHentai"] = new NHentai();
 } else {
   sourcemap["MangaDex"] = new MangaDex();
-  sourcemap["Guya"] = new Guya();
+  sourcemap["Cubari"] = new Cubari();
   sourcemap["Manganelo"] = new Manganelo();
 }
 

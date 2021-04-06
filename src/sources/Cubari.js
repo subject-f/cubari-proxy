@@ -6,18 +6,18 @@ import {
   createMangaTile,
 } from "../utils/bridge.js";
 
-const GUYA_API_BASE = "https://cubari.moe";
-const GUYA_ALL_SERIES_API = `${GUYA_API_BASE}/api/get_all_series/`;
+const CUBARI_API_BASE = "https://cubari.moe";
+const CUBARI_ALL_SERIES_API = `${CUBARI_API_BASE}/api/get_all_series/`;
 
-export default class Guya {
+export default class Cubari {
   getHomePageSectionRequest() {
     return [
       createHomeSectionRequest({
         request: createRequestObject({
-          url: GUYA_ALL_SERIES_API,
+          url: CUBARI_ALL_SERIES_API,
           method: "GET",
         }),
-        sections: [createHomeSection({ id: "all_cubari", title: "ALL GUYA" })],
+        sections: [createHomeSection({ id: "all_cubari", title: "ALL CUBARI" })],
       }),
     ];
   }
@@ -32,7 +32,7 @@ export default class Guya {
         mangas.push(
           createMangaTile({
             id: seriesDetails["slug"],
-            image: `${GUYA_API_BASE}/${seriesDetails["cover"]}`,
+            image: `${CUBARI_API_BASE}/${seriesDetails["cover"]}`,
             title: createIconText({ text: series }),
           })
         );
@@ -45,7 +45,7 @@ export default class Guya {
   searchRequest(query, page) {
     return createRequestObject({
       metadata: { query: query.title },
-      url: GUYA_ALL_SERIES_API,
+      url: CUBARI_ALL_SERIES_API,
       method: "GET",
     });
   }
@@ -62,7 +62,7 @@ export default class Guya {
       let seriesMetadata = result[series];
       return createMangaTile({
         id: seriesMetadata["slug"],
-        image: `${GUYA_API_BASE}/${seriesMetadata["cover"]}`,
+        image: `${CUBARI_API_BASE}/${seriesMetadata["cover"]}`,
         title: createIconText({ text: series }),
       });
     });
@@ -73,6 +73,6 @@ export default class Guya {
   }
 
   getSourceName() {
-    return "Guya";
+    return "Cubari";
   }
 }
