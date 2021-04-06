@@ -85,7 +85,7 @@ export default class App extends Component {
             <div className="navbar-brand">
               <div className="navbar-item navbar-logo">
                 <Link to="/">
-                  <img src="https://guya.moe/static/logo_small.png" alt="logo" />
+                  <img src="https://cubari.moe/static/favicon.png" alt="logo" />
                 </Link>
               </div>
               {/* eslint-disable-next-line */}

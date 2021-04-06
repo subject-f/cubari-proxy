@@ -6,7 +6,7 @@ import {
   createMangaTile,
 } from "../utils/bridge.js";
 
-const GUYA_API_BASE = "https://guya.moe";
+const GUYA_API_BASE = "https://cubari.moe";
 const GUYA_ALL_SERIES_API = `${GUYA_API_BASE}/api/get_all_series/`;
 
 export default class Guya {
@@ -17,7 +17,7 @@ export default class Guya {
           url: GUYA_ALL_SERIES_API,
           method: "GET",
         }),
-        sections: [createHomeSection({ id: "all_guya", title: "ALL GUYA" })],
+        sections: [createHomeSection({ id: "all_cubari", title: "ALL GUYA" })],
       }),
     ];
   }
@@ -69,7 +69,7 @@ export default class Guya {
   }
 
   getMangaUrl(slug) {
-    return `https://guya.moe/read/manga/${slug}/`;
+    return `https://cubari.moe/read/manga/${slug}/`;
   }
 
   getSourceName() {

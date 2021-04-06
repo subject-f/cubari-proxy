@@ -9,7 +9,7 @@ export default class PageNotFound extends PureComponent {
             <div className="container">
               <h1 className="title">404</h1>
               <h2 className="subtitle">
-                Go home? Or visit <a href="https://guya.moe/">guya.moe</a>.
+                Go home? Or visit <a href="https://cubari.moe/">cubari.moe</a>.
               </h2>
             </div>
           </div>

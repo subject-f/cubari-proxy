@@ -21,7 +21,7 @@ export default class History extends PureComponent {
               <h1 className="title">History</h1>
               <h2 className="subtitle">
                 Note that this history is different from your remotestorage
-                history on guya.moe.
+                history on cubari.moe.
               </h2>
             </div>
           </div>

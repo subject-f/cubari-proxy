@@ -167,7 +167,7 @@ export default class NHentai {
   }
 
   getMangaUrl(slug) {
-    return `https://guya.moe/g/${slug}/`;
+    return `https://cubari.moe/g/${slug}/`;
   }
 
   getSourceName() {
