@@ -1,5 +1,4 @@
-import { Chapter, ChapterDetails, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, MangaUpdates, PagedResults, SearchRequest, TagSection } from "paperback-extensions-common";
-import { parseJsonText } from "typescript";
+import { Chapter, ChapterDetails, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, SearchRequest, TagSection } from "paperback-extensions-common";
 
 export const parseMangakakalotMangaDetails = ($: CheerioStatic, mangaId: string): Manga => {
   const panel = $('.manga-info-top')
@@ -11,16 +10,16 @@ export const parseMangakakalotMangaDetails = ($: CheerioStatic, mangaId: string)
   let autart = $('.manga-info-text li:nth-child(2)').text().replace('Author(s) :', '').replace(/\r?\n|\r/g, '').split(', ')
   autart[autart.length-1] = autart[autart.length-1]?.replace(', ', '')
   author = autart[0]
-  if (autart.length > 1 && $(autart[1]).text() != ' ') {
+  if (autart.length > 1 && $(autart[1]).text() !== ' ') {
     artist = autart[1]
   }
 
   const rating = Number($('#rate_row_cmd', table).text().replace('Mangakakalot.com rate : ', '').slice($('#rate_row_cmd', table).text().indexOf('Mangakakalot.com rate : '), $('#rate_row_cmd', table).text().indexOf(' / 5')) )
-  const status = $('.manga-info-text li:nth-child(3)').text().split(' ').pop() == 'Ongoing' ? MangaStatus.ONGOING : MangaStatus.COMPLETED
+  const status = $('.manga-info-text li:nth-child(3)').text().split(' ').pop() === 'Ongoing' ? MangaStatus.ONGOING : MangaStatus.COMPLETED
   let titles = [title]
   const follows = Number($('#rate_row_cmd', table).text().replace(' votes', '').split(' ').pop() )
   const views = Number($('.manga-info-text li:nth-child(6)').text().replace(/,/g, '').replace('View : ', '') )
-  let hentai = false
+  // let hentai = false
 
   const tagSections: TagSection[] = [createTagSection({ id: '0', label: 'genres', tags: [] })]
 
@@ -29,7 +28,7 @@ export const parseMangakakalotMangaDetails = ($: CheerioStatic, mangaId: string)
   let genres: string[] = []
   genres = Array.from(elems, x=>$(x).text() )
   tagSections[0].tags = genres.map((elem: string) => createTag({ id: elem, label: elem }))
-  hentai = (genres.includes('Adult') || genres.includes('Smut') ) ? true : false;
+  // hentai = (genres.includes('Adult') || genres.includes('Smut') ) ? true : false;
 
   // Alt Titles
   for (let row of $('li', table).toArray()) {

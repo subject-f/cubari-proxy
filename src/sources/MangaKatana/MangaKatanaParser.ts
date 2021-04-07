@@ -1,4 +1,4 @@
-import { Chapter, ChapterDetails, Tag, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, MangaUpdates, PagedResults, SearchRequest, TagSection } from "paperback-extensions-common";
+import { Chapter, ChapterDetails, Tag, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, SearchRequest, TagSection } from "paperback-extensions-common";
 //parseSearch has some issues!
 
 export const parseMangaDetails = ($: CheerioStatic, mangaId: string): Manga => {
@@ -87,7 +87,7 @@ export const parseChapterDetails = ($: CheerioStatic, mangaId: string, chapterId
       const array = script.match(imageArrayRegex)![1];
       const img = array.replace(/''?/g, '').split(",");
       for (const i of img) {
-        if (i == '') continue;
+        if (i === '') continue;
         pages.push(i);
       }
     }

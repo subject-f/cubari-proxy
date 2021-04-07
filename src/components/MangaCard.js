@@ -38,7 +38,7 @@ export default class MangaCard extends PureComponent {
             style={{ backgroundImage: `url("${this.props.coverUrl}")` }}
           ></div>
           <picture>
-            <img data-src={this.props.coverUrl}></img>
+            <img data-src={this.props.coverUrl} alt={this.props.mangaTitle}></img>
           </picture>
           <article>
             <h2>
