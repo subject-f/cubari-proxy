@@ -98,13 +98,13 @@ export default class App extends Component {
             <div id="navMenu" className="navbar-menu">
               <div className="navbar-start">
                 <Link className="navbar-item ni" to="/">
-                  Discover
+                &nbsp;Discover
                 </Link>
                 <Link className="navbar-item ni" to="/search">
-                  Search
+                &nbsp;&nbsp;Search
                 </Link>
                 <Link className="navbar-item ni" to="/history">
-                  History
+                &nbsp;&nbsp;History
                 </Link>
               </div>
               {/* <div className="navbar-end">
