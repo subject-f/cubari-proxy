@@ -61,7 +61,7 @@ export const MangakakalotInfo: SourceInfo = {
 
 export class Mangakakalot extends CubariSource {
   getMangaUrl(slug: string): string {
-    return `https://cubari.moe/mk/${slug}`;
+    return `https://cubari.moe/mb/${slug}`;
   }
   getSourceDetails(): SourceInfo {
     return MangakakalotInfo;
