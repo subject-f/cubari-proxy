@@ -47,23 +47,17 @@ export default class App extends Component {
 
   initializeDiscoverItems = () => {
     this.sources.forEach((source) => {
-      let baseReqs = source.getHomePageSectionRequest();
-      baseReqs.forEach((homeSection) => {
-        homeSection
-          .request()
-          .then((e) => e.text())
-          .then((e) => {
-            source
-              .getHomePageSections(e, homeSection.sections)
-              .forEach((section) => {
-                section.title = `${source.getSourceName()} - ${section.title}`;
-                section.source = source;
-                section.mangaUrlizer = source.getMangaUrl;
-                this.setState({
-                  discover: new Set(this.state.discover).add(section),
-                });
-              });
-          });
+      source.getHomePageSections((section) => {
+        if (!section.title.startsWith(source.getSourceDetails().name)) {
+          section.title = `${source.getSourceDetails().name} - ${
+            section.title
+          }`;
+        }
+        section.source = source;
+        section.mangaUrlizer = source.getMangaUrl;
+        this.setState({
+          discover: new Set(this.state.discover).add(section),
+        });
       });
     });
   };

@@ -1,18 +1,19 @@
-import MangaDex from "./MangaDex";
-import Cubari from "./Cubari";
-import NHentai from "./NHentai";
-import Manganelo from "./Manganelo";
+import { NHentai } from "./NHentai/NHentai";
+import { MangaKatana } from "./MangaKatana/MangaKatana";
+import { Guya } from "./Guya/Guya";
+import { Mangakakalot } from "./Mangakakalot/Mangakakalot";
+import cheerio from "cheerio";
 
 const hentai = localStorage.getItem("hentai");
 
 const sourcemap = {};
 
 if (hentai || window.location.search.includes("hentai")) {
-  sourcemap["NHentai"] = new NHentai();
+  sourcemap["NHentai"] = new NHentai(cheerio);
 } else {
-  sourcemap["MangaDex"] = new MangaDex();
-  sourcemap["Cubari"] = new Cubari();
-  sourcemap["Manganelo"] = new Manganelo();
+  sourcemap["MangaKatana"] = new MangaKatana(cheerio);
+  sourcemap["Guya"] = new Guya(cheerio);
+  sourcemap["Mangakakalot"] = new Mangakakalot(cheerio);
 }
 
 export default sourcemap;

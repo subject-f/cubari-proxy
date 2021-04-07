@@ -36,11 +36,13 @@ export default class Search extends PureComponent {
       };
       this.runningQueries.add(queryTask);
       let baseReq = source.searchRequest(query);
-      baseReq()
-        .then((e) => e.text())
+      baseReq
         .then((e) => {
-          let results = source.search(e, baseReq.metadata).map((manga) => {
+          let results = (e.results || []).map((manga) => {
             manga.mangaUrlizer = source.getMangaUrl;
+            manga.slug = manga.id;
+            manga.coverUrl = manga.image;
+            manga.mangaTitle = manga.title.text;
             return manga;
           });
           this.runningQueries.delete(queryTask);

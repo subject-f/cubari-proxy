@@ -5,7 +5,7 @@ import { capitalizeFirstLetters } from "../utils/strings.js";
 export default class Discover extends PureComponent {
   createHeroSection = (section) => {
     return (
-      <section key={section.id} className="hero column is-full">
+      <section key={section.id + section.title} className="hero column is-full">
         <h1 className="title is-4">{capitalizeFirstLetters(section.title)}</h1>
       </section>
     );
@@ -15,17 +15,19 @@ export default class Discover extends PureComponent {
     const items = [];
     this.props.discover.forEach((section) => {
       items.push(this.createHeroSection(section));
-      section.items.forEach((item) => {
-        items.push(
-          <MangaCard
-            key={section.id + item.slug}
-            mangaUrlizer={section.mangaUrlizer}
-            slug={item.slug}
-            coverUrl={item.coverUrl}
-            mangaTitle={item.mangaTitle}
-          />
-        );
-      });
+      if (section.items) {
+        section.items.forEach((item) => {
+          items.push(
+            <MangaCard
+              key={section.id + item.id}
+              mangaUrlizer={section.mangaUrlizer}
+              slug={item.id}
+              coverUrl={item.image}
+              mangaTitle={item.title.text}
+            />
+          );
+        });
+      }
     });
     return (
       <div className="columns is-mobile is-multiline">
