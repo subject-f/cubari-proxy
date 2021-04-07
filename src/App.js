@@ -79,7 +79,7 @@ export default class App extends Component {
             <div className="navbar-brand">
               <div className="navbar-item navbar-logo">
                 <Link to="/">
-                  <img src="https://cubari.moe/static/favicon.png" alt="logo" />
+                  {/* <img src="https://cubari.moe/static/favicon.png" alt="logo" /> */}
                 </Link>
               </div>
               {/* eslint-disable-next-line */}
@@ -115,8 +115,8 @@ export default class App extends Component {
             </div>
           </div>
         </nav>
-        <div className="container is-fluid">
-          <div className="container">
+        <div id="history">
+          <div className="UI HistoryView has-pinned has-history">
             <Switch>
               <Route exact path="/">
                 <Discover discover={this.state.discover} />

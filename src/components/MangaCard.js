@@ -25,40 +25,27 @@ export default class MangaCard extends PureComponent {
 
   render() {
     return (
-      <div
-        className="column is-6-mobile is-3-tablet is-2-desktop"
-        ref={this.ref}
-      >
-        <div className="manga card">
-          <div className="manga card-image">
-            <a
-              href={this.props.mangaUrlizer(this.props.slug)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseDown={this.saveToHistory}
-            >
-              <figure className="image">
-                <img data-src={this.props.coverUrl} alt={this.props.slug} />
-              </figure>
-            </a>
-          </div>
-          <div className="manga card-content">
-            <div className="media">
-              <div className="media-content">
-                <p className="title is-5">
-                  <a
-                    href={this.props.mangaUrlizer(this.props.slug)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseDown={this.saveToHistory}
-                  >
-                    {this.props.mangaTitle}
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="UI HistoryUnit" ref={this.ref}>
+        <a
+          className="manga-card smol proxy"
+          href={this.props.mangaUrlizer(this.props.slug)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onMouseDown={this.saveToHistory}
+        >
+          <div
+            className="bloor"
+            style={{ backgroundImage: `url("${this.props.coverUrl}")` }}
+          ></div>
+          <picture>
+            <img data-src={this.props.coverUrl}></img>
+          </picture>
+          <article>
+            <h2>
+              <span className="title">{this.props.mangaTitle}</span>
+            </h2>
+          </article>
+        </a>
       </div>
     );
   }

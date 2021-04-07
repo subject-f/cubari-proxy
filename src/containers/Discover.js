@@ -5,19 +5,19 @@ import { capitalizeFirstLetters } from "../utils/strings.js";
 export default class Discover extends PureComponent {
   createHeroSection = (section) => {
     return (
-      <section key={section.id + section.title} className="hero column is-full">
-        <h1 className="title is-4">{capitalizeFirstLetters(section.title)}</h1>
-      </section>
+      <h2 key={section.id + section.title} className="pinned-header">
+        {capitalizeFirstLetters(section.title)}
+      </h2>
     );
   };
 
   render() {
     const items = [];
     this.props.discover.forEach((section) => {
-      items.push(this.createHeroSection(section));
       if (section.items) {
-        section.items.forEach((item) => {
-          items.push(
+        items.push(this.createHeroSection(section));
+        let sectionItems = section.items.map((item) => {
+          return (
             <MangaCard
               key={section.id + item.id}
               mangaUrlizer={section.mangaUrlizer}
@@ -27,24 +27,24 @@ export default class Discover extends PureComponent {
             />
           );
         });
+        items.push(
+          <div
+            key={section.id + section.title + "container"}
+            className="history UI List"
+          >
+            {sectionItems}
+          </div>
+        );
       }
     });
     return (
-      <div className="columns is-mobile is-multiline">
-        <section className="hero column is-full">
-          <div className="hero-body">
-            <div className="container">
-              <h1 className="title">Discover</h1>
-              <h2 className="subtitle">Discover your favourites here.</h2>
-            </div>
-          </div>
-        </section>
+      <React.Fragment>
         {this.props.discover.size ? (
           items
         ) : (
           <progress className="progress is-small"></progress>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

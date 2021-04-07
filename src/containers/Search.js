@@ -85,7 +85,9 @@ export default class Search extends PureComponent {
             placeholder="Search..."
           />
         </section>
-        {items}
+        <div className="history UI List">
+          {items}
+        </div>
         {this.state.searching ? (
           <progress className="progress is-small"></progress>
         ) : undefined}

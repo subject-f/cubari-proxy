@@ -26,13 +26,15 @@ export default class History extends PureComponent {
             </div>
           </div>
         </section>
-        {items.length ? (
-          items
-        ) : (
-          <section className="hero column is-full">
-            <h1 className="title is-4">No items.</h1>
-          </section>
-        )}
+        <div className="history UI List">
+          {items.length ? (
+            items
+          ) : (
+            <section className="hero column is-full">
+              <h1 className="title is-4">No items.</h1>
+            </section>
+          )}
+        </div>
       </div>
     );
   }
