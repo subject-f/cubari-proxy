@@ -8,7 +8,7 @@ export abstract class CubariSource extends Source {
 
   readonly requestManager: any = {
     requestsPerSecond: 2.5,
-    requestTimeout: 5000,
+    requestTimeout: 15000,
     schedule: async function (request: Request, retryCount: number) {
       // Append any cookies into the header properly
       let headers: any = request.headers ?? {};
