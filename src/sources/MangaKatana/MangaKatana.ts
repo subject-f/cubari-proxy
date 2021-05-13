@@ -14,14 +14,13 @@ import { CubariSource } from "../CubariSource"
 import { parseUpdatedManga, isLastPage, parseTags, generateSearch, parseChapterDetails, parseChapters, parseHomeSections, parseMangaDetails, parseSearch, parseViewMore, UpdatedManga } from "./MangaKatanaParser"
 
 const MK_DOMAIN = 'https://mangakatana.com'
-
 const method = 'GET'
 const headers = {
   "content-type": "application/x-www-form-urlencoded"
 }
 
 export const MangaKatanaInfo: SourceInfo = {
-  version: '1.0.3',
+  version: '1.0.6',
   name: 'MangaKatana',
   icon: 'icon.png',
   author: 'Netsky',
@@ -33,27 +32,25 @@ export const MangaKatanaInfo: SourceInfo = {
     {
       text: "Notifications",
       type: TagType.GREEN
-    },
-    {
-      text: "Buggy",
-      type: TagType.RED
     }
   ]
 }
 
 export class MangaKatana extends CubariSource {
+  getMangaUrl(slug: string): string {
+    return `https://cubari.moe/mk/${MK_DOMAIN}/manga/${slug}`;
+  }
+  getSourceDetails(): SourceInfo {
+    return MangaKatanaInfo;
+  }
   getMangaShareUrl(mangaId: string): string | null { return `${MK_DOMAIN}/manga/${mangaId}` }
-
-  getMangaUrl(slug: string): string { return `https://cubari.moe/mk/${MK_DOMAIN}/manga/${slug}`}
-
-  getSourceDetails(): SourceInfo { return MangaKatanaInfo }
 
   async getMangaDetails(mangaId: string): Promise<Manga> {
     const request = createRequestObject({
       url: `${MK_DOMAIN}/manga/`,
       method,
       param: mangaId,
-    })
+    });
 
     const response = await this.requestManager.schedule(request, 1);
     const $ = this.cheerio.load(response.data);
@@ -65,7 +62,7 @@ export class MangaKatana extends CubariSource {
       url: `${MK_DOMAIN}/manga/`,
       method,
       param: mangaId,
-    })
+    });
 
     const response = await this.requestManager.schedule(request, 1);
     const $ = this.cheerio.load(response.data);
@@ -75,7 +72,7 @@ export class MangaKatana extends CubariSource {
   async getChapterDetails(mangaId: string, chapterId: string): Promise<ChapterDetails> {
     const request = createRequestObject({
       url: `${MK_DOMAIN}/manga/${mangaId}/${chapterId}`,
-      method: "GET",
+      method: method,
     });
 
     const response = await this.requestManager.schedule(request, 1);
@@ -87,7 +84,7 @@ export class MangaKatana extends CubariSource {
     const request = createRequestObject({
       url: `${MK_DOMAIN}/genres`,
       method,
-    })
+    });
 
     const response = await this.requestManager.schedule(request, 1);
     const $ = this.cheerio.load(response.data);
@@ -121,9 +118,9 @@ export class MangaKatana extends CubariSource {
   }
 
   async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
-    let section1 = createHomeSection({ id: 'hot_update', title: 'Hot Updates' });
-    let section2 = createHomeSection({ id: 'hot_manga', title: 'Hot Manga', view_more: true });
-    let section3 = createHomeSection({ id: 'latest_updates', title: 'Latest Updates', view_more: true });
+    const section1 = createHomeSection({ id: 'hot_update', title: 'Hot Updates' });
+    const section2 = createHomeSection({ id: 'hot_manga', title: 'Hot Manga', view_more: true });
+    const section3 = createHomeSection({ id: 'latest_updates', title: 'Latest Updates', view_more: true });
     const sections = [section1, section2, section3];
     const request = createRequestObject({
       url: MK_DOMAIN,
@@ -132,7 +129,6 @@ export class MangaKatana extends CubariSource {
 
     const response = await this.requestManager.schedule(request, 1);
     const $ = this.cheerio.load(response.data);
-
     parseHomeSections($, sections, sectionCallback);
   }
 
@@ -154,7 +150,7 @@ export class MangaKatana extends CubariSource {
       url: `${MK_DOMAIN}`,
       method,
       param,
-    })
+    });
 
     const response = await this.requestManager.schedule(request, 1);
     const $ = this.cheerio.load(response.data);
