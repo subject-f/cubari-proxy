@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { InformationCircleIcon } from "@heroicons/react/outline";
+import Section from "./Section";
 
 export default class InfoModal extends PureComponent {
   constructor(props) {
@@ -48,11 +49,20 @@ export default class InfoModal extends PureComponent {
                 leaveTo="opacity-0 scale-95"
               >
                 <div className="text-black dark:text-white inline-block bg-gray-100 dark:bg-gray-800 w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
-                  <Dialog.Title className="text-2xl"></Dialog.Title>
-                  <Dialog.Description className="pt-2">
-                    This project is distinct from cubari.moe, and should be
-                    considered an early alpha to the catalog that Cubari is
-                    capable of displaying.
+                  <Dialog.Description className="-mt-2">
+                    <Section text="About"></Section>
+                    While this project is related to cubari.moe, it should be
+                    considered distinct (and will evolve indepdently of the main
+                    website).
+                    <br></br>
+                    <br></br>
+                    Sources that have decent readers and/or no ads may be
+                    included.
+                    <Section text="Credits"></Section>
+                    All sources are powered by Paperback's extensions.{" "}
+                    <a href="https://paperback.moe/">
+                      Check out the app if you're on iOS.
+                    </a>
                   </Dialog.Description>
 
                   <button
