@@ -15,7 +15,7 @@ export default class ThemeSwitcher extends PureComponent {
     super(props);
     let theme = window.localStorage.getItem("theme");
     if (!theme) {
-      window.localStorage.setItem("theme", "light");
+      window.localStorage.setItem("theme", "dark");
     }
     this.state = {
       theme,
