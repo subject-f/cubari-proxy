@@ -1,7 +1,7 @@
 import { NHentai } from "./NHentai/NHentai";
 import { MangaKatana } from "./MangaKatana/MangaKatana";
 import { Guya } from "./Guya/Guya";
-import { Mangakakalot } from "./Mangakakalot/Mangakakalot";
+// import { Mangakakalot } from "./Mangakakalot/Mangakakalot";
 import { MangaDex } from "./MangaDex/MangaDex";
 import { MangaLife } from "./MangaLife/MangaLife";
 import cheerio from "cheerio";
@@ -15,7 +15,7 @@ if (hentai || window.location.search.includes("hentai")) {
 } else {
   sourcemap["MangaKatana"] = new MangaKatana(cheerio);
   sourcemap["Guya"] = new Guya(cheerio);
-  sourcemap["Mangakakalot"] = new Mangakakalot(cheerio);
+  // sourcemap["Mangakakalot"] = new Mangakakalot(cheerio);
   sourcemap["MangaDex"] = new MangaDex(cheerio);
   sourcemap["MangaLife"] = new MangaLife(cheerio);
 }
