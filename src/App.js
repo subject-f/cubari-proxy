@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { HashRouter, Switch, Route, Link } from "react-router-dom";
 import Discover from "./containers/Discover.js";
 import Search from "./containers/Search.js";
-// import History from "./containers/History.js";
+import History from "./containers/History.js";
 // import Settings from "./containers/Settings.js";
 import { classNames } from "./utils/strings";
 import PageNotFound from "./containers/PageNotFound.js";
@@ -23,6 +23,10 @@ const navigation = {
     href: "/search",
     component: (app) => <Search sources={app.sources} setPath={app.setPath} />,
   },
+  History: {
+    href: "/history",
+    component: (app) => <History setPath={app.setPath} />
+  }
 };
 
 export default class App extends Component {
