@@ -1,12 +1,18 @@
 import React, { PureComponent } from "react";
 import MangaCard from "../components/MangaCard";
+import Spinner from "../components/Spinner";
+import ScrollableCarousel from "../components/ScrollableCarousel";
+import Section from "../components/Section";
+import Container from "../components/Container";
+
+const recommendedSources = ["MangaKatana", "Manga4Life", "Guya"];
 
 export default class Search extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      searching: false,
-      results: new Set(),
+      searching: undefined,
+      results: {},
     };
     this.runningQueries = new Set();
   }
@@ -19,7 +25,7 @@ export default class Search extends PureComponent {
       this.setState(
         {
           searching: true,
-          results: new Set(),
+          results: {},
         },
         () => {
           this.runSearchQuery(query);
@@ -45,51 +51,73 @@ export default class Search extends PureComponent {
             manga.mangaTitle = manga.title.text;
             return manga;
           });
+          this.setState({
+            results: {
+              [source.getSourceDetails().name]: results,
+              ...this.state.results,
+            },
+          });
+        })
+        .finally(() => {
           this.runningQueries.delete(queryTask);
           this.setState({
-            results: new Set([...this.state.results, ...results]),
             searching: this.runningQueries.size ? true : false,
           });
         });
     });
   };
 
+  componentDidMount = () => {
+    this.props.setPath("Search");
+  };
+
   render() {
     const items = [];
-    this.state.results.forEach((manga) =>
-      items.push(
-        <MangaCard
-          key={manga.slug}
-          mangaUrlizer={manga.mangaUrlizer}
-          slug={manga.slug}
-          coverUrl={manga.coverUrl}
-          mangaTitle={manga.mangaTitle}
-        />
-      )
-    );
-    return (
-      <div className="columns is-mobile is-multiline">
-        <section className="hero column is-full">
-          <div className="hero-body">
-            <div className="container">
-              <h1 className="title">Search</h1>
-              <h2 className="subtitle">
-                Press enter after your query to search.
-              </h2>
-            </div>
-          </div>
-          <input
-            className="input is-medium"
-            onKeyPress={this.handleInput}
-            type="text"
-            placeholder="Search..."
+    Object.entries(this.state.results).forEach((entry) => {
+      let source = entry[0];
+      let results = entry[1];
+      if (results && results.length) {
+        items.push(
+          <Section
+            key={`search-${source}`}
+            text={source}
+            subText={
+              recommendedSources.includes(source) ? "Recommended" : undefined
+            }
           />
-        </section>
-        {items}
+        );
+        items.push(
+          <ScrollableCarousel key={`search-${source}-carousel`}>
+            {results.map((item) => (
+              <MangaCard
+                key={"Search-" + source.name + item.id}
+                mangaUrlizer={item.mangaUrlizer}
+                slug={item.id}
+                coverUrl={item.image}
+                mangaTitle={item.title.text}
+              />
+            ))}
+          </ScrollableCarousel>
+        );
+      }
+    });
+
+    return (
+      <Container>
+        <input
+          className="w-full mt-8 p-4 pt-4 pb-4 text-2xl text-black bg-gray-200 dark:text-white dark:bg-gray-800 rounded-md focus:outline-none"
+          onKeyPress={this.handleInput}
+          type="text"
+          placeholder="Search..."
+        />
         {this.state.searching ? (
-          <progress className="progress is-small"></progress>
-        ) : undefined}
-      </div>
+          <Spinner />
+        ) : this.state.searching ===
+          undefined ? undefined : items.length ? undefined : (
+          <Section key="results" text="No results." subText="Sorry 'bout that." />
+        )}
+        <Container>{items}</Container>
+      </Container>
     );
   }
 }

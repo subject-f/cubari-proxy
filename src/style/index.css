@@ -1,45 +1,34 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.lazy-background {
+  background-image: linear-gradient(gray, black);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
-.manga.card-image {
-  height: 65%;
-  max-height: 65%;
-  min-height: 200px;
-  overflow: hidden;
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 20px;
+  border: 3.5px solid transparent;
+  background-clip: content-box;
 }
 
-.manga.card {
-  height: 100%;
+::-webkit-scrollbar-track:hover {
+  background-color: rgba(128, 128, 128, 0.1);
 }
 
-.manga.card .manga.card-content {
-  padding: 18px 12px 12px 12px;
-  margin-top: -6px;
-  max-height: 110px;
-  overflow: hidden;
+::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.5);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
-.manga.card .manga.card-content .title {
-  overflow: hidden;
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(128, 128, 128, 0.8);
 }
 
-progress {
-  margin-top: 36px;
-  margin-bottom: 36px;
-}
-
-.card-footer-item.selected {
-  background-color: gray;
-  color: white;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

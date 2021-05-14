@@ -25,41 +25,29 @@ export default class MangaCard extends PureComponent {
 
   render() {
     return (
-      <div
-        className="column is-6-mobile is-3-tablet is-2-desktop"
+      <a
         ref={this.ref}
+        href={this.props.mangaUrlizer(this.props.slug)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="lazy-background bg-no-repeat bg-cover bg-center transform rounded-lg hover:shadow-lg shadow-md scale-95 hover:scale-100 h-80 w-52 bg-gray-600 flex flex-row flex-wrap p-2 transition duration-250 ease-in-out"
+        data-background-image={`linear-gradient(rgba(0,0,0,0) 50%, black 95%), url("${this.props.coverUrl}")`}
+        onMouseDown={this.saveToHistory}
       >
-        <div className="manga card">
-          <div className="manga card-image">
-            <a
-              href={this.props.mangaUrlizer(this.props.slug)}
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseDown={this.saveToHistory}
+        <div className="w-full px-0 flex flex-row flex-wrap overflow-hidden">
+          <div className="w-full text-gray-700 font-semibold relative pt-3 md:pt-0">
+            <div
+              className="text-l text-white absolute bottom-0 left-0"
+              style={{
+                textShadow:
+                  "0 0 8px black, 0 0 8px black, 0 0 8px black, 0 0 8px black",
+              }}
             >
-              <figure className="image">
-                <img data-src={this.props.coverUrl} alt={this.props.slug} />
-              </figure>
-            </a>
-          </div>
-          <div className="manga card-content">
-            <div className="media">
-              <div className="media-content">
-                <p className="title is-5">
-                  <a
-                    href={this.props.mangaUrlizer(this.props.slug)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseDown={this.saveToHistory}
-                  >
-                    {this.props.mangaTitle}
-                  </a>
-                </p>
-              </div>
+              {this.props.mangaTitle}
             </div>
           </div>
         </div>
-      </div>
+      </a>
     );
   }
 }

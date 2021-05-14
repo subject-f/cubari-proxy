@@ -1,50 +1,44 @@
 import React, { PureComponent } from "react";
 import MangaCard from "../components/MangaCard";
-import { capitalizeFirstLetters } from "../utils/strings.js";
+import ScrollableCarousel from "../components/ScrollableCarousel";
+import Section from "../components/Section";
+import Spinner from "../components/Spinner";
+import Container from "../components/Container";
 
 export default class Discover extends PureComponent {
-  createHeroSection = (section) => {
-    return (
-      <section key={section.id + section.title} className="hero column is-full">
-        <h1 className="title is-4">{capitalizeFirstLetters(section.title)}</h1>
-      </section>
-    );
+  componentDidMount = () => {
+    this.props.setPath("Discover");
   };
 
   render() {
     const items = [];
     this.props.discover.forEach((section) => {
-      items.push(this.createHeroSection(section));
-      if (section.items) {
-        section.items.forEach((item) => {
-          items.push(
-            <MangaCard
-              key={section.id + item.id}
-              mangaUrlizer={section.mangaUrlizer}
-              slug={item.id}
-              coverUrl={item.image}
-              mangaTitle={item.title.text}
-            />
-          );
-        });
+      if (section.items && section.items.length) {
+        let [text, subText] = section.title.split(" - ");
+        items.push(
+          <Section
+            key={section.id + section.title + "title"}
+            text={text}
+            subText={subText}
+          />
+        );
+        items.push(
+          <ScrollableCarousel key={section.id + section.title + "-carousel"}>
+            {section.items.map((item) => (
+              <MangaCard
+                key={section.id + item.id}
+                mangaUrlizer={section.mangaUrlizer}
+                slug={item.id}
+                coverUrl={item.image}
+                mangaTitle={item.title.text}
+              />
+            ))}
+          </ScrollableCarousel>
+        );
       }
     });
     return (
-      <div className="columns is-mobile is-multiline">
-        <section className="hero column is-full">
-          <div className="hero-body">
-            <div className="container">
-              <h1 className="title">Discover</h1>
-              <h2 className="subtitle">Discover your favourites here.</h2>
-            </div>
-          </div>
-        </section>
-        {this.props.discover.size ? (
-          items
-        ) : (
-          <progress className="progress is-small"></progress>
-        )}
-      </div>
+      <Container>{this.props.discover.size ? items : <Spinner />}</Container>
     );
   }
 }

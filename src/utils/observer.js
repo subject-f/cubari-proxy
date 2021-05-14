@@ -1,8 +1,7 @@
 export default new IntersectionObserver((entries, self) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      let img = entry.target.querySelector("img");
-      img.src = img.dataset.src;
+      entry.target.style.backgroundImage = entry.target.dataset.backgroundImage;
       self.unobserve(entry.target);
     }
   });

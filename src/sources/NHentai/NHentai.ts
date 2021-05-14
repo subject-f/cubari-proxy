@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, @typescript-eslint/explicit-module-boundary-types, radix, eqeqeq, no-loop-func, no-useless-escape, @typescript-eslint/no-useless-constructor, @typescript-eslint/no-unused-vars */
 import {
   Manga,
   Chapter,
@@ -16,7 +17,7 @@ import { CubariSource } from "../CubariSource";
 const NHENTAI_DOMAIN = "https://nhentai.net";
 
 export const NHentaiInfo: SourceInfo = {
-  version: "2.0.1",
+  version: "2.0.2",
   name: "nHentai",
   description: `Extension which pulls 18+ content from nHentai. (Literally all of it. We know why you're here)`,
   author: `VibrantClouds`,
@@ -34,6 +35,10 @@ export class NHentai extends CubariSource {
   }
   getSourceDetails(): SourceInfo {
     return NHentaiInfo;
+  }
+
+  constructor(cheerio: CheerioAPI) {
+    super(cheerio);
   }
 
   convertLanguageToCode(language: string) {
@@ -58,7 +63,7 @@ export class NHentai extends CubariSource {
     let data = await this.requestManager.schedule(request, 1);
 
     let $ = this.cheerio.load(data.data);
-    // let info = $("[itemprop=name]");
+    let info = $("[itemprop=name]");
     let image = $("[itemprop=image]").attr("content") ?? "";
     let title = $("[itemprop=name]").attr("content") ?? "";
 
@@ -90,25 +95,25 @@ export class NHentai extends CubariSource {
     // Get the artist and language information
     let context = $("#info-block");
     let artist = "";
-    // let language = "";
+    let language = "";
     for (let item of $(".tag-container", context).toArray()) {
       if ($(item).text().indexOf("Artists") > -1) {
         let temp = $("a", item).text();
         artist = temp.substring(0, temp.search(/\d/));
       } else if ($(item).text().indexOf("Languages") > -1) {
-        // let temp = $("a", item);
-        // if (temp.toArray().length > 1) {
-        //   let temptext = $(temp.toArray()[1]).text();
-        //   language = temptext.substring(0, temptext.indexOf(" ("));
-        // } else {
-        //   let temptext = temp.text();
-        //   language = temptext.substring(0, temptext.indexOf(" ("));
-        // }
+        let temp = $("a", item);
+        if (temp.toArray().length > 1) {
+          let temptext = $(temp.toArray()[1]).text();
+          language = temptext.substring(0, temptext.indexOf(" ("));
+        } else {
+          let temptext = temp.text();
+          language = temptext.substring(0, temptext.indexOf(" ("));
+        }
       }
     }
 
     let status = 1;
-    // let hentai = true; // I'm assuming that's why you're here!
+    let hentai = true; // I'm assuming that's why you're here!
 
     return createManga({
       id: mangaId,
@@ -187,7 +192,7 @@ export class NHentai extends CubariSource {
     // Get the number of chapters, we can generate URLs using that as a basis
     let pages: string[] = [];
     let thumbContainer = $("#thumbnail-container");
-    // let numChapters = $(".thumb-container", thumbContainer).length;
+    let numChapters = $(".thumb-container", thumbContainer).length;
 
     // Get the gallery number that it is assigned to
     let gallerySrc = $("img", thumbContainer).attr("data-src");
@@ -242,10 +247,10 @@ export class NHentai extends CubariSource {
       sixDigit = true;
     } else {
       query.title = query.title?.trim();
-      query.title = query.title.replace(" ", "+") + "+";
+      query.title = query.title.replace(/ /g, "+") + "+";
 
       request = createRequestObject({
-        url: `${NHENTAI_DOMAIN}/search/?q=${query.title}+english&page=${page}`,
+        url: `${NHENTAI_DOMAIN}/search/?q=${query.title}&page=${page}`,
         method: "GET",
       });
       sixDigit = false;
@@ -288,7 +293,7 @@ export class NHentai extends CubariSource {
       let image = $("img", currNode).attr("data-src")!;
 
       // If image is undefined, we've hit a lazyload part of the website. Adjust the scraping to target the other features
-      if (image === undefined) {
+      if (image == undefined) {
         image = "http:" + $("img", currNode).attr("src")!;
       }
 
@@ -338,7 +343,7 @@ export class NHentai extends CubariSource {
     sectionCallback(newUploads);
 
     const request = createRequestObject({
-      url: `${NHENTAI_DOMAIN}/language/english`,
+      url: `${NHENTAI_DOMAIN}`,
       method: "GET",
     });
 
@@ -354,7 +359,7 @@ export class NHentai extends CubariSource {
       let image = $("img", currNode).attr("data-src")!;
 
       // If image is undefined, we've hit a lazyload part of the website. Adjust the scraping to target the other features
-      if (image === undefined) {
+      if (image == undefined) {
         image = "http:" + $("img", currNode).attr("src")!;
       }
 
@@ -384,7 +389,7 @@ export class NHentai extends CubariSource {
       let image = $("img", currNode).attr("data-src")!;
 
       // If image is undefined, we've hit a lazyload part of the website. Adjust the scraping to target the other features
-      if (image === undefined) {
+      if (image == undefined) {
         image = "http:" + $("img", currNode).attr("src")!;
       }
 
@@ -434,7 +439,7 @@ export class NHentai extends CubariSource {
       let image = $("img", currNode).attr("data-src")!;
 
       // If image is undefined, we've hit a lazyload part of the website. Adjust the scraping to target the other features
-      if (image === undefined) {
+      if (image == undefined) {
         image = "http:" + $("img", currNode).attr("src")!;
       }
 
