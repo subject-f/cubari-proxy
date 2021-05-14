@@ -2,6 +2,8 @@ import React, { PureComponent } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
 import { classNames } from "../utils/strings";
 
+const SCROLL_THRESHOLD = 20;
+
 export default class ScrollableCarousel extends PureComponent {
   constructor(props) {
     super(props);
@@ -15,10 +17,10 @@ export default class ScrollableCarousel extends PureComponent {
 
   scrollPositionHandler = () => {
     this.setState({
-      fullyLeftScrolled: this.ref.current.scrollLeft === 0,
+      fullyLeftScrolled: this.ref.current.scrollLeft < SCROLL_THRESHOLD,
       fullyRightScrolled:
-        this.ref.current.scrollLeft + this.ref.current.clientWidth ===
-        this.ref.current.scrollWidth,
+        this.ref.current.scrollLeft + this.ref.current.clientWidth >
+        this.ref.current.scrollWidth - SCROLL_THRESHOLD,
     });
   };
 
