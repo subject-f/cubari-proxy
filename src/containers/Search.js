@@ -53,8 +53,8 @@ export default class Search extends PureComponent {
           });
           this.setState({
             results: {
-              [source.getSourceDetails().name]: results,
               ...this.state.results,
+              [source.getSourceDetails().name]: results,
             },
           });
         })
@@ -82,7 +82,8 @@ export default class Search extends PureComponent {
             key={`search-${source}`}
             text={source}
             subText={
-              recommendedSources.includes(source) ? "Recommended" : undefined
+              (recommendedSources.includes(source) ? "Recommended - " : "") +
+              `${results.length} result(s)`
             }
           />
         );
@@ -110,13 +111,17 @@ export default class Search extends PureComponent {
           type="text"
           placeholder="Search..."
         />
+        <Container>{items}</Container>
         {this.state.searching ? (
           <Spinner />
         ) : this.state.searching ===
           undefined ? undefined : items.length ? undefined : (
-          <Section key="results" text="No results." subText="Sorry 'bout that." />
+          <Section
+            key="results"
+            text="No results."
+            subText="Sorry 'bout that."
+          />
         )}
-        <Container>{items}</Container>
       </Container>
     );
   }
