@@ -51,9 +51,12 @@ export default class App extends Component {
         }
         section.source = source;
         section.mangaUrlizer = source.getMangaUrl;
-        this.setState({
-          discover: new Set(this.state.discover).add(section),
-        });
+        // Only update state with sections that have items
+        if (section.items && section.items.length) {
+          this.setState({
+            discover: new Set(this.state.discover).add(section),
+          });
+        }
       });
     });
   };
