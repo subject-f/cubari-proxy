@@ -31,6 +31,8 @@ export default class Discover extends PureComponent {
                 slug={item.id}
                 coverUrl={item.image}
                 mangaTitle={item.title.text}
+                sourceName={section.sourceName}
+                source={section.source}
               />
             ))}
           </ScrollableCarousel>

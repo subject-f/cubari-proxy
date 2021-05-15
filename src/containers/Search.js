@@ -11,21 +11,20 @@ export default class Search extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      searching: undefined,
-      results: {},
+      searching: false,
     };
     this.runningQueries = new Set();
   }
 
   handleInput = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && event.target.value) {
       let query = {
         title: event.target.value,
       };
+      this.props.searchHandler("", {});
       this.setState(
         {
           searching: true,
-          results: {},
         },
         () => {
           this.runSearchQuery(query);
@@ -35,7 +34,7 @@ export default class Search extends PureComponent {
   };
 
   runSearchQuery = (query) => {
-    this.props.sources.forEach((source) => {
+    Object.entries(this.props.sources).forEach(([sourceName, source]) => {
       const queryTask = {
         source,
         query,
@@ -49,13 +48,13 @@ export default class Search extends PureComponent {
             manga.slug = manga.id;
             manga.coverUrl = manga.image;
             manga.mangaTitle = manga.title.text;
+            manga.source = source;
+            manga.sourceName = sourceName;
             return manga;
           });
-          this.setState({
-            results: {
-              ...this.state.results,
-              [source.getSourceDetails().name]: results,
-            },
+          this.props.searchHandler(query.title, {
+            ...this.props.searchResults,
+            [sourceName]: results,
           });
         })
         .finally(() => {
@@ -73,9 +72,7 @@ export default class Search extends PureComponent {
 
   render() {
     const items = [];
-    Object.entries(this.state.results).forEach((entry) => {
-      let source = entry[0];
-      let results = entry[1];
+    Object.entries(this.props.searchResults).forEach(([source, results]) => {
       if (results && results.length) {
         items.push(
           <Section
@@ -91,11 +88,13 @@ export default class Search extends PureComponent {
           <ScrollableCarousel key={`search-${source}-carousel`}>
             {results.map((item) => (
               <MangaCard
-                key={"Search-" + source.name + item.id}
+                key={"search-" + source.name + item.id}
                 mangaUrlizer={item.mangaUrlizer}
-                slug={item.id}
-                coverUrl={item.image}
-                mangaTitle={item.title.text}
+                slug={item.slug}
+                coverUrl={item.coverUrl}
+                mangaTitle={item.mangaTitle}
+                sourceName={item.sourceName}
+                source={item.source}
               />
             ))}
           </ScrollableCarousel>
@@ -109,19 +108,19 @@ export default class Search extends PureComponent {
           className="w-full mt-8 p-4 pt-4 pb-4 text-2xl text-black bg-gray-200 dark:text-white dark:bg-gray-800 rounded-md focus:outline-none"
           onKeyPress={this.handleInput}
           type="text"
+          defaultValue={this.props.searchQuery}
           placeholder="Search..."
         />
-        <Container>{items}</Container>
+        {items.length ? <Container>{items}</Container> : undefined}
         {this.state.searching ? (
           <Spinner />
-        ) : this.state.searching ===
-          undefined ? undefined : items.length ? undefined : (
+        ) : items.length ? undefined : this.props.searchQuery ? (
           <Section
             key="results"
             text="No results."
             subText="Sorry 'bout that."
           />
-        )}
+        ) : undefined}
       </Container>
     );
   }

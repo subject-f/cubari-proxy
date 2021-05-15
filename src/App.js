@@ -15,18 +15,29 @@ import ThemeSwitcher from "./components/ThemeSwitcher.js";
 const navigation = {
   Discover: {
     href: "/",
+    inNav: true,
     component: (app) => (
       <Discover discover={app.state.discover} setPath={app.setPath} />
     ),
   },
   Search: {
     href: "/search",
-    component: (app) => <Search sources={app.sources} setPath={app.setPath} />,
+    inNav: true,
+    component: (app) => (
+      <Search
+        searchResults={app.state.searchResults}
+        searchQuery={app.state.searchQuery}
+        searchHandler={app.searchHandler}
+        sources={app.sources}
+        setPath={app.setPath}
+      />
+    ),
   },
   History: {
     href: "/history",
-    component: (app) => <History setPath={app.setPath} />
-  }
+    inNav: true,
+    component: (app) => <History setPath={app.setPath} />,
+  },
 };
 
 export default class App extends Component {
@@ -34,9 +45,11 @@ export default class App extends Component {
     super(props);
     this.state = {
       discover: new Set(),
+      searchQuery: "",
+      searchResults: new Set(),
       current: undefined,
     };
-    this.sources = Object.values(sourcemap);
+    this.sources = sourcemap;
   }
 
   setPath = (path) => {
@@ -45,8 +58,15 @@ export default class App extends Component {
     });
   };
 
+  searchHandler = (query, items) => {
+    this.setState({
+      searchQuery: query,
+      searchResults: items,
+    });
+  };
+
   initializeDiscoverItems = () => {
-    this.sources.forEach((source) => {
+    Object.entries(this.sources).forEach(([sourceName, source]) => {
       source.getHomePageSections((section) => {
         if (!section.title.startsWith(source.getSourceDetails().name)) {
           section.title = `${source.getSourceDetails().name} - ${
@@ -55,6 +75,7 @@ export default class App extends Component {
         }
         section.source = source;
         section.mangaUrlizer = source.getMangaUrl;
+        section.sourceName = sourceName;
         // Only update state with sections that have items
         if (section.items && section.items.length) {
           this.setState({
@@ -110,6 +131,7 @@ export default class App extends Component {
                         {Object.keys(navigation).map((item) => {
                           let name = item;
                           item = navigation[name];
+                          if (!navigation[name].inNav) return;
                           return (
                             <Link
                               key={name}
@@ -154,6 +176,7 @@ export default class App extends Component {
                     {Object.keys(navigation).map((item) => {
                       let name = item;
                       item = navigation[name];
+                      if (!navigation[name].inNav) return;
                       return (
                         <Link
                           key={name}
