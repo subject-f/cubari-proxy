@@ -20,7 +20,13 @@ export default class MangaCard extends PureComponent {
   };
 
   componentDidMount = () => {
+    // We'll use a shared observer for MangaCards since
+    // there can be potentially many of them.
     observer.observe(this.ref.current);
+  };
+
+  componentWillUnmount = () => {
+    observer.unobserve(this.ref.current);
   };
 
   render() {
@@ -31,7 +37,7 @@ export default class MangaCard extends PureComponent {
           href={this.props.mangaUrlizer(this.props.slug)}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-no-repeat bg-cover bg-center bg-gray-300 dark:bg-gray-800 transform rounded-lg shadow-md scale-100 hover:scale-105 h-72 w-48 flex flex-row flex-wrap p-1 transition duration-100 ease-in-out"
+          className="bg-no-repeat bg-cover bg-center bg-gray-300 dark:bg-gray-800 transform rounded-lg shadow-md scale-100 md:hover:scale-105 h-72 w-48 flex flex-row flex-wrap p-1 transition duration-100 ease-in-out"
           data-background-image={`linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.8) 90%), url("${this.props.coverUrl}")`}
           onMouseDown={this.saveToHistory}
         >
