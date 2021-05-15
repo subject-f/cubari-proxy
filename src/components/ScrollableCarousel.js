@@ -1,27 +1,65 @@
 import React, { PureComponent } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
 import { classNames } from "../utils/strings";
+import Spinner from "./Spinner";
 
 const SCROLL_THRESHOLD = 20;
+const LOAD_BATCH_COUNT = 6;
 
 export default class ScrollableCarousel extends PureComponent {
   constructor(props) {
     super(props);
-    this.ref = React.createRef();
     this.state = {
       fullyLeftScrolled: true,
       fullyRightScrolled: true,
       scrolling: false,
+      items: [],
     };
+    // While a shared observer would be preferable, we lose
+    // the virtual DOM context here so we'll instead bind it
+    // per scrollable carousel
+    this.ref = React.createRef();
+    this.componentRef = React.createRef();
+    this.observer = new IntersectionObserver(this.observerCallback);
   }
 
-  scrollPositionHandler = () => {
-    this.setState({
-      fullyLeftScrolled: this.ref.current.scrollLeft < SCROLL_THRESHOLD,
-      fullyRightScrolled:
-        this.ref.current.scrollLeft + this.ref.current.clientWidth >
-        this.ref.current.scrollWidth - SCROLL_THRESHOLD,
+  observerCallback = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        this.setState(
+          {
+            items: this.props.children.slice(0, LOAD_BATCH_COUNT),
+          },
+          this.scrollPositionHandler
+        );
+        this.observer.unobserve(entry.target);
+        delete this.observer;
+      }
     });
+  };
+
+  scrollPositionHandler = () => {
+    // TODO add scroll snapping?
+    let fullyLeftScrolled = this.ref.current.scrollLeft < SCROLL_THRESHOLD;
+    let fullyRightScrolled =
+      this.ref.current.scrollLeft + this.ref.current.clientWidth >
+      this.ref.current.scrollWidth - SCROLL_THRESHOLD;
+    if (
+      fullyRightScrolled &&
+      this.state.items.length < this.props.children.length
+    ) {
+      this.setState({
+        items: this.props.children.slice(
+          0,
+          this.state.items.length + LOAD_BATCH_COUNT
+        ),
+      });
+    } else {
+      this.setState({
+        fullyLeftScrolled,
+        fullyRightScrolled,
+      });
+    }
   };
 
   _scroller = (modifier) => {
@@ -62,12 +100,12 @@ export default class ScrollableCarousel extends PureComponent {
   };
 
   componentDidMount = () => {
-    this.scrollPositionHandler();
+    this.observer.observe(this.componentRef.current);
   };
 
   render() {
     return (
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full" ref={this.componentRef}>
         <div
           className={classNames(
             this.state.fullyLeftScrolled
@@ -84,15 +122,17 @@ export default class ScrollableCarousel extends PureComponent {
             />
           </div>
         </div>
-        <div
-          ref={this.ref}
-          className="static w-full h-full flex overflow-x-auto pb-1 pt-5 select-none"
-          onScroll={this.scrollPositionHandler}
-        >
-          <div className="flex flex-nowrap mt-4 mb-4">
-            {this.props.children}
+        {this.state.items.length ? (
+          <div
+            ref={this.ref}
+            className="static w-full h-full flex overflow-x-auto pb-1 pt-5 select-none"
+            onScroll={this.scrollPositionHandler}
+          >
+            <div className="flex flex-nowrap mt-4 mb-4">{this.state.items}</div>
           </div>
-        </div>
+        ) : (
+          <Spinner />
+        )}
         <div
           className={classNames(
             this.state.fullyRightScrolled
