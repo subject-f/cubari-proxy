@@ -39,26 +39,28 @@ export default class ScrollableCarousel extends PureComponent {
   };
 
   scrollPositionHandler = () => {
-    // TODO add scroll snapping?
-    let fullyLeftScrolled = this.ref.current.scrollLeft < SCROLL_THRESHOLD;
-    let fullyRightScrolled =
-      this.ref.current.scrollLeft + this.ref.current.clientWidth >
-      this.ref.current.scrollWidth - SCROLL_THRESHOLD;
-    if (
-      fullyRightScrolled &&
-      this.state.items.length < this.props.children.length
-    ) {
-      this.setState({
-        items: this.props.children.slice(
-          0,
-          this.state.items.length + LOAD_BATCH_COUNT
-        ),
-      });
-    } else {
-      this.setState({
-        fullyLeftScrolled,
-        fullyRightScrolled,
-      });
+    if (this.ref.current) {
+      // TODO add scroll snapping?
+      let fullyLeftScrolled = this.ref.current.scrollLeft < SCROLL_THRESHOLD;
+      let fullyRightScrolled =
+        this.ref.current.scrollLeft + this.ref.current.clientWidth >
+        this.ref.current.scrollWidth - SCROLL_THRESHOLD;
+      if (
+        fullyRightScrolled &&
+        this.state.items.length < this.props.children.length
+      ) {
+        this.setState({
+          items: this.props.children.slice(
+            0,
+            this.state.items.length + LOAD_BATCH_COUNT
+          ),
+        });
+      } else {
+        this.setState({
+          fullyLeftScrolled,
+          fullyRightScrolled,
+        });
+      }
     }
   };
 
@@ -130,9 +132,9 @@ export default class ScrollableCarousel extends PureComponent {
           >
             <div className="flex flex-nowrap mt-4 mb-4">{this.state.items}</div>
           </div>
-        ) : (
+        ) : this.props.children.length ? (
           <Spinner />
-        )}
+        ) : undefined}
         <div
           className={classNames(
             this.state.fullyRightScrolled
