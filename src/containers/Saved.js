@@ -7,7 +7,7 @@ import Spinner from "../components/Spinner";
 import sourcemap from "../sources/sourcemap";
 import { mangaUrlBuilder } from "../utils/compatability";
 
-export default class History extends PureComponent {
+export default class Saved extends PureComponent {
   constructor(props) {
     super(props);
     this.ref = React.createRef();
@@ -18,7 +18,7 @@ export default class History extends PureComponent {
   }
 
   updateItems = () => {
-    return globalHistoryHandler.getAllUnpinnedSeries().then((items) => {
+    return globalHistoryHandler.getAllPinnedSeries().then((items) => {
       if (this.ref.current) {
         this.setState({
           items,
@@ -29,7 +29,7 @@ export default class History extends PureComponent {
   };
 
   componentDidMount = () => {
-    this.props.setPath("History");
+    this.props.setPath("Saved");
     this.updateItems();
   };
 
@@ -37,22 +37,21 @@ export default class History extends PureComponent {
     return (
       <Container>
         <Section
-          text="History"
-          subText={`This includes the last ${globalHistoryHandler.max} things you've clicked on (${this.state.items.length} so far)`}
+          text="Saved"
+          subText={'This includes stuff you\'ve "hearted"'}
           ref={this.ref}
         ></Section>
         {this.state.ready ? (
-          <Container key="history">
+          <Container>
             {this.state.items.map((e) => (
               <MangaCard
-                key={`history-${e.timestamp}-${e.slug}-${e.source}`}
+                key={`saved-${e.timestamp}-${e.slug}-${e.source}`}
                 mangaUrlizer={mangaUrlBuilder(e.url)}
                 slug={e.slug}
                 coverUrl={e.coverUrl}
                 mangaTitle={e.title}
                 sourceName={e.source}
                 source={sourcemap[e.source]}
-                showRemoveFromHistory={true}
                 storageCallback={this.updateItems}
               ></MangaCard>
             ))}

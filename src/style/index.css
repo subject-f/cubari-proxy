@@ -30,6 +30,10 @@
   background-color: rgba(128, 128, 128, 0.8);
 }
 
+.rs-state-sign-in {
+  position: relative !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

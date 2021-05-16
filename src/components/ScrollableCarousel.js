@@ -130,7 +130,7 @@ export default class ScrollableCarousel extends PureComponent {
             className="static w-full h-full flex overflow-x-auto pb-1 pt-5 select-none"
             onScroll={this.scrollPositionHandler}
           >
-            <div className="flex flex-nowrap mt-4 mb-4">{this.state.items}</div>
+            <div className="flex flex-nowrap mt-1 mb-1">{this.state.items}</div>
           </div>
         ) : this.props.children.length ? (
           <Spinner />
