@@ -68,10 +68,20 @@ export default class ScrollableCarousel extends PureComponent {
     if (!this.state.scrolling) {
       let elementWidth = this.ref.current.lastChild.lastChild.clientWidth;
       let containerWidth = this.ref.current.clientWidth;
-      let amount = elementWidth * Math.floor(containerWidth / elementWidth);
+      let currentPosition = this.ref.current.scrollLeft;
+      // The amount we scroll will be the number of elements that can be displayed
+      // on the screen, while snapping the new position to the nearest element
+      // (which is accounted by the addition subtraction of the leftover scroll amount)
+      let amount =
+        elementWidth * Math.floor(containerWidth / elementWidth) +
+        (elementWidth * Math.ceil(currentPosition / elementWidth) -
+          currentPosition) *
+          modifier;
+      if (amount < elementWidth) {
+        amount = elementWidth;
+      }
       let steps = 0;
       let maxSteps = 20;
-      let currentPosition = this.ref.current.scrollLeft;
       let scroller = () => {
         // This emulates an ease-in-out function
         let functor = (Math.sin((steps / maxSteps - 0.5) * Math.PI) + 1) * 0.5;
