@@ -131,7 +131,7 @@ export default class App extends Component {
                         {Object.keys(navigation).map((item) => {
                           let name = item;
                           item = navigation[name];
-                          if (!navigation[name].inNav) return;
+                          if (!navigation[name].inNav) return undefined;
                           return (
                             <Link
                               key={name}
@@ -176,7 +176,7 @@ export default class App extends Component {
                     {Object.keys(navigation).map((item) => {
                       let name = item;
                       item = navigation[name];
-                      if (!navigation[name].inNav) return;
+                      if (!navigation[name].inNav) return undefined;
                       return (
                         <Link
                           key={name}
