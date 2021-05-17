@@ -1,5 +1,5 @@
 import React, { Fragment, PureComponent } from "react";
-import { Chat, ChatIcon } from "@heroicons/react/outline";
+import { ChatIcon } from "@heroicons/react/outline";
 import { Popover, Transition } from "@headlessui/react";
 import Section from "./Section";
 import { classNames } from "../utils/strings";
