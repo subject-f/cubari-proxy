@@ -83,7 +83,7 @@ export default class BlackholeMail extends PureComponent {
                     ></Section>
                     <input
                       className={classNames(
-                        "w-full mt-8 p-4 text-md bg-gray-200 dark:bg-gray-700 rounded-md focus:outline-none",
+                        "w-full mt-8 p-4 text-md bg-gray-200 dark:bg-gray-700 rounded-md focus:outline-none shadow-md",
                         this.state.submitted
                           ? "text-gray-500 dark:text-gray-500 user select-none"
                           : "text-black dark:text-white"

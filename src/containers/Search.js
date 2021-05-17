@@ -105,7 +105,7 @@ export default class Search extends PureComponent {
     return (
       <Container>
         <input
-          className="w-full mt-8 p-4 pt-4 pb-4 text-2xl text-black bg-gray-200 dark:text-white dark:bg-gray-800 rounded-md focus:outline-none"
+          className="w-full mt-8 p-4 pt-4 pb-4 text-2xl text-black bg-gray-200 dark:text-white dark:bg-gray-800 rounded-md focus:outline-none shadow-md"
           onKeyPress={this.handleInput}
           type="text"
           defaultValue={this.props.searchQuery}
