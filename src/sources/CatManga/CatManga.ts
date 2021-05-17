@@ -7,11 +7,12 @@ import {
   MangaUpdates,
   PagedResults,
   Request,
+  RequestManager,
   SearchRequest,
+  Source,
   SourceInfo,
 } from "paperback-extensions-common";
 import { CatMangaParser } from "./CatMangaParser";
-import { CubariSource } from "../CubariSource";
 
 const BASE = "https://catmanga.org";
 
@@ -27,15 +28,13 @@ export const CatMangaInfo: SourceInfo = {
   websiteBaseURL: BASE,
 };
 
-export class CatManga extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://catmanga.org/series/${slug}`;
-  }
-  getSourceDetails(): SourceInfo {
-    return CatMangaInfo;
-  }
-
+export class CatManga extends Source {
   private readonly parser: CatMangaParser = new CatMangaParser();
+
+  readonly requestManager: RequestManager = createRequestManager({
+    requestsPerSecond: 5,
+    requestTimeout: 10000,
+  });
 
   getMangaShareUrl(mangaId: string): string | null {
     return `${BASE}/series/${mangaId}`;
@@ -163,17 +162,17 @@ export class CatManga extends CubariSource {
   ): Promise<void> {
     // TODO: Wait for upload times to be shown.
     /*
-        const tiles: MangaTile[] = this.getLatest(await this.getHomePageData());
-        const idsFound: string[] = [];
-        for (let i = 0; i < tiles.length; i++) {
-            const id = tiles[i].id;
-            if (ids.includes(id)){
-                idsFound.push(id)
-            }
-        }
-        mangaUpdatesFoundCallback(createMangaUpdates({
-            ids: idsFound
-        }));
-        */
+      const tiles: MangaTile[] = this.getLatest(await this.getHomePageData());
+      const idsFound: string[] = [];
+      for (let i = 0; i < tiles.length; i++) {
+          const id = tiles[i].id;
+          if (ids.includes(id)){
+              idsFound.push(id)
+          }
+      }
+      mangaUpdatesFoundCallback(createMangaUpdates({
+          ids: idsFound
+      }));
+      */
   }
 }

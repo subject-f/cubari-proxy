@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-
 import {Chapter, LanguageCode, Manga, MangaStatus, MangaTile, Tag} from "paperback-extensions-common";
 
 export class CatMangaParser {

@@ -1,4 +1,5 @@
 import {
+  Source,
   Manga,
   Chapter,
   ChapterDetails,
@@ -10,10 +11,9 @@ import {
   TagType,
   TagSection
 } from "paperback-extensions-common"
-import { CubariSource } from "../CubariSource"
 import { parseUpdatedManga, isLastPage, parseTags, generateSearch, parseChapterDetails, parseChapters, parseHomeSections, parseMangaDetails, parseSearch, parseViewMore, UpdatedManga } from "./MangaKatanaParser"
 
-const MK_DOMAIN = 'https://mangakatana.com'
+export const MK_DOMAIN = 'https://mangakatana.com'
 const method = 'GET'
 const headers = {
   "content-type": "application/x-www-form-urlencoded"
@@ -36,13 +36,7 @@ export const MangaKatanaInfo: SourceInfo = {
   ]
 }
 
-export class MangaKatana extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://cubari.moe/mk/${MK_DOMAIN}/manga/${slug}`;
-  }
-  getSourceDetails(): SourceInfo {
-    return MangaKatanaInfo;
-  }
+export class MangaKatana extends Source {
   getMangaShareUrl(mangaId: string): string | null { return `${MK_DOMAIN}/manga/${mangaId}` }
 
   async getMangaDetails(mangaId: string): Promise<Manga> {

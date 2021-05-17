@@ -20,7 +20,7 @@ export const parseManganeloMangaDetails = ($: CheerioStatic, mangaId: string): M
   let follows = 0
   let views = 0
   let lastUpdate = ''
-  // let hentai = false
+  let hentai = false
 
   const tagSections: TagSection[] = [createTagSection({ id: '0', label: 'genres', tags: [] })]
 
@@ -39,19 +39,19 @@ export const parseManganeloMangaDetails = ($: CheerioStatic, mangaId: string): M
       }
     }
     else if ($(row).find('.info-status').length > 0) {
-      status = $('.table-value', row).text() === 'Ongoing' ? MangaStatus.ONGOING : MangaStatus.COMPLETED
+      status = $('.table-value', row).text() == 'Ongoing' ? MangaStatus.ONGOING : MangaStatus.COMPLETED
     }
     else if ($(row).find('.info-genres').length > 0) {
       let elems = $('.table-value', row).find('a').toArray()
       let genres: string[] = []
       for (let elem of elems) {
         let text = $(elem).text()
-        // if (text.toLowerCase().includes('smut')) {
-        //   hentai = true
-        // }
+        if (text.toLowerCase().includes('smut')) {
+          hentai = true
+        }
         genres.push(text)
       }
-      // tagSections[0].tags = genres.map((elem: string) => createTag({ id: elem, label: elem }))
+      tagSections[0].tags = genres.map((elem: string) => createTag({ id: elem, label: elem }))
     }
   }
 

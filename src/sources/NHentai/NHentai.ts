@@ -1,5 +1,5 @@
-/* eslint-disable camelcase, @typescript-eslint/explicit-module-boundary-types, radix, eqeqeq, no-loop-func, no-useless-escape, @typescript-eslint/no-useless-constructor, @typescript-eslint/no-unused-vars */
 import {
+  Source,
   Manga,
   Chapter,
   ChapterDetails,
@@ -9,11 +9,11 @@ import {
   LanguageCode,
   TagSection,
   Request,
+  SourceTag,
   TagType,
   PagedResults,
   SourceInfo,
 } from "paperback-extensions-common";
-import { CubariSource } from "../CubariSource";
 const NHENTAI_DOMAIN = "https://nhentai.net";
 
 export const NHentaiInfo: SourceInfo = {
@@ -29,14 +29,7 @@ export const NHentaiInfo: SourceInfo = {
   websiteBaseURL: NHENTAI_DOMAIN,
 };
 
-export class NHentai extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://cubari.moe/g/${slug}/`;
-  }
-  getSourceDetails(): SourceInfo {
-    return NHentaiInfo;
-  }
-
+export class NHentai extends Source {
   constructor(cheerio: CheerioAPI) {
     super(cheerio);
   }

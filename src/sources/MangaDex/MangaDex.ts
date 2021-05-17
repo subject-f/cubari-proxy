@@ -1,6 +1,7 @@
-/* eslint-disable camelcase, @typescript-eslint/explicit-module-boundary-types, radix, eqeqeq, no-loop-func, no-useless-escape */
+/* eslint-disable camelcase, @typescript-eslint/explicit-module-boundary-types, radix */
 import {
   PagedResults,
+  Source,
   Manga,
   Chapter,
   ChapterDetails,
@@ -14,7 +15,6 @@ import {
   MangaTile,
   Tag,
 } from "paperback-extensions-common";
-import { CubariSource } from "../CubariSource";
 
 const MANGADEX_DOMAIN = "https://mangadex.org";
 const MANGADEX_API = "https://api.mangadex.org";
@@ -24,7 +24,7 @@ export const MangaDexInfo: SourceInfo = {
   description: "Extension that pulls manga from MangaDex",
   icon: "icon.png",
   name: "MangaDex",
-  version: "1.0.1",
+  version: "1.0.3",
   authorWebsite: "https://github.com/nar1n",
   websiteBaseURL: MANGADEX_DOMAIN,
   hentaiSource: false,
@@ -41,14 +41,7 @@ export const MangaDexInfo: SourceInfo = {
   ],
 };
 
-export class MangaDex extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://cubari.moe/read/mangadex/${slug}`;
-  }
-  getSourceDetails(): SourceInfo {
-    return MangaDexInfo;
-  }
-
+export class MangaDex extends Source {
   languageMapping: any = {
     en: "gb",
     "pt-br": "pt",
@@ -91,6 +84,11 @@ export class MangaDex extends CubariSource {
     da: "dk",
     fi: "fi",
   };
+
+  requestManager = createRequestManager({
+    requestsPerSecond: 4,
+    requestTimeout: 15000,
+  });
 
   getMangaShareUrl(mangaId: string): string {
     return `${MANGADEX_DOMAIN}/manga/${mangaId}`;
@@ -464,6 +462,9 @@ export class MangaDex extends CubariSource {
           : response.data;
       offset += 500;
 
+      if (json.results === undefined)
+        throw new Error(`Failed to parse json results for ${newMangaId}`);
+
       for (const chapter of json.results) {
         const chapterId = chapter.data.id;
         const chapterDetails = chapter.data.attributes;
@@ -576,6 +577,10 @@ export class MangaDex extends CubariSource {
         ? JSON.parse(response.data)
         : response.data;
 
+    if (json.results === undefined) {
+      throw new Error(`Failed to parse json for the given search`);
+    }
+
     for (const manga of json.results) {
       const mangaId = manga.data.id;
       const mangaDetails = manga.data.attributes;
@@ -646,12 +651,18 @@ export class MangaDex extends CubariSource {
       promises.push(
         this.requestManager
           .schedule(section.request, 1)
-          .then(async (response: { data: string; }) => {
+          .then(async (response) => {
             const json =
               typeof response.data === "string"
                 ? JSON.parse(response.data)
                 : response.data;
             let results = [];
+
+            if (json.results === undefined)
+              throw new Error(
+                `Failed to parse json results for section ${section.section.title}`
+              );
+
             for (const manga of json.results) {
               const mangaId = manga.data.id;
               const mangaDetails = manga.data.attributes;
@@ -715,6 +726,9 @@ export class MangaDex extends CubariSource {
 
     const promises: Promise<void>[] = [];
 
+    if (json.results === undefined)
+      throw new Error(`Failed to parse json results for getViewMoreItems`);
+
     for (const manga of json.results) {
       const mangaId = manga.data.id;
       const mangaDetails = manga.data.attributes;
@@ -746,69 +760,65 @@ export class MangaDex extends CubariSource {
     });
   }
 
-  async filterUpdatedManga(
-    mangaUpdatesFoundCallback: (updates: MangaUpdates) => void,
-    time: Date,
-    ids: string[]
-  ): Promise<void> {
-    let legacyIds: string[] = ids.filter((x) => !x.includes("-"));
-    let conversionDict: { [id: string]: string } = {};
-    if (legacyIds.length != 0) {
-      conversionDict = await this.getMangaUUIDs(legacyIds);
-      for (const key of Object.keys(conversionDict)) {
-        conversionDict[conversionDict[key]] = key;
-      }
-    }
+  // async filterUpdatedManga(mangaUpdatesFoundCallback: (updates: MangaUpdates) => void, time: Date, ids: string[]): Promise<void> {
+  //   let legacyIds: string[] = ids.filter(x => !x.includes('-'))
+  //   let conversionDict: {[id: string]: string} = {}
+  //   if (legacyIds.length != 0 ) {
+  //     conversionDict = await this.getMangaUUIDs(legacyIds)
+  //     for (const key of Object.keys(conversionDict)) {
+  //       conversionDict[conversionDict[key]] = key
+  //     }
+  //   }
 
-    let offset = 0;
-    let loadNextPage = true;
-    let updatedManga: string[] = [];
-    while (loadNextPage) {
-      const updatedAt = time
-        .toISOString()
-        .substr(0, time.toISOString().length - 5); // They support a weirdly truncated version of an ISO timestamp. A magic number of '5' seems to be always valid
+  //   let offset = 0
+  //   let loadNextPage = true
+  //   let updatedManga: string[] = []
+  //   while (loadNextPage) {
 
-      const request = createRequestObject({
-        url: `${MANGADEX_API}/manga?limit=100&offset=${offset}&updatedAtSince=${updatedAt}`,
-        method: "GET",
-      });
+  //     const updatedAt = time.toISOString().substr(0, time.toISOString().length - 5) // They support a weirdly truncated version of an ISO timestamp. A magic number of '5' seems to be always valid
 
-      const response = await this.requestManager.schedule(request, 1);
+  //     const request = createRequestObject({
+  //       url: `${MANGADEX_API}/manga?limit=100&offset=${offset}&updatedAtSince=${updatedAt}`,
+  //       method: 'GET',
+  //     })
 
-      // If we have no content, there are no updates available
-      if (response.status == 204) {
-        return;
-      }
+  //     const response = await this.requestManager.schedule(request, 1)
 
-      const json =
-        typeof response.data === "string"
-          ? JSON.parse(response.data)
-          : response.data;
+  //     // If we have no content, there are no updates available
+  //     if(response.status == 204) {
+  //       return
+  //     }
 
-      for (const manga of json.results) {
-        const mangaId = manga.data.id;
-        const mangaTime = new Date(manga.data.attributes.updatedAt);
+  //     const json = typeof response.data === "string" ? JSON.parse(response.data) : response.data
 
-        if (mangaTime <= time) {
-          loadNextPage = false;
-        } else if (ids.includes(mangaId)) {
-          updatedManga.push(mangaId);
-        } else if (ids.includes(conversionDict[mangaId])) {
-          updatedManga.push(conversionDict[mangaId]);
-        }
-      }
-      if (loadNextPage) {
-        offset = offset + 100;
-      }
-    }
-    if (updatedManga.length > 0) {
-      mangaUpdatesFoundCallback(
-        createMangaUpdates({
-          ids: updatedManga,
-        })
-      );
-    }
-  }
+  //     if(json.results === undefined) {
+  //       // Log this, no need to throw.
+  //       console.log(`Failed to parse JSON results for filterUpdatedManga using the date ${updatedAt} and the offset ${offset}`)
+  //       return
+  //     }
+
+  //     for (const manga of json.results) {
+  //       const mangaId = manga.data.id
+  //       const mangaTime = new Date(manga.data.attributes.updatedAt)
+
+  //       if (mangaTime <= time) {
+  //         loadNextPage = false
+  //       } else if (ids.includes(mangaId)) {
+  //         updatedManga.push(mangaId)
+  //       } else if (ids.includes(conversionDict[mangaId])) {
+  //         updatedManga.push(conversionDict[mangaId])
+  //       }
+  //     }
+  //     if (loadNextPage) {
+  //       offset = offset + 100
+  //     }
+  //   }
+  //   if (updatedManga.length > 0) {
+  //     mangaUpdatesFoundCallback(createMangaUpdates({
+  //         ids: updatedManga
+  //     }))
+  //   }
+  // }
 
   decodeHTMLEntity(str: string): string {
     return str

@@ -1,37 +1,36 @@
-import { Chapter, ChapterDetails, Tag, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, SearchRequest, TagSection } from "paperback-extensions-common";
-//parseSearch has some issues!
+import { Chapter, ChapterDetails, Tag, HomeSection, LanguageCode, Manga, MangaStatus, MangaTile, MangaUpdates, PagedResults, SearchRequest, TagSection } from "paperback-extensions-common";
 
 export const parseMangaDetails = ($: CheerioStatic, mangaId: string): Manga => {
-  const title = $('h1.heading').first().text().trim();
 
   const titles = [];
-  titles.push(title);
-  const altTitles = $('div.alt_name').text().trim().replace(" ", "").split(";");
-  altTitles.forEach(t => {
-    titles.push(t);
-  });
+  titles.push($('h1.heading').first().text().trim());
+  const altTitles = $('div.alt_name').text().split(";");
+  for (const t of altTitles) {
+    titles.push(t.trim());
+  }
 
   const image = $('div.media div.cover img').attr('src') ?? "";
   const author = $('.author').text().trim();
   const description = $('.summary > p').text().trim();
-  const rawStatus = $('.value.status').text().trim();
-  let hentai = false;
-  let arrayTags: Tag[] = [];
 
-  $('.genres > a').each((i, tag) => {
+  let hentai = false;
+
+  const arrayTags: Tag[] = [];
+  for (const tag of $(".genres > a").toArray()) {
     const label = $(tag).text().trim();
     const id = $(tag).attr('href')?.split("genre/")[1] ?? "";
-    if (["Adult", "Smut", "Mature"].includes(label)) hentai = true;
+    if (["ADULT", "SMUT", "MATURE"].includes(label.toUpperCase())) hentai = true;
     arrayTags.push({ id: id, label: label });
-  });
+  }
   const tagSections: TagSection[] = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
 
+  const rawStatus = $('.value.status').text().trim();
   let status = MangaStatus.ONGOING;
-  switch (rawStatus) {
-    case 'Ongoing':
+  switch (rawStatus.toUpperCase()) {
+    case 'ONGOING':
       status = MangaStatus.ONGOING;
       break;
-    case 'Completed':
+    case 'COMPLETED':
       status = MangaStatus.COMPLETED;
       break;
     default:
@@ -49,7 +48,8 @@ export const parseMangaDetails = ($: CheerioStatic, mangaId: string): Manga => {
     artist: "",
     tags: tagSections,
     desc: description,
-    hentai: hentai,
+    //hentai: hentai
+    hentai: false //MangaDex down
   });
 }
 
@@ -62,16 +62,15 @@ export const parseChapters = ($: CheerioStatic, mangaId: string): Chapter[] => {
     const date = new Date($('.update_time', elem).text() ?? '');
     const chapterId = $('a', elem).attr('href')?.split('/').pop() ?? ''
     const chapterNumber = Number("0" + chapterId.match(chapterNumberRegex)![1]);
-    if (isNaN(chapterNumber)) continue;
 
     chapters.push(createChapter({
       id: chapterId,
       mangaId,
       name: title,
       langCode: LanguageCode.ENGLISH,
-      chapNum: chapterNumber,
+      chapNum: isNaN(chapterNumber) ? 0 : chapterNumber,
       time: date,
-    }))
+    }));
   }
   return chapters;
 }
@@ -87,13 +86,13 @@ export const parseChapterDetails = ($: CheerioStatic, mangaId: string, chapterId
       const array = script.match(imageArrayRegex)![1];
       const img = array.replace(/''?/g, '').split(",");
       for (const i of img) {
-        if (i === '') continue;
+        if (i == '') continue;
         pages.push(i);
       }
     }
   }
 
-  let chapterDetails = createChapterDetails({
+  const chapterDetails = createChapterDetails({
     id: chapterId,
     mangaId: mangaId,
     pages: pages,
@@ -101,7 +100,6 @@ export const parseChapterDetails = ($: CheerioStatic, mangaId: string, chapterId
   });
   return chapterDetails;
 }
-
 
 export const parseTags = ($: CheerioStatic): TagSection[] | null => {
   const tagSections: TagSection[] = [createTagSection({ id: '0', label: 'genres', tags: [] })];
@@ -123,7 +121,7 @@ export const parseUpdatedManga = ($: CheerioStatic, time: Date, ids: string[]): 
   const updatedManga: string[] = [];
   let loadMore = true;
 
-  for (let manga of $('div.item', 'div#book_list').toArray()) {
+  for (const manga of $('div.item', 'div#book_list').toArray()) {
     const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
     const mangaDate = new Date($('.update_time', manga).first().text());
     if (mangaDate > time) {
@@ -146,7 +144,7 @@ export const parseHomeSections = ($: CheerioStatic, sections: HomeSection[], sec
 
   //Hot Mango Update
   const hotMangaUpdate: MangaTile[] = [];
-  for (let manga of $('div.item', 'div#hot_update').toArray()) {
+  for (const manga of $('div.item', 'div#hot_update').toArray()) {
     const title: string = $('.title', manga).text().trim();
     const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
     const image = $('img', manga).first().attr('src') ?? "";
@@ -164,7 +162,7 @@ export const parseHomeSections = ($: CheerioStatic, sections: HomeSection[], sec
 
   //Hot Mango
   const hotManga: MangaTile[] = [];
-  for (let manga of $('div.item', 'div#hot_book').toArray()) {
+  for (const manga of $('div.item', 'div#hot_book').toArray()) {
     const title: string = $('.title', manga).text().trim();
     const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
     const image = $("img", manga).attr('data-src') ?? "";
@@ -182,7 +180,7 @@ export const parseHomeSections = ($: CheerioStatic, sections: HomeSection[], sec
 
   //Latest Mango
   const latestManga: MangaTile[] = [];
-  for (let manga of $('div.item', 'div#book_list').toArray()) {
+  for (const manga of $('div.item', 'div#book_list').toArray()) {
     const title: string = $('.title', manga).text().trim();
     const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
     const image = $('img', manga).first().attr('src') ?? "";
@@ -201,61 +199,51 @@ export const parseHomeSections = ($: CheerioStatic, sections: HomeSection[], sec
   for (const section of sections) sectionCallback(section);
 }
 
-//Fix this later for more stuff if it works, it works.
 export const generateSearch = (query: SearchRequest): string => {
-  let search: string = query.title?.replace(" ", "+") ?? "";
-  return search;
+  let search: string = query.title ?? "";
+  return encodeURI(search);
 }
 
-/*
-ISSUE!
-- Exact matches will not show any manga in the search results
-- Duplicate and black panels
-*/
 export const parseSearch = ($: CheerioStatic): MangaTile[] => {
   const mangas: MangaTile[] = [];
-  try {
+  const collectedIds: string[] = [];
 
-    if ($('meta[property="$=url"]').attr('content')?.includes("/manga/")) {
-      const title = $('h1.heading').first().text().trim() ?? "";
-      const id = $('meta[property$=url]"]').attr('content')?.split('/')?.pop() ?? "";
-      const image = $('div.media div.cover img').attr('src') ?? "";
-      if (id && title) {
+  if ($('meta[property="og:url"]').attr('content')?.includes("/manga/")) {
+    const title = $('h1.heading').first().text().trim() ?? "";
+    const id = $('meta[property$=url]').attr('content')?.split('/')?.pop() ?? "";
+    const image = $('div.media div.cover img').attr('src') ?? "";
+    if (!collectedIds.includes(id) && id && title) {
+      mangas.push(createMangaTile({
+        id,
+        image: image,
+        title: createIconText({ text: title }),
+      }));
+      collectedIds.push(id);
+    }
+  } else {
+
+    for (const manga of $("div.item", "#book_list").toArray()) {
+      const title: string = $('.title a', manga).text().trim();
+      const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
+      const image = $("img", manga).attr('src') ?? "";
+      const subtitle: string = $('.chapter', manga).first().text().trim();
+      if (!collectedIds.includes(id) && id && title) {
         mangas.push(createMangaTile({
           id,
           image: image,
           title: createIconText({ text: title }),
+          subtitleText: createIconText({ text: subtitle }),
         }));
-      }
-    } else {
-
-      const collectedIds: string[] = [];
-      for (const manga of $("div.item", "#book_list").toArray()) {
-        const title: string = $('.title a', manga).text().trim();
-        const id = $('a', manga).attr('href')?.split('/').pop() ?? '';
-        const image = $("img", manga).attr('src') ?? "";
-        const subtitle: string = $('.chapter', manga).first().text().trim();
-        if (!collectedIds.includes(id) && id && title) {
-          mangas.push(createMangaTile({
-            id,
-            image: image,
-            title: createIconText({ text: title }),
-            subtitleText: createIconText({ text: subtitle }),
-          }));
-          collectedIds.push(id);
-        };
-      }
+        collectedIds.push(id);
+      };
     }
-  } catch (e) {
-    console.log(e);
   }
   return mangas;
 }
 
-
 export const parseViewMore = ($: CheerioStatic, homepageSectionId: string): MangaTile[] => {
   const manga: MangaTile[] = [];
-  for (let p of $('div.item', 'div#book_list').toArray()) {
+  for (const p of $('div.item', 'div#book_list').toArray()) {
     const title: string = $('.title a', p).text().trim();
     const id = $('a', p).attr('href')?.split('/').pop() ?? '';
     const image = $("img", p).attr('src') ?? "";
@@ -276,17 +264,5 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 
   let hasNext = Boolean($("a.next.page-numbers", 'ul.uk-pagination').text());
   if (hasNext) isLast = false;
-  /*
-    let current = Number($("span.page-numbers.current", 'ul.uk-pagination').text());
-    let totalPages = [];
-  
-    for (const p of $("a.page-numbers", 'ul.uk-pagination').toArray()) {
-      let page = Number($(p).text().trim());
-      if (isNaN(page)) continue;
-      totalPages.push(page);
-    }
-    let lastPage = Math.max(...totalPages);
-    if (lastPage >= current) isLast = false;
-    */
   return isLast;
 }

@@ -1,4 +1,5 @@
 import {
+  Source,
   Manga,
   Chapter,
   ChapterDetails,
@@ -9,9 +10,8 @@ import {
   SourceInfo,
   MangaUpdates,
   TagType,
+  RequestHeaders,
 } from "paperback-extensions-common";
-import { CubariSource } from "../CubariSource";
-
 import {
   parseChapterDetails,
   parseChapters,
@@ -50,15 +50,7 @@ export const MangaLifeInfo: SourceInfo = {
   ],
 };
 
-export class MangaLife extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://cubari.moe/ml/${slug}`;
-  }
-
-  getSourceDetails(): SourceInfo {
-    return MangaLifeInfo;
-  }
-
+export class MangaLife extends Source {
   getMangaShareUrl(mangaId: string): string | null {
     return `${ML_DOMAIN}/manga/${mangaId}`;
   }
@@ -170,6 +162,12 @@ export class MangaLife extends CubariSource {
 
     const response = await this.requestManager.schedule(request, 1);
     return parseViewMore(response.data, homepageSectionId);
+  }
+
+  async globalRequestHeaders(): Promise<RequestHeaders> {
+    return {
+      referer: ML_DOMAIN,
+    };
   }
 
   getCloudflareBypassRequest() {

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase, @typescript-eslint/explicit-module-boundary-types, radix, eqeqeq, no-loop-func, no-useless-escape, @typescript-eslint/no-unused-vars */
 import {
   Chapter,
   ChapterDetails,

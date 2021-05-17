@@ -1,4 +1,5 @@
 import {
+  Source,
   Manga,
   Chapter,
   ChapterDetails,
@@ -11,7 +12,6 @@ import {
   RequestHeaders,
   TagType
 } from "paperback-extensions-common"
-import { CubariSource } from "../CubariSource"
 
 import {
   generateSearch,
@@ -59,14 +59,7 @@ export const MangakakalotInfo: SourceInfo = {
   ]
 }
 
-export class Mangakakalot extends CubariSource {
-  getMangaUrl(slug: string): string {
-    return `https://cubari.moe/mb/${slug}`;
-  }
-  getSourceDetails(): SourceInfo {
-    return MangakakalotInfo;
-  }
-
+export class Mangakakalot extends Source {
   getMangaShareUrl(mangaId: string): string | null { return `${mangaId}/` }
 
   async getMangaDetails(mangaId: string): Promise<Manga> {
