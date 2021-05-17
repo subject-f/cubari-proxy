@@ -17,7 +17,7 @@ export default class Section extends PureComponent {
           <h2
             className={classNames(
               this.props.subTextSize ? this.props.subTextSize : "text-md",
-              "text-gray-600 dark:text-gray-400 font-medium uppercase"
+              "text-gray-600 dark:text-gray-400 font-medium"
             )}
           >
             {this.props.subText}

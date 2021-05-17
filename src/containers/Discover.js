@@ -4,6 +4,7 @@ import ScrollableCarousel from "../components/ScrollableCarousel";
 import Section from "../components/Section";
 import Spinner from "../components/Spinner";
 import Container from "../components/Container";
+import { capitalizeFirstLetters } from "../utils/strings";
 
 export default class Discover extends PureComponent {
   componentDidMount = () => {
@@ -19,7 +20,7 @@ export default class Discover extends PureComponent {
           <Section
             key={section.id + section.title + "title"}
             text={text}
-            subText={subText}
+            subText={capitalizeFirstLetters(subText)}
           />
         );
         items.push(
