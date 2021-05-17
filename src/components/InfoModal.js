@@ -17,7 +17,7 @@ export default class InfoModal extends PureComponent {
 
   render() {
     return (
-      <button className="p-1 rounded-full bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white">
+      <button className="p-1 rounded-full bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white focus:outline-none">
         <InformationCircleIcon
           className="h-6 w-6"
           aria-hidden="true"
@@ -52,7 +52,7 @@ export default class InfoModal extends PureComponent {
                   <Dialog.Description className="-mt-2">
                     <Section text="About"></Section>
                     While this project is related to cubari.moe, it should be
-                    considered distinct (and will evolve indepdently of the main
+                    considered distinct (and will evolve independently of the main
                     website).
                     <br></br>
                     <br></br>

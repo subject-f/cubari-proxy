@@ -52,15 +52,16 @@ export default class BlackholeMail extends PureComponent {
     return (
       <Popover as={Fragment}>
         {({ open }) => (
-          <div
-            className={classNames(
-              "p-1 relative rounded-full mr-4",
-              open
-                ? "bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
-                : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white dark:text-gray-300"
-            )}
-          >
-            <Popover.Button as="div" className="relative">
+          <div className="relative mr-4">
+            <Popover.Button
+              as="button"
+              className={classNames(
+                "p-1 rounded-full bg-transparent text-black relative focus:outline-none",
+                open
+                  ? "bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
+                  : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white text-black dark:text-gray-300"
+              )}
+            >
               <ChatIcon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
             <Transition
