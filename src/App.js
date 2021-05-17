@@ -6,6 +6,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import sourcemap from "./sources/sourcemap.js";
 import InfoModal from "./components/InfoModal.js";
 import ThemeSwitcher from "./components/ThemeSwitcher.js";
+import BlackholeMail from "./components/BlackholeMail.js";
 import Router, { navigation } from "./Router.js";
 
 export default class App extends Component {
@@ -36,10 +37,8 @@ export default class App extends Component {
   initializeDiscoverItems = () => {
     Object.entries(this.sources).forEach(([sourceName, source]) => {
       source.getHomePageSections((section) => {
-        if (!section.title.startsWith(source.getSourceDetails().name)) {
-          section.title = `${source.getSourceDetails().name} - ${
-            section.title
-          }`;
+        if (!section.title.startsWith(sourceName)) {
+          section.title = `${sourceName} - ${section.title}`;
         }
         section.source = source;
         section.mangaUrlizer = source.getMangaUrl;
@@ -66,10 +65,7 @@ export default class App extends Component {
             <div className="relative flex items-center justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Menu.Button
-                  onClick
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                >
+                <Menu.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   {({ open }) => (
                     <Fragment>
                       <span className="sr-only">Open main menu</span>
@@ -130,6 +126,7 @@ export default class App extends Component {
                 </div>
               </div>
               <div className="absolute sm:mr-3 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <BlackholeMail />
                 <ThemeSwitcher />
                 <InfoModal />
               </div>

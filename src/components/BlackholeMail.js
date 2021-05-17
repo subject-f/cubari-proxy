@@ -1,0 +1,107 @@
+import React, { Fragment, PureComponent } from "react";
+import { Chat, ChatIcon } from "@heroicons/react/outline";
+import { Popover, Transition } from "@headlessui/react";
+import Section from "./Section";
+import { classNames } from "../utils/strings";
+
+const BLACKHOLE_URL = "https://guya.moe/api/black_hole_mail/";
+
+export default class BlackholeMail extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      textValue: "",
+      submitted: false,
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      textValue: e.target.value,
+    });
+  };
+
+  handleKeyPress = (e) => {
+    if (e.key === "Enter" && this.state.textValue) {
+      let payload = new URLSearchParams();
+      payload.append("text", this.state.textValue);
+      fetch(BLACKHOLE_URL, {
+        method: "POST",
+        body: payload,
+      })
+        .then((e) => e.json())
+        .then((e) => {
+          this.setState({
+            submitted: true,
+            textValue:
+              (e.success && "Successfully delivered!") ||
+              (e.error && "Failed to send.") ||
+              "No response.",
+          });
+        })
+        .catch(() => {
+          this.setState({
+            submitted: true,
+            textValue: "Failed to send.",
+          });
+        });
+    }
+  };
+
+  render() {
+    return (
+      <Popover as={Fragment}>
+        {({ open }) => (
+          <div
+            className={classNames(
+              "p-1 relative rounded-full mr-4",
+              open
+                ? "bg-gray-200 dark:bg-gray-700 text-black dark:text-white"
+                : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white dark:text-gray-300"
+            )}
+          >
+            <Popover.Button as="div" className="relative">
+              <ChatIcon className="h-6 w-6" aria-hidden="true" />
+            </Popover.Button>
+            <Transition
+              as={Fragment}
+              enter="transition duration-250 ease-out"
+              enterFrom=" opacity-0"
+              enterTo=" opacity-100"
+              leave="transition duration-250 ease-out"
+              leaveFrom=" opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Popover.Panel className="absolute z-40 w-screen max-w-xl px-4 transform -right-24 sm:px-0 pointer-events-none">
+                <div className="ml-8 overflow-hidden mt-6 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                  <div className="p-4 text-black dark:text-white bg-gray-100 dark:bg-gray-800 pointer-events-auto">
+                    <Section
+                      text="Send us a message!"
+                      textSize="text-2xl"
+                      subText="Let us know if you have any ideas, suggestions, or issues."
+                      subTextSize="text-sm"
+                    ></Section>
+                    <input
+                      className={classNames(
+                        "w-full mt-8 p-4 text-md bg-gray-200 dark:bg-gray-700 rounded-md focus:outline-none",
+                        this.state.submitted
+                          ? "text-gray-500 dark:text-gray-500 user select-none"
+                          : "text-black dark:text-white"
+                      )}
+                      onChange={this.handleChange}
+                      onKeyPress={this.handleKeyPress}
+                      type="text"
+                      value={this.state.textValue}
+                      placeholder="Press enter to send..."
+                      disabled={this.state.submitted}
+                    />
+                  </div>
+                </div>
+              </Popover.Panel>
+            </Transition>
+          </div>
+        )}
+      </Popover>
+    );
+  }
+}

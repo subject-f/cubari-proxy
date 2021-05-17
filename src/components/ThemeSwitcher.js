@@ -37,7 +37,7 @@ export default class ThemeSwitcher extends PureComponent {
 
   render() {
     return (
-      <div className="p-1 rounded-full bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white ml-3 mr-3">
+      <div className="p-1 rounded-full bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white mr-4">
         {this.state.theme === "dark" ? (
           <SunIcon className="h-6 w-6" onClick={() => this.setTheme("light")} />
         ) : (
