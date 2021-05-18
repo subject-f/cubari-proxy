@@ -1,10 +1,11 @@
 import React, { PureComponent } from "react";
 import observer from "../utils/observer";
 import { Transition } from "@headlessui/react";
-import { HeartIcon, XIcon, RefreshIcon } from "@heroicons/react/solid";
+import { HeartIcon, XIcon } from "@heroicons/react/solid";
 import { classNames } from "../utils/strings";
 import { globalHistoryHandler } from "../utils/remotestorage";
 import { mangaUrlSaver } from "../utils/compatability";
+import { SpinIcon } from "./Spinner";
 
 export default class MangaCard extends PureComponent {
   constructor(props) {
@@ -224,7 +225,7 @@ export default class MangaCard extends PureComponent {
                   style={{ willChange: "transform" }}
                 >
                   {this.state.removing ? (
-                    <RefreshIcon className="rounded-full animate-spin z-10 p-0 w-6 h-6" />
+                    <SpinIcon className="rounded-full animate-spin z-10 p-0 w-6 h-6" />
                   ) : (
                     <XIcon className="rounded-full z-10 p-0 w-6 h-6" />
                   )}
@@ -243,7 +244,7 @@ export default class MangaCard extends PureComponent {
                   style={{ willChange: "transform" }}
                 >
                   {this.state.saving ? (
-                    <RefreshIcon className="rounded-full animate-spin z-10 p-0 w-6 h-6" />
+                    <SpinIcon className="rounded-full animate-spin z-10 p-0 w-6 h-6" />
                   ) : (
                     <HeartIcon className="rounded-full z-10 p-0 w-6 h-6" />
                   )}
