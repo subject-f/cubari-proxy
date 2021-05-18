@@ -84,7 +84,8 @@ export default class ScrollableCarousel extends PureComponent {
       let maxSteps = 20;
       let scroller = () => {
         // This emulates an ease-in-out function
-        let functor = (Math.sin((steps / maxSteps - 0.5) * Math.PI) + 1) * 0.5;
+        let x = steps / maxSteps;
+        let functor = (x * x) / (2 * (x * x - x) + 1);
         this.ref.current.scrollLeft =
           currentPosition + functor * amount * modifier;
         steps++;
