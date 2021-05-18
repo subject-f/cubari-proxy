@@ -16,7 +16,7 @@ const hentai = localStorage.getItem("hentai");
 
 const sourcemap = {};
 
-if (hentai || window.location.search.includes("hentai")) {
+if (hentai) {
   sourcemap["NHentai"] = new (CubariSourceMixin(
     NHentai,
     NHentaiInfo,
