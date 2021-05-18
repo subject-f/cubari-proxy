@@ -22,6 +22,7 @@ export default class Search extends PureComponent {
       let query = {
         title: event.target.value,
       };
+      this.runningQueries.clear();
       this.props.searchHandler("", {});
       this.setState(
         {
@@ -34,16 +35,17 @@ export default class Search extends PureComponent {
     }
   };
 
-  runSearchQuery = (query) => {
-    Object.entries(this.props.sources).forEach(([sourceName, source]) => {
-      const queryTask = {
-        source,
-        query,
-      };
-      this.runningQueries.add(queryTask);
-      let baseReq = source.searchRequest(query);
-      baseReq
-        .then((e) => {
+  sourceQueryHelper = (sourceName, source, queryTask) => {
+    // TODO consider limiting the returned results, which means we need to pass
+    // an async callback to the carousel to load more if we're near the end
+    this.runningQueries.add(queryTask);
+    let hasMore = false;
+    source
+      .searchRequest({ ...queryTask.query }, queryTask.metadata)
+      .then((e) => {
+        // This bounds check ensures that the returning query is still current
+        // Otherwise it could return results to a new result as you type it in
+        if (this.runningQueries.has(queryTask) && this.inputRef.current) {
           let results = (e.results || []).map((manga) => {
             manga.mangaUrlizer = source.getMangaUrl;
             manga.slug = manga.id;
@@ -53,17 +55,40 @@ export default class Search extends PureComponent {
             manga.sourceName = sourceName;
             return manga;
           });
-          this.props.searchHandler(query.title, {
+          let previousResults = this.props.searchResults[sourceName];
+          queryTask.metadata = e.metadata;
+          hasMore = queryTask.metadata && results.length;
+          this.props.searchHandler(queryTask.query.title, {
             ...this.props.searchResults,
-            [sourceName]: results,
+            [sourceName]: [
+              ...(previousResults ? previousResults : []),
+              ...results,
+            ],
           });
-        })
-        .finally(() => {
-          this.runningQueries.delete(queryTask);
-          this.setState({
-            searching: this.runningQueries.size ? true : false,
-          });
-        });
+        }
+      })
+      .finally(() => {
+        if (this.runningQueries.has(queryTask) && this.inputRef.current) {
+          if (hasMore) {
+            this.sourceQueryHelper(sourceName, source, queryTask);
+          } else {
+            this.runningQueries.delete(queryTask);
+            this.setState({
+              searching: this.runningQueries.size ? true : false,
+            });
+          }
+        }
+      });
+  };
+
+  runSearchQuery = (query) => {
+    Object.entries(this.props.sources).forEach(([sourceName, source]) => {
+      const queryTask = {
+        source,
+        query,
+        metadata: undefined,
+      };
+      this.sourceQueryHelper(sourceName, source, queryTask);
     });
   };
 
