@@ -423,3 +423,12 @@ export const globalHistoryHandler = (() => {
     getAllUnpinnedSeries,
   };
 })();
+
+export const purgePreviousCache = () => {
+  // Clean up previous cache entries from the last time the app was loaded
+  for (let [key, value] of Object.entries(localStorage)) {
+    if (key.startsWith("remotestorage") && value === "undefined") {
+      localStorage.removeItem(key);
+    }
+  }
+};

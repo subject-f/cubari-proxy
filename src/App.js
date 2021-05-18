@@ -8,6 +8,7 @@ import InfoModal from "./components/InfoModal.js";
 import ThemeSwitcher from "./components/ThemeSwitcher.js";
 import BlackholeMail from "./components/BlackholeMail.js";
 import Router, { navigation } from "./Router.js";
+import { purgePreviousCache } from "./utils/remotestorage";
 
 export default class App extends Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class App extends Component {
   };
 
   componentDidMount = () => {
+    purgePreviousCache();
     this.initializeDiscoverItems();
   };
 
