@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Fragment, PureComponent } from "react";
 import observer from "../utils/observer";
 import { Transition } from "@headlessui/react";
 import { HeartIcon, XIcon } from "@heroicons/react/solid";
@@ -182,6 +182,7 @@ export default class MangaCard extends PureComponent {
       <Transition
         appear={true}
         show={true}
+        as={Fragment}
         enter="transition-opacity duration-500"
         enterFrom="opacity-0"
         enterTo="opacity-100"
@@ -189,7 +190,10 @@ export default class MangaCard extends PureComponent {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="px-2 py-3.5 sm:px-3.5 sm:py-5">
+        <div
+          className="px-2 py-3.5 sm:px-3.5 sm:py-5"
+          style={{ willChange: "transform" }}
+        >
           <a
             ref={this.ref}
             href={this.props.mangaUrlizer(this.props.slug)}
