@@ -97,7 +97,9 @@ export default class Search extends PureComponent {
     setTimeout(() => {
       // TODO fix this focus problem where the mobile nav button gets
       // focus after dismissing the menu. This can be an issue on faster devices
-      this.inputRef.current.focus();
+      if (this.inputRef.current) {
+        this.inputRef.current.focus();
+      }
     }, 500);
   };
 
