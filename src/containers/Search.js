@@ -13,6 +13,7 @@ export default class Search extends PureComponent {
     this.state = {
       searching: false,
     };
+    this.inputRef = React.createRef();
     this.runningQueries = new Set();
   }
 
@@ -68,6 +69,7 @@ export default class Search extends PureComponent {
 
   componentDidMount = () => {
     this.props.setPath("Search");
+    this.inputRef.current.focus();
   };
 
   render() {
@@ -106,6 +108,7 @@ export default class Search extends PureComponent {
       <Container>
         <input
           className="w-full mt-8 p-4 pt-4 pb-4 text-2xl text-black bg-gray-200 dark:text-white dark:bg-gray-800 rounded-md focus:outline-none shadow-md"
+          ref={this.inputRef}
           onKeyPress={this.handleInput}
           type="text"
           defaultValue={this.props.searchQuery}
