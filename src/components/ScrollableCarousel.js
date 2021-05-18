@@ -40,7 +40,6 @@ export default class ScrollableCarousel extends PureComponent {
 
   scrollPositionHandler = () => {
     if (this.ref.current) {
-      // TODO add scroll snapping?
       let fullyLeftScrolled = this.ref.current.scrollLeft < SCROLL_THRESHOLD;
       let fullyRightScrolled =
         this.ref.current.scrollLeft + this.ref.current.clientWidth >
@@ -66,6 +65,7 @@ export default class ScrollableCarousel extends PureComponent {
 
   _scroller = (modifier) => {
     if (!this.state.scrolling) {
+      this.ref.current.classList.add("overflow-x-hidden");
       let elementWidth = this.ref.current.lastChild.lastChild.clientWidth;
       let containerWidth = this.ref.current.clientWidth;
       let currentPosition = this.ref.current.scrollLeft;
@@ -91,6 +91,7 @@ export default class ScrollableCarousel extends PureComponent {
         if (steps < maxSteps) {
           window.requestAnimationFrame(scroller);
         } else {
+          this.ref.current.classList.remove("overflow-x-hidden");
           this.setState({
             scrolling: false,
           });
@@ -137,7 +138,7 @@ export default class ScrollableCarousel extends PureComponent {
         {this.state.items.length ? (
           <div
             ref={this.ref}
-            className="static w-full h-full flex overflow-x-auto pb-1 pt-5 select-none"
+            className="static w-full h-full flex overflow-x-auto no-scrollbar pb-1 pt-5 select-none"
             onScroll={this.scrollPositionHandler}
           >
             <div className="flex flex-nowrap mt-1 mb-1">{this.state.items}</div>
