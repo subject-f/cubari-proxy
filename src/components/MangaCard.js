@@ -189,7 +189,7 @@ export default class MangaCard extends PureComponent {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="px-3.5 py-5">
+        <div className="px-2 py-3.5 sm:px-3.5 sm:py-5">
           <a
             ref={this.ref}
             href={this.props.mangaUrlizer(this.props.slug)}
