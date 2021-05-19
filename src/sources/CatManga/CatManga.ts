@@ -18,7 +18,7 @@ const BASE = "https://catmanga.org";
 
 export const CatMangaInfo: SourceInfo = {
   icon: "icon.png",
-  version: "1.2.3",
+  version: "1.2.4",
   name: "CatManga",
   author: "PythonCoderAS",
   authorWebsite: "https://github.com/PythonCoderAS",
@@ -48,7 +48,7 @@ export class CatManga extends Source {
       createHomeSection({
         id: "featured",
         title: "Featured",
-        items: this.parser.parseFeatured($, BASE),
+        items: this.getFeatured($),
       })
     );
     sectionCallback(
@@ -61,7 +61,7 @@ export class CatManga extends Source {
     sectionCallback(
       createHomeSection({
         id: "all",
-        items: (await this.getWebsiteMangaDirectory(null)).results,
+        items: this.getAll($),
         title: "All Manga",
       })
     );
@@ -76,11 +76,53 @@ export class CatManga extends Source {
     return this.cheerio.load(response.data);
   }
 
+  getFeatured($: CheerioStatic) {
+    const jsonData = JSON.parse($("script#__NEXT_DATA__").html() || "{}");
+    return jsonData.props.pageProps.featured.map((manga: any) =>
+      createMangaTile({
+        id: manga.series_id,
+        title: createIconText({
+          text: manga.title,
+        }),
+        image: manga.cover_art.source,
+      })
+    );
+  }
+
   getLatest($: CheerioStatic) {
-    return this.parser.parseTileList(
-      $,
-      "latestChapterListView",
-      "latestChapterView"
+    // TODO push this upstream to fix it, probably
+    const jsonData = JSON.parse($("script#__NEXT_DATA__").html() || "{}");
+    const latestSeries = jsonData.props.pageProps.latests.map((e: any) => e[0]);
+    const uniqueSeries = new Set();
+    const finalSeriesData: any = [];
+    latestSeries.forEach((manga: any) => {
+      if (!uniqueSeries.has(manga.series_id)) {
+        uniqueSeries.add(manga.series_id);
+        finalSeriesData.push(manga);
+      }
+    });
+
+    return finalSeriesData.map((manga: any) =>
+      createMangaTile({
+        id: manga.series_id,
+        title: createIconText({
+          text: manga.title,
+        }),
+        image: manga.cover_art.source,
+      })
+    );
+  }
+
+  getAll($: CheerioStatic) {
+    const jsonData = JSON.parse($("script#__NEXT_DATA__").html() || "{}");
+    return jsonData.props.pageProps.series.map((manga: any) =>
+      createMangaTile({
+        id: manga.series_id,
+        title: createIconText({
+          text: manga.title,
+        }),
+        image: manga.cover_art.source,
+      })
     );
   }
 
@@ -136,7 +178,7 @@ export class CatManga extends Source {
     metadata: any
   ): Promise<PagedResults> {
     // TODO: Wait for search to be implemented on the website.
-    const results = (await this.getWebsiteMangaDirectory(null)).results;
+    const results = this.getAll(await this.getHomePageData());
     const data: MangaTile[] = [];
     for (let i = 0; i < results.length; i++) {
       const key = results[i];
