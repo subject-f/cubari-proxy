@@ -9,7 +9,7 @@ export default class Section extends PureComponent {
           <h1
             className={classNames(
               this.props.textSize ? this.props.textSize : "text-2xl sm:text-3xl",
-              "text-black dark:text-white font-semibold leading-loose"
+              "text-black dark:text-white font-semibold leading-loose mb-1"
             )}
           >
             {this.props.text}

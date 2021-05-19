@@ -191,7 +191,7 @@ export default class MangaCard extends PureComponent {
         leaveTo="opacity-0"
       >
         <div
-          className="px-2 py-3.5 sm:px-3.5 sm:py-5"
+          className="px-1.5 py-2.5 sm:px-3.5 sm:py-5"
           style={{ willChange: "transform" }}
         >
           <a
@@ -199,7 +199,7 @@ export default class MangaCard extends PureComponent {
             href={this.props.mangaUrlizer(this.props.slug)}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-no-repeat bg-cover bg-center bg-gray-300 dark:bg-gray-800 transform rounded-lg shadow-md scale-100 md:hover:scale-105 w-32 h-52 sm:h-72 sm:w-48 flex flex-row flex-wrap p-1 transition duration-100 ease-in-out"
+            className="bg-no-repeat bg-cover bg-center bg-gray-300 dark:bg-gray-800 transform rounded-lg shadow-md scale-100 md:hover:scale-105 w-36 h-56 sm:h-72 sm:w-48 flex flex-row flex-wrap p-1 transition duration-100 ease-in-out"
             data-background-image={`linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,0.75) 90%), url("${this.props.coverUrl}")`}
             onClick={this.addHistoryHandler}
             style={{ willChange: "transform" }}

@@ -100,7 +100,7 @@ export default class Search extends PureComponent {
       if (this.inputRef.current) {
         this.inputRef.current.focus();
       }
-    }, 500);
+    }, 100);
   };
 
   render() {

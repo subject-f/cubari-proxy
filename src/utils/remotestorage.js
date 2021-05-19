@@ -53,8 +53,12 @@ export const remoteStorage = (() => {
         ],
       });
 
+      let slugBuilder = (slug, source) => {
+        return `${source}-${slug}`;
+      };
+
       let pathBuilder = (path, slug, source) => {
-        return path.replace(REPLACEMENT_STR, `${source}-${slug}`);
+        return path.replace(REPLACEMENT_STR, slugBuilder(slug, source));
       };
 
       let seriesBuilder = (
@@ -80,9 +84,7 @@ export const remoteStorage = (() => {
 
       return {
         exports: {
-          slugBuilder: (slug, source) => {
-            return `${source}-${slug}`;
-          },
+          slugBuilder,
           addSeries: (slug, coverUrl, source, url, title, pinned, chapters) => {
             let toStore = seriesBuilder(
               slug,

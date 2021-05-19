@@ -24,7 +24,9 @@ export default class ThemeSwitcher extends PureComponent {
 
   setTheme = (theme) => {
     window.localStorage.setItem("theme", theme);
-    document.body.className = "";
+    if (document.body.classList.length) {
+      document.body.className = "transition-colors duration-300";
+    }
     document.body.classList.add(...themes[theme].rootClasses);
     this.setState({
       theme,
