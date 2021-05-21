@@ -35,15 +35,14 @@ export default class Discover extends PureComponent {
     const items = [];
     this.props.discover.forEach((section) => {
       if (section.items && section.items.length) {
-        let [text, subText] = section.title.split(" - ");
+        let subText = section.title.split(" - ")[1];
         items.push(
           <Fragment
             key={section.sourceName + section.id + section.title + "-section"}
           >
             <Section
               key={section.id + section.title + "title"}
-              text={text}
-              subText={capitalizeFirstLetters(subText)}
+              text={capitalizeFirstLetters(subText)}
             />
             <ScrollableCarousel key={section.id + section.title + "-carousel"}>
               {section.items.map((item) => (
