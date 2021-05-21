@@ -31,7 +31,7 @@ export function CubariSourceMixin<TBase extends Constructor>(
   return class CubariSource extends Base {
     getMangaUrl = getMangaUrlCallback;
 
-    getSourceDetails(): SourceInfo {
+    getSourceDetails = () => {
       return sourceInfo;
     }
   };
