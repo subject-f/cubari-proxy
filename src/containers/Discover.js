@@ -6,28 +6,26 @@ import Spinner from "../components/Spinner";
 import Container from "../components/Container";
 import Tabber from "../components/Tabber";
 import { capitalizeFirstLetters } from "../utils/strings";
+import sourcemap from "../sources/sourcemap.js";
 
 export default class Discover extends PureComponent {
   componentDidMount = () => {
     this.props.setPath("Discover");
   };
 
-  getSourceNamesAndIcon() {
-    let sourceNames = new Set();
-    const response = [...this.props.discover].reduce((acc, section) => {
-      if (
-        sourceNames.has(section.sourceName) ||
-        !(section.items && section.items.length)
-      )
-        return acc;
-      sourceNames.add(section.sourceName);
-      let iconFileName = section.source.getSourceDetails().icon;
-      acc.push({
-        name: section.sourceName,
-        icon: require(`../sources/${section.sourceName}/includes/${iconFileName}`),
+  getSourceNamesAndIcons() {
+    let activeSources = new Set(
+      [...this.props.discover].map((section) => section.sourceName)
+    );
+    let response = [];
+    for (const [sourceName, source] of Object.entries(sourcemap)) {
+      let iconFileName = source.getSourceDetails().icon;
+      response.push({
+        name: sourceName,
+        icon: require(`../sources/${sourceName}/includes/${iconFileName}`),
+        disabled: !activeSources.has(sourceName),
       });
-      return acc;
-    }, []);
+    }
     return response;
   }
 
@@ -64,7 +62,7 @@ export default class Discover extends PureComponent {
     return (
       <Container>
         {this.props.discover.size ? (
-          <Tabber items={items} classes={this.getSourceNamesAndIcon()} />
+          <Tabber items={items} classes={this.getSourceNamesAndIcons()} />
         ) : (
           <Spinner />
         )}

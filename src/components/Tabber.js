@@ -24,15 +24,19 @@ class Tabber extends PureComponent {
           {this.props.classes.map((item) => {
             return (
               <button
+                disabled={item.disabled}
                 key={item.name}
                 onClick={() => {
                   this.handleSelect(item.name);
                 }}
                 className={classNames(
-                  this.state.selected === item.name
+                  this.state.selected === item.name && !item.disabled
                     ? "bg-black text-white dark:bg-gray-800 dark:text-white"
-                    : "bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white",
-                  "inline-flex items-center justify-center px-3 py-2 mx-2 rounded-md text-md font-medium focus:outline-none"
+                    : "bg-transparent text-black dark:text-gray-300",
+                  "inline-flex items-center justify-center px-3 py-2 mx-2 rounded-md text-md font-medium focus:outline-none",
+                  item.disabled
+                    ? "opacity-25"
+                    : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white"
                 )}
               >
                 <img

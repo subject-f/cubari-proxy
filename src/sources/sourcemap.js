@@ -23,35 +23,35 @@ if (hentai) {
     (slug) => `https://cubari.moe/read/nhentai/${slug}/`
   ))(cheerio);
 } else {
-  sourcemap["MangaKatana"] = new (CubariSourceMixin(
-    MangaKatana,
-    MangaKatanaInfo,
-    (slug) => `https://cubari.moe/mk/${MK_DOMAIN}/manga/${slug}/`
-  ))(cheerio);
   sourcemap["Guya"] = new (CubariSourceMixin(
     Guya,
     GuyaInfo,
     (slug) => `https://guya.moe/read/manga/${slug}/`
-  ))(cheerio);
-  // sourcemap["Mangakakalot"] = new (CubariSourceMixin(
-  //   Mangakakalot,
-  //   MangakakalotInfo,
-  //   (slug) => `https://cubari.moe/mb/${slug}/`
-  // ))(cheerio);
-  sourcemap["MangaDex"] = new (CubariSourceMixin(
-    MangaDex,
-    MangaDexInfo,
-    (slug) => `https://cubari.moe/read/mangadex/${slug}/`
   ))(cheerio);
   sourcemap["MangaLife"] = new (CubariSourceMixin(
     MangaLife,
     MangaLifeInfo,
     (slug) => `https://cubari.moe/ml/${slug}/`
   ))(cheerio);
+  sourcemap["MangaKatana"] = new (CubariSourceMixin(
+    MangaKatana,
+    MangaKatanaInfo,
+    (slug) => `https://cubari.moe/mk/${MK_DOMAIN}/manga/${slug}/`
+  ))(cheerio);
+  // sourcemap["Mangakakalot"] = new (CubariSourceMixin(
+  //   Mangakakalot,
+  //   MangakakalotInfo,
+  //   (slug) => `https://cubari.moe/mb/${slug}/`
+  // ))(cheerio);
   sourcemap["CatManga"] = new (CubariSourceMixin(
     CatManga,
     CatMangaInfo,
     (slug) => `https://catmanga.org/series/${slug}/`
+  ))(cheerio);
+  sourcemap["MangaDex"] = new (CubariSourceMixin(
+    MangaDex,
+    MangaDexInfo,
+    (slug) => `https://cubari.moe/read/mangadex/${slug}/`
   ))(cheerio);
 }
 
