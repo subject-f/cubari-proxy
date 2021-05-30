@@ -2,13 +2,18 @@ import React, { Fragment, PureComponent } from "react";
 import MangaCard from "../components/MangaCard";
 import ScrollableCarousel from "../components/ScrollableCarousel";
 import Section from "../components/Section";
-import Spinner from "../components/Spinner";
+import Spinner, { SpinIcon } from "../components/Spinner";
 import Container from "../components/Container";
-import Tabber from "../components/Tabber";
 import { capitalizeFirstLetters } from "../utils/strings";
 import sourcemap from "../sources/sourcemap.js";
+import { RadioGroup } from "@headlessui/react";
+import { classNames } from "../utils/strings";
 
 export default class Discover extends PureComponent {
+  state = {
+    currentSource: Object.keys(sourcemap)[0],
+  };
+
   componentDidMount = () => {
     this.props.setPath("Discover");
   };
@@ -28,6 +33,12 @@ export default class Discover extends PureComponent {
     }
     return response;
   }
+
+  setCurrentSource = (source) => {
+    this.setState({
+      currentSource: source,
+    });
+  };
 
   render() {
     const items = [];
@@ -62,7 +73,56 @@ export default class Discover extends PureComponent {
     return (
       <Container>
         {this.props.discover.size ? (
-          <Tabber items={items} classes={this.getSourceNamesAndIcons()} />
+          <Fragment>
+            <ScrollableCarousel iconSize={4}>
+              <RadioGroup
+                as="div"
+                className="py-2 flex flex-nowrap"
+                value={this.state.currentSource}
+                onChange={this.setCurrentSource}
+              >
+                {this.getSourceNamesAndIcons().map((source) => (
+                  <RadioGroup.Option as={Fragment} value={source.name}>
+                    {({ checked }) => (
+                      <button
+                        disabled={source.disabled}
+                        key={
+                          source.name +
+                          (source.disabled ? "-disabled" : "-enabled")
+                        }
+                        className={classNames(
+                          checked
+                            ? "bg-black text-white dark:bg-gray-800 dark:text-white"
+                            : "bg-transparent text-black dark:text-gray-300",
+                          source.disabled
+                            ? "opacity-25"
+                            : checked
+                            ? ""
+                            : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-white",
+                          "min-w-max inline-flex items-center justify-center px-3 py-2 mx-2 rounded-md text-md font-medium focus:outline-none"
+                        )}
+                      >
+                        {source.disabled ? (
+                          <SpinIcon className="h-8 h-8 animate-spin"></SpinIcon>
+                        ) : (
+                          <img
+                            src={source.icon.default}
+                            className="h-8 w-8"
+                            alt={source.name}
+                          />
+                        )}
+                        <div className="block px-2">{source.name}</div>
+                      </button>
+                    )}
+                  </RadioGroup.Option>
+                ))}
+              </RadioGroup>
+            </ScrollableCarousel>
+
+            {items.map((item) =>
+              item.key.includes(this.state.currentSource) ? item : undefined
+            )}
+          </Fragment>
         ) : (
           <Spinner />
         )}
