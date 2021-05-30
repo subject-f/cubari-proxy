@@ -138,7 +138,7 @@ export default class ScrollableCarousel extends PureComponent {
         {this.state.itemLength ? (
           <div
             ref={this.ref}
-            className="static w-full h-full flex overflow-x-auto no-scrollbar pb-1 pt-1 sm:pt-5 select-none"
+            className="static w-full h-full flex overflow-x-auto no-scrollbar pb-1 pt-1 select-none"
             onScroll={this.scrollPositionHandler}
           >
             <div className="flex flex-nowrap mt-1 mb-1">
