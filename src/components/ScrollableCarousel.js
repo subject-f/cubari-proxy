@@ -13,7 +13,7 @@ export default class ScrollableCarousel extends PureComponent {
       fullyLeftScrolled: true,
       fullyRightScrolled: true,
       scrolling: false,
-      items: [],
+      itemLength: 0,
     };
     // While a shared observer would be preferable, we lose
     // the virtual DOM context here so we'll instead bind it
@@ -28,7 +28,7 @@ export default class ScrollableCarousel extends PureComponent {
       if (entry.isIntersecting) {
         this.setState(
           {
-            items: this.props.children.slice(0, LOAD_BATCH_COUNT),
+            itemLength: LOAD_BATCH_COUNT,
           },
           this.scrollPositionHandler
         );
@@ -46,13 +46,10 @@ export default class ScrollableCarousel extends PureComponent {
         this.ref.current.scrollWidth - SCROLL_THRESHOLD;
       if (
         fullyRightScrolled &&
-        this.state.items.length < this.props.children.length
+        this.state.itemLength < this.props.children.length
       ) {
         this.setState({
-          items: this.props.children.slice(
-            0,
-            this.state.items.length + LOAD_BATCH_COUNT
-          ),
+          itemLength: this.state.itemLength + LOAD_BATCH_COUNT,
         });
       } else {
         this.setState({
@@ -125,7 +122,7 @@ export default class ScrollableCarousel extends PureComponent {
             this.state.fullyLeftScrolled
               ? "opacity-0 pointer-events-none"
               : "opacity-100",
-            "absolute cursor-pointer select-none -left-2 md:-left-5 top-1/2 z-10 transition-all duration-250"
+            "absolute cursor-pointer select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
           <div className="sticky bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250">
@@ -136,13 +133,17 @@ export default class ScrollableCarousel extends PureComponent {
             />
           </div>
         </div>
-        {this.state.items.length ? (
+        {this.state.itemLength ? (
           <div
             ref={this.ref}
             className="static w-full h-full flex overflow-x-auto no-scrollbar pb-1 pt-1 sm:pt-5 select-none"
             onScroll={this.scrollPositionHandler}
           >
-            <div className="flex flex-nowrap mt-1 mb-1">{this.state.items}</div>
+            <div className="flex flex-nowrap mt-1 mb-1">
+              {Array.isArray(this.props.children)
+                ? this.props.children.slice(0, this.state.itemLength)
+                : this.props.children}
+            </div>
           </div>
         ) : this.props.children.length ? (
           <Spinner />
@@ -152,7 +153,7 @@ export default class ScrollableCarousel extends PureComponent {
             this.state.fullyRightScrolled
               ? "opacity-0 pointer-events-none"
               : "opacity-100",
-            "absolute cursor-pointer select-none -right-2 md:-right-5 top-1/2 z-10 transition-all duration-250"
+            "absolute cursor-pointer select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
           <div className="bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250">
