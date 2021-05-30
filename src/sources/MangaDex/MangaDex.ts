@@ -42,6 +42,13 @@ export const MangaDexInfo: SourceInfo = {
 };
 
 export class MangaDex extends Source {
+  extraParams: string;
+
+  constructor(cheerio: CheerioAPI, extraParams: string = "") {
+    super(cheerio);
+    this.extraParams = extraParams;
+  }
+
   languageMapping: any = {
     en: "gb",
     "pt-br": "pt",
@@ -561,7 +568,9 @@ export class MangaDex extends Source {
     let results: MangaTile[] = [];
 
     const request = createRequestObject({
-      url: `${MANGADEX_API}/manga?title=${encodeURIComponent(
+      url: `${MANGADEX_API}/manga?${
+        this.extraParams
+      }&title=${encodeURIComponent(
         query.title ?? ""
       )}&limit=100&offset=${offset}`,
       method: "GET",
@@ -609,34 +618,12 @@ export class MangaDex extends Source {
     const sections = [
       {
         request: createRequestObject({
-          url: `${MANGADEX_API}/manga?limit=20`,
+          url: `${MANGADEX_API}/manga?limit=50&${this.extraParams}`,
           method: "GET",
         }),
         section: createHomeSection({
           id: "recently_updated",
           title: "RECENTLY UPDATED TITLES",
-          view_more: true,
-        }),
-      },
-      {
-        request: createRequestObject({
-          url: `${MANGADEX_API}/manga?limit=20&publicationDemographic[0]=shounen`,
-          method: "GET",
-        }),
-        section: createHomeSection({
-          id: "shounen",
-          title: "UPDATED SHOUNEN TITLES",
-          view_more: true,
-        }),
-      },
-      {
-        request: createRequestObject({
-          url: `${MANGADEX_API}/manga?limit=20&includedTags[0]=391b0423-d847-456f-aff0-8b0cfc03066b`,
-          method: "GET",
-        }),
-        section: createHomeSection({
-          id: "action",
-          title: "UPDATED ACTION TITLES",
           view_more: true,
         }),
       },
