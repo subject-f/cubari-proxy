@@ -427,7 +427,7 @@ export class MangaDex extends Source {
     return createManga({
       id: mangaId,
       titles,
-      image: await this.getImageLink(mangaDetails.links, true),
+      image: `https://coverapi.orell.dev/api/v1/mdaltimage/manga/${mangaId}/cover`,
       author,
       artist,
       desc,
@@ -601,7 +601,7 @@ export class MangaDex extends Source {
         createMangaTile({
           id: mangaId,
           title: createIconText({ text: title }),
-          image: await this.getImageLink(mangaDetails.links),
+          image: `https://coverapi.orell.dev/api/v1/mdaltimage/manga/${mangaId}/cover`,
         })
       );
     }
@@ -661,7 +661,7 @@ export class MangaDex extends Source {
                 createMangaTile({
                   id: mangaId,
                   title: createIconText({ text: title }),
-                  image: await this.getImageLink(mangaDetails.links, true),
+                  image: `https://coverapi.orell.dev/api/v1/mdaltimage/manga/${mangaId}/cover`,
                 })
               );
             }
