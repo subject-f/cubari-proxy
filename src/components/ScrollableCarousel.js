@@ -127,16 +127,18 @@ export default class ScrollableCarousel extends PureComponent {
             this.state.fullyLeftScrolled
               ? "opacity-0 pointer-events-none"
               : "opacity-100",
-            "absolute cursor-pointer select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
+            "absolute select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
-          <div className="sticky bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250">
+          <div
+            className="cursor-pointer sticky bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
+            onClick={this.scrollLeft}
+          >
             <ArrowLeftIcon
               className={`rounded-full z-10 p-0 w-${
                 this.props.iconSize ? this.props.iconSize : 8
               } h-${this.props.iconSize ? this.props.iconSize : 8}`}
               aria-hidden="true"
-              onClick={this.scrollLeft}
             />
           </div>
         </div>
@@ -160,16 +162,18 @@ export default class ScrollableCarousel extends PureComponent {
             this.state.fullyRightScrolled
               ? "opacity-0 pointer-events-none"
               : "opacity-100",
-            "absolute cursor-pointer select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
+            "absolute select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
-          <div className="bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250">
+          <div
+            className="cursor-pointer  bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
+            onClick={this.scrollRight}
+          >
             <ArrowRightIcon
               className={`rounded-full z-10 p-0 w-${
                 this.props.iconSize ? this.props.iconSize : 8
               } h-${this.props.iconSize ? this.props.iconSize : 8}`}
               aria-hidden="true"
-              onClick={this.scrollRight}
             />
           </div>
         </div>
