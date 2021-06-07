@@ -49,22 +49,26 @@ export default class InfoModal extends PureComponent {
                 leaveTo="opacity-0 scale-95"
               >
                 <div className="text-black dark:text-white inline-block bg-gray-100 dark:bg-gray-800 w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
-                  <Dialog.Description className="-mt-2">
-                    <Section text="About"></Section>
-                    While this project is related to cubari.moe, it should be
-                    considered distinct (and will evolve independently of the main
-                    website).
-                    <br></br>
-                    <br></br>
-                    Sources that have decent readers and/or no ads may be
-                    included.
-                    <Section text="Credits"></Section>
-                    All sources are powered by Paperback's extensions.{" "}
-                    <a href="https://paperback.moe/">
-                      Check out the app if you're on iOS.
-                    </a>
-                  </Dialog.Description>
-
+                  {/* Ugly wrapper thing for now I guess? */}
+                  <div className="-mt-2">
+                    <Section text="About" />
+                    <Dialog.Description>
+                      While this project is related to cubari.moe, it should be
+                      considered distinct (and will evolve independently of the
+                      main website).
+                      <br></br>
+                      <br></br>
+                      Sources that have decent readers and/or no ads may be
+                      included.
+                    </Dialog.Description>
+                    <Section text="Credits" />
+                    <Dialog.Description>
+                      All sources are powered by Paperback's extensions.{" "}
+                      <a href="https://paperback.moe/">
+                        Check out the app if you're on iOS.
+                      </a>
+                    </Dialog.Description>
+                  </div>
                   <button
                     className="mt-10 bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     onClick={this.setIsOpen(false)}
