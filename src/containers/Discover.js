@@ -70,6 +70,7 @@ export default class Discover extends PureComponent {
         );
       }
     });
+
     return (
       <Container>
         {this.props.discover.size ? (
@@ -82,14 +83,14 @@ export default class Discover extends PureComponent {
                 onChange={this.setCurrentSource}
               >
                 {this.getSourceNamesAndIcons().map((source) => (
-                  <RadioGroup.Option as={Fragment} value={source.name}>
+                  <RadioGroup.Option
+                    as={Fragment}
+                    value={source.name}
+                    key={source.name}
+                  >
                     {({ checked }) => (
                       <button
                         disabled={source.disabled}
-                        key={
-                          source.name +
-                          (source.disabled ? "-disabled" : "-enabled")
-                        }
                         className={classNames(
                           checked
                             ? "bg-black text-white dark:bg-gray-800 dark:text-white"
