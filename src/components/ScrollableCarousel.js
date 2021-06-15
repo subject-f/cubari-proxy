@@ -11,7 +11,9 @@ export default class ScrollableCarousel extends PureComponent {
     super(props);
     this.state = {
       fullyLeftScrolled: true,
+      fullyRemoveLeftButton: false,
       fullyRightScrolled: true,
+      fullyRemoveRightButton: false,
       scrolling: false,
       itemLength: 0,
     };
@@ -124,11 +126,15 @@ export default class ScrollableCarousel extends PureComponent {
       <div className="relative w-full h-full" ref={this.componentRef}>
         <div
           className={classNames(
-            this.state.fullyLeftScrolled
-              ? "opacity-0 pointer-events-none"
-              : "opacity-100",
+            this.state.fullyLeftScrolled ? "opacity-0" : "opacity-100",
+            this.state.fullyRemoveLeftButton ? "pointer-events-none" : "",
             "absolute select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
+          onMouseLeave={() =>
+            this.setState({
+              fullyRemoveLeftButton: this.state.fullyLeftScrolled,
+            })
+          }
         >
           <div
             className="cursor-pointer sticky bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
@@ -159,11 +165,15 @@ export default class ScrollableCarousel extends PureComponent {
         ) : undefined}
         <div
           className={classNames(
-            this.state.fullyRightScrolled
-              ? "opacity-0 pointer-events-none"
-              : "opacity-100",
+            this.state.fullyRightScrolled ? "opacity-0" : "opacity-100",
+            this.state.fullyRemoveRightButton ? "pointer-events-none" : "",
             "absolute select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
+          onMouseLeave={() =>
+            this.setState({
+              fullyRemoveRightButton: this.state.fullyRightScrolled,
+            })
+          }
         >
           <div
             className="cursor-pointer  bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
