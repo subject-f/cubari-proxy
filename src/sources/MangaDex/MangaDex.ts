@@ -47,6 +47,12 @@ export const MangaDexInfo: SourceInfo = {
 }
 
 export class MangaDex extends Source {
+  extraParams: string;
+
+  constructor(cheerio: CheerioAPI, extraParams: string = "") {
+    super(cheerio);
+    this.extraParams = extraParams;
+  }
 
   languageMapping: any = {
     'en': 'gb',
@@ -159,7 +165,8 @@ export class MangaDex extends Source {
     const response = await this.requestManager.schedule(request, 1)
     const json = typeof response.data === "string" ? JSON.parse(response.data) : response.data
 
-    return `${MANGADEX_API}/manga?limit=100&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art&ids[]=${json.relationships.filter((x: any) => x.type == 'manga').map((x: any) => x.id).join('&ids[]=')}`
+    return `${MANGADEX_API}/manga?limit=100&contentRating[]=safe${this.extraParams === "" ? "" : "&" + this.extraParams }&includes[]=cover_art&ids[]=${json.relationships.filter((x: any) => x.type == 'manga').map((x: any) => x.id).join('&ids[]=')}`
+
   }
 
   async getMangaDetails(mangaId: string): Promise<Manga> {
@@ -320,7 +327,7 @@ export class MangaDex extends Source {
     let results: MangaTile[] = []
 
     const request = createRequestObject({
-      url: `${MANGADEX_API}/manga?title=${encodeURIComponent(query.title ?? '')}&limit=100&offset=${offset}&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art`,
+      url: `${MANGADEX_API}/manga?title=${encodeURIComponent(query.title ?? '')}&limit=100&offset=${offset}&contentRating[]=safe&includes[]=cover_art${this.extraParams === "" ? "" : "&" + this.extraParams }`,
       method: 'GET',
     })
 
@@ -360,20 +367,20 @@ export class MangaDex extends Source {
 
   async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
     const sections = [
+      // {
+      //   request: createRequestObject({
+      //     url: await this.getCustomListRequestURL('8018a70b-1492-4f91-a584-7451d7787f7a'),
+      //     method: 'GET',
+      //   }),
+      //   section: createHomeSection({
+      //     id: 'featured',
+      //     title: 'FEATURED TITLES',
+      //     view_more: true,
+      //   }),
+      // },
       {
         request: createRequestObject({
-          url: await this.getCustomListRequestURL('8018a70b-1492-4f91-a584-7451d7787f7a'),
-          method: 'GET',
-        }),
-        section: createHomeSection({
-          id: 'featured',
-          title: 'FEATURED TITLES',
-          view_more: true,
-        }),
-      },
-      {
-        request: createRequestObject({
-          url: `${MANGADEX_API}/manga?limit=20&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art`,
+          url: `${MANGADEX_API}/manga?limit=50&contentRating[]=safe${this.extraParams === "" ? "" : "&" + this.extraParams }&includes[]=cover_art`,
           method: 'GET',
         }),
         section: createHomeSection({
@@ -384,7 +391,7 @@ export class MangaDex extends Source {
       },
       {
         request: createRequestObject({
-          url: `${MANGADEX_API}/manga?limit=20&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art&order[updatedAt]=desc`,
+          url: `${MANGADEX_API}/manga?limit=50&contentRating[]=safe${this.extraParams === "" ? "" : "&" + this.extraParams }&includes[]=cover_art&order[updatedAt]=desc`,
           method: 'GET',
         }),
         section: createHomeSection({
@@ -449,11 +456,11 @@ export class MangaDex extends Source {
         break
       }
       case 'popular': {
-        url = `${MANGADEX_API}/manga?limit=100&offset=${offset}&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art`
+        url = `${MANGADEX_API}/manga?limit=100&offset=${offset}&contentRating[]=safe${this.extraParams === "" ? "" : "&" + this.extraParams }&includes[]=cover_art`
         break
       }
       case 'recently_updated': {
-        url = `${MANGADEX_API}/manga?limit=100&offset=${offset}&contentRating[]=none&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includes[]=cover_art&order[updatedAt]=desc`
+        url = `${MANGADEX_API}/manga?limit=100&offset=${offset}&contentRating[]=safe${this.extraParams === "" ? "" : "&" + this.extraParams }&includes[]=cover_art&order[updatedAt]=desc`
         break
       }
     }
