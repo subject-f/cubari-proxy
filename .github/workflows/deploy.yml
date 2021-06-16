@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 10 # For the build-time changelog
 
       - name: install node v12
         uses: actions/setup-node@v1
