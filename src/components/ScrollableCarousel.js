@@ -11,9 +11,8 @@ export default class ScrollableCarousel extends PureComponent {
     super(props);
     this.state = {
       fullyLeftScrolled: true,
-      fullyRemoveLeftButton: false,
       fullyRightScrolled: true,
-      fullyRemoveRightButton: false,
+      isButtonHovered: false,
       scrolling: false,
       itemLength: 0,
     };
@@ -121,29 +120,38 @@ export default class ScrollableCarousel extends PureComponent {
     window.removeEventListener("resize", this.scrollPositionHandler);
   };
 
+  onMouseEnter = () =>
+    this.setState({
+      isButtonHovered: true,
+    });
+
+  onMouseLeave = () =>
+    this.setState({
+      isButtonHovered: false,
+    });
+
   render() {
+    const { fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
+      this.state;
+    const { iconSize = 8 } = this.props;
+
     return (
       <div className="relative w-full h-full" ref={this.componentRef}>
         <div
+          hidden={fullyLeftScrolled && !isButtonHovered}
           className={classNames(
-            this.state.fullyLeftScrolled ? "opacity-0" : "opacity-100",
-            this.state.fullyRemoveLeftButton ? "pointer-events-none" : "",
+            fullyLeftScrolled ? "opacity-0" : "opacity-100",
             "absolute select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
-          onMouseLeave={() =>
-            this.setState({
-              fullyRemoveLeftButton: this.state.fullyLeftScrolled,
-            })
-          }
         >
           <div
             className="cursor-pointer sticky bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
             onClick={this.scrollLeft}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
           >
             <ArrowLeftIcon
-              className={`rounded-full z-10 p-0 w-${
-                this.props.iconSize ? this.props.iconSize : 8
-              } h-${this.props.iconSize ? this.props.iconSize : 8}`}
+              className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
               aria-hidden="true"
             />
           </div>
@@ -164,25 +172,20 @@ export default class ScrollableCarousel extends PureComponent {
           <Spinner />
         ) : undefined}
         <div
+          hidden={fullyRightScrolled && !isButtonHovered}
           className={classNames(
-            this.state.fullyRightScrolled ? "opacity-0" : "opacity-100",
-            this.state.fullyRemoveRightButton ? "pointer-events-none" : "",
+            fullyRightScrolled ? "opacity-0" : "opacity-100",
             "absolute select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
-          onMouseLeave={() =>
-            this.setState({
-              fullyRemoveRightButton: this.state.fullyRightScrolled,
-            })
-          }
         >
           <div
             className="cursor-pointer  bg-gray-900 text-white dark:bg-white dark:text-black rounded-full p-2 shadow-2xl transform scale-95 hover:scale-100 opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
             onClick={this.scrollRight}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
           >
             <ArrowRightIcon
-              className={`rounded-full z-10 p-0 w-${
-                this.props.iconSize ? this.props.iconSize : 8
-              } h-${this.props.iconSize ? this.props.iconSize : 8}`}
+              className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
               aria-hidden="true"
             />
           </div>
