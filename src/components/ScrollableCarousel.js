@@ -12,7 +12,7 @@ export default class ScrollableCarousel extends PureComponent {
     this.state = {
       fullyLeftScrolled: true,
       fullyRightScrolled: true,
-      mouseHoveringButton: false,
+      isButtonHovered: false,
       scrolling: false,
       itemLength: 0,
     };
@@ -122,24 +122,25 @@ export default class ScrollableCarousel extends PureComponent {
 
   onMouseEnter = () =>
     this.setState({
-      mouseHoveringButton: true,
+      isButtonHovered: true,
     });
 
   onMouseLeave = () =>
     this.setState({
-      mouseHoveringButton: false,
+      isButtonHovered: false,
     });
 
   render() {
-    const { fullyLeftScrolled, fullyRightScrolled, mouseHoveringButton } =
+    const { fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
       this.state;
 
     const { iconSize } = this.props;
+    const calculatedIconSize = iconSize || 8;
 
     return (
       <div className="relative w-full h-full" ref={this.componentRef}>
         <div
-          hidden={fullyLeftScrolled && !mouseHoveringButton}
+          hidden={fullyLeftScrolled && !isButtonHovered}
           className={classNames(
             fullyLeftScrolled ? "opacity-0" : "opacity-100",
             "absolute select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
@@ -152,9 +153,7 @@ export default class ScrollableCarousel extends PureComponent {
             onMouseLeave={this.onMouseLeave}
           >
             <ArrowLeftIcon
-              className={`rounded-full z-10 p-0 w-${
-                iconSize ? iconSize : 8
-              } h-${iconSize ? iconSize : 8}`}
+              className={`rounded-full z-10 p-0 w-${calculatedIconSize} h-${calculatedIconSize}`}
               aria-hidden="true"
             />
           </div>
@@ -175,7 +174,7 @@ export default class ScrollableCarousel extends PureComponent {
           <Spinner />
         ) : undefined}
         <div
-          hidden={fullyRightScrolled && !mouseHoveringButton}
+          hidden={fullyRightScrolled && !isButtonHovered}
           className={classNames(
             fullyRightScrolled ? "opacity-0" : "opacity-100",
             "absolute select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
@@ -188,9 +187,7 @@ export default class ScrollableCarousel extends PureComponent {
             onMouseLeave={this.onMouseLeave}
           >
             <ArrowRightIcon
-              className={`rounded-full z-10 p-0 w-${
-                iconSize ? iconSize : 8
-              } h-${iconSize ? iconSize : 8}`}
+              className={`rounded-full z-10 p-0 w-${calculatedIconSize} h-${calculatedIconSize}`}
               aria-hidden="true"
             />
           </div>
