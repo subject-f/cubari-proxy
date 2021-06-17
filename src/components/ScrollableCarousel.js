@@ -133,9 +133,7 @@ export default class ScrollableCarousel extends PureComponent {
   render() {
     const { fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
       this.state;
-
-    const { iconSize } = this.props;
-    const calculatedIconSize = iconSize || 8;
+    const { iconSize = 8 } = this.props;
 
     return (
       <div className="relative w-full h-full" ref={this.componentRef}>
@@ -153,7 +151,7 @@ export default class ScrollableCarousel extends PureComponent {
             onMouseLeave={this.onMouseLeave}
           >
             <ArrowLeftIcon
-              className={`rounded-full z-10 p-0 w-${calculatedIconSize} h-${calculatedIconSize}`}
+              className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
               aria-hidden="true"
             />
           </div>
@@ -187,7 +185,7 @@ export default class ScrollableCarousel extends PureComponent {
             onMouseLeave={this.onMouseLeave}
           >
             <ArrowRightIcon
-              className={`rounded-full z-10 p-0 w-${calculatedIconSize} h-${calculatedIconSize}`}
+              className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
               aria-hidden="true"
             />
           </div>
