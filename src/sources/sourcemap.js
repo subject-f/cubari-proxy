@@ -22,11 +22,6 @@ if (hentai) {
     NHentaiInfo,
     (slug) => `https://cubari.moe/read/nhentai/${slug}/`
   ))(cheerio);
-  sourcemap["MangaDex"] = new (CubariSourceMixin(
-    MangaDex,
-    MangaDexInfo,
-    (slug) => `https://cubari.moe/read/mangadex/${slug}/`
-  ))(cheerio, "contentRating[]=pornographic");
 } else {
   sourcemap["Guya"] = new (CubariSourceMixin(
     Guya,
