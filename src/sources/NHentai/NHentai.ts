@@ -16,6 +16,8 @@ import {
 } from "paperback-extensions-common";
 const NHENTAI_DOMAIN = "https://nhentai.net";
 
+const IMAGE_PROXY_BASE = "https://proxy.f-ck.me/";
+
 export const NHentaiInfo: SourceInfo = {
   version: "2.0.2",
   name: "nHentai",
@@ -111,7 +113,7 @@ export class NHentai extends Source {
     return createManga({
       id: mangaId,
       titles: titles,
-      image: image,
+      image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
       rating: 0,
       status: status,
       artist: artist,
@@ -267,11 +269,13 @@ export class NHentai extends Source {
       // Clean up the title by removing all metadata, these are items enclosed within [ ] brackets
       title = title.replace(/(\[.+?\])/g, "").trim();
 
+      let image = $("[itemprop=image]").attr("content");
+
       mangaTiles.push(
         createMangaTile({
           id: mangaId.toString(),
           title: createIconText({ text: title }),
-          image: $("[itemprop=image]").attr("content") ?? "",
+          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
         })
       );
 
@@ -302,7 +306,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image,
+          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
         })
       );
     }
@@ -368,7 +372,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image,
+          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
         })
       );
     }
@@ -398,7 +402,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image,
+          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
         })
       );
     }
@@ -448,7 +452,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image,
+          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
         })
       );
     }
