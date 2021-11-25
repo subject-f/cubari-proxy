@@ -7,7 +7,6 @@ import {
 import { Guya, GuyaInfo } from "./Guya/Guya";
 import { MangaDex, MangaDexInfo } from "./MangaDex/MangaDex";
 import { MangaLife, MangaLifeInfo } from "./MangaLife/MangaLife";
-import { CatManga, CatMangaInfo } from "./CatManga/CatManga";
 import { CubariSourceMixin } from "./CubariSource";
 import cheerio from "cheerio";
 // import { Mangakakalot, MangakakalotInfo } from "./Mangakakalot/Mangakakalot";
@@ -43,11 +42,6 @@ if (hentai) {
   //   MangakakalotInfo,
   //   (slug) => `https://cubari.moe/mb/${slug}/`
   // ))(cheerio);
-  sourcemap["CatManga"] = new (CubariSourceMixin(
-    CatManga,
-    CatMangaInfo,
-    (slug) => `https://catmanga.org/series/${slug}/`
-  ))(cheerio);
   sourcemap["MangaDex"] = new (CubariSourceMixin(
     MangaDex,
     MangaDexInfo,
