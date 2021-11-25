@@ -4,7 +4,7 @@ import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 const UNSAFE_HEADERS = new Set(["cookie", "user-agent"]);
 
 const requestInterceptor = (req: AxiosRequestConfig) => {
-  req.url = `https://cubari-cors.herokuapp.com/${req.url}${req.params ?? ""}`;
+  req.url = `https://cors.f-ck.me/${req.url}${req.params ?? ""}`;
   Object.keys(req.headers).forEach((header) => {
     if (UNSAFE_HEADERS.has(header.toLowerCase())) {
       delete req.headers[header];
