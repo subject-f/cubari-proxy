@@ -16,7 +16,7 @@ import {
 } from "paperback-extensions-common";
 const NHENTAI_DOMAIN = "https://nhentai.net";
 
-const IMAGE_PROXY_BASE = "https://proxy.f-ck.me/";
+const IMAGE_PROXY_BASE = "https://img-proxy.cubari.moe/";
 
 export const NHentaiInfo: SourceInfo = {
   version: "2.0.2",
