@@ -431,7 +431,7 @@ export class MangaDex extends Source {
       {
         request: createRequestObject({
           url: await this.getCustomListRequestURL(
-            "a153b4e6-1fcc-4f45-a990-f37f989c0d74"
+            "d434f5f1-ff90-4fa5-be7c-2c070da79120"
           ),
           method: "GET",
         }),
