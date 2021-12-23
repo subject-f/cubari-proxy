@@ -14,9 +14,8 @@ import {
   PagedResults,
   SourceInfo,
 } from "paperback-extensions-common";
+import { convertImageUrl } from "../CubariSource";
 const NHENTAI_DOMAIN = "https://nhentai.net";
-
-const IMAGE_PROXY_BASE = "https://img-proxy.cubari.moe/";
 
 export const NHentaiInfo: SourceInfo = {
   version: "2.0.2",
@@ -113,7 +112,7 @@ export class NHentai extends Source {
     return createManga({
       id: mangaId,
       titles: titles,
-      image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+      image: image ? convertImageUrl(image) : "",
       rating: 0,
       status: status,
       artist: artist,
@@ -275,7 +274,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: mangaId.toString(),
           title: createIconText({ text: title }),
-          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+          image: image ? convertImageUrl(image) : "",
         })
       );
 
@@ -306,7 +305,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+          image: image ? convertImageUrl(image) : "",
         })
       );
     }
@@ -372,7 +371,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+          image: image ? convertImageUrl(image) : "",
         })
       );
     }
@@ -402,7 +401,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+          image: image ? convertImageUrl(image) : "",
         })
       );
     }
@@ -452,7 +451,7 @@ export class NHentai extends Source {
         createMangaTile({
           id: idHref[1],
           title: createIconText({ text: title }),
-          image: image ? `${IMAGE_PROXY_BASE}${image}` : "",
+          image: image ? convertImageUrl(image) : "",
         })
       );
     }
