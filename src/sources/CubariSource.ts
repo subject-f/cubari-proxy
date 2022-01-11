@@ -9,13 +9,15 @@ const base64UrlEncode = (s: string): string => {
 };
 
 export const convertImageUrl = (originalUrl: string): string => {
-  return `${PROXY_URL}/v1/image/${base64UrlEncode(originalUrl)}`;
+  return `${PROXY_URL}/v1/image/${base64UrlEncode(
+    originalUrl
+  )}?source=proxy_cubari_moe`;
 };
 
 const requestInterceptor = (req: AxiosRequestConfig) => {
   req.url = `${PROXY_URL}/v1/cors/${base64UrlEncode(
     req.url + (req.params ?? "")
-  )}`;
+  )}?source=proxy_cubari_moe`;
   Object.keys(req.headers).forEach((header) => {
     if (UNSAFE_HEADERS.has(header.toLowerCase())) {
       delete req.headers[header];
