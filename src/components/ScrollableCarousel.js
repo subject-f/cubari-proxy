@@ -215,8 +215,7 @@ export default class ScrollableCarousel extends PureComponent {
           </div>
         </div>
         <div>
-          {/* Use LOAD_BATCH_COUNT since that corresponds to the initial load */}
-          {expandable && this.props.children.length > LOAD_BATCH_COUNT ? (
+          {expandable && !(fullyLeftScrolled && fullyRightScrolled) ? (
             <div
               className={classNames(
                 "w-full flex justify-center",
