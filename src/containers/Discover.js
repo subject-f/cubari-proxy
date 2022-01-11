@@ -53,7 +53,7 @@ export default class Discover extends PureComponent {
               key={section.id + section.title + "title"}
               text={capitalizeFirstLetters(subText)}
             />
-            <ScrollableCarousel key={section.id + section.title + "-carousel"}>
+            <ScrollableCarousel key={section.id + section.title + "-carousel"} expandable={true}>
               {section.items.map((item) => (
                 <MangaCard
                   key={section.id + item.id}
@@ -107,7 +107,7 @@ export default class Discover extends PureComponent {
                           <SpinIcon className="h-8 h-8 animate-spin"></SpinIcon>
                         ) : (
                           <img
-                            src={source.icon.default}
+                            src={source.icon}
                             className="h-8 w-8"
                             alt={source.name}
                           />

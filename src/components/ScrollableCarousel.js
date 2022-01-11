@@ -1,5 +1,10 @@
 import React, { PureComponent } from "react";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/outline";
 import { classNames } from "../utils/strings";
 import Spinner from "./Spinner";
 
@@ -15,6 +20,7 @@ export default class ScrollableCarousel extends PureComponent {
       isButtonHovered: false,
       scrolling: false,
       itemLength: 0,
+      expanded: false,
     };
     // While a shared observer would be preferable, we lose
     // the virtual DOM context here so we'll instead bind it
@@ -130,17 +136,23 @@ export default class ScrollableCarousel extends PureComponent {
       isButtonHovered: false,
     });
 
+  onExpandToggle = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  };
+
   render() {
-    const { fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
+    const { expanded, fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
       this.state;
-    const { iconSize = 8 } = this.props;
+    const { iconSize = 8, expandable } = this.props;
 
     return (
       <div className="relative w-full h-full" ref={this.componentRef}>
         <div
           hidden={fullyLeftScrolled && !isButtonHovered}
           className={classNames(
-            fullyLeftScrolled ? "opacity-0" : "opacity-100",
+            fullyLeftScrolled || expanded ? "opacity-0" : "opacity-100",
             "absolute select-none -left-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
@@ -159,12 +171,24 @@ export default class ScrollableCarousel extends PureComponent {
         {this.state.itemLength ? (
           <div
             ref={this.ref}
-            className="static w-full h-full flex overflow-x-auto no-scrollbar pb-1 pt-1 select-none"
+            className={classNames(
+              expanded
+                ? ""
+                : "static w-full h-full flex overflow-x-auto no-scrollbar select-none",
+              "pb-1 pt-1"
+            )}
             onScroll={this.scrollPositionHandler}
           >
-            <div className="flex flex-nowrap mt-1 mb-1">
+            <div
+              className={classNames(
+                expanded ? "flex-wrap" : "flex-nowrap",
+                "flex mt-1 mb-1"
+              )}
+            >
               {Array.isArray(this.props.children)
-                ? this.props.children.slice(0, this.state.itemLength)
+                ? expanded
+                  ? this.props.children
+                  : this.props.children.slice(0, this.state.itemLength)
                 : this.props.children}
             </div>
           </div>
@@ -174,7 +198,7 @@ export default class ScrollableCarousel extends PureComponent {
         <div
           hidden={fullyRightScrolled && !isButtonHovered}
           className={classNames(
-            fullyRightScrolled ? "opacity-0" : "opacity-100",
+            fullyRightScrolled || expanded ? "opacity-0" : "opacity-100",
             "absolute select-none -right-2 top-1/2 transform -translate-y-1/2 z-10 transition-all duration-250"
           )}
         >
@@ -189,6 +213,34 @@ export default class ScrollableCarousel extends PureComponent {
               aria-hidden="true"
             />
           </div>
+        </div>
+        <div>
+          {/* Use LOAD_BATCH_COUNT since that corresponds to the initial load */}
+          {expandable && this.props.children.length > LOAD_BATCH_COUNT ? (
+            <div
+              className={classNames(
+                "w-full flex justify-center",
+                "cursor-pointer text-black dark:text-white",
+                "transform scale-95 hover:scale-100",
+                "opacity-40 sm:opacity-80 hover:opacity-100 transition-opacity transition-transform duration-250"
+              )}
+              onClick={this.onExpandToggle}
+              onMouseEnter={this.onMouseEnter}
+              onMouseLeave={this.onMouseLeave}
+            >
+              {expanded ? (
+                <ChevronUpIcon
+                  className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
+                  aria-hidden="true"
+                />
+              ) : (
+                <ChevronDownIcon
+                  className={`rounded-full z-10 p-0 w-${iconSize} h-${iconSize}`}
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          ) : undefined}
         </div>
       </div>
     );

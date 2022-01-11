@@ -118,7 +118,7 @@ export default class Search extends PureComponent {
           />
         );
         items.push(
-          <ScrollableCarousel key={`search-${source}-carousel`}>
+          <ScrollableCarousel key={`search-${source}-carousel`} expandable={true}>
             {results.map((item) => (
               <MangaCard
                 key={"search-" + source.name + item.id}
