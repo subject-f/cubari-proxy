@@ -244,7 +244,9 @@ export class NHentai extends Source {
       query.title = query.title.replace(/ /g, "+") + "+";
 
       request = createRequestObject({
-        url: `${NHENTAI_DOMAIN}/search/?q=${query.title}&page=${page}`,
+        url: `${NHENTAI_DOMAIN}/search/?q=${query.title}+${encodeURIComponent(
+          "language:english"
+        )}&page=${page}`,
         method: "GET",
       });
       sixDigit = false;
@@ -328,7 +330,7 @@ export class NHentai extends Source {
   ): Promise<void> {
     let popular: HomeSection = createHomeSection({
       id: "popular",
-      title: "Popular Now",
+      title: "Popular",
     });
     let newUploads: HomeSection = createHomeSection({
       id: "new",
@@ -338,15 +340,14 @@ export class NHentai extends Source {
     sectionCallback(popular);
     sectionCallback(newUploads);
 
-    const request = createRequestObject({
-      url: `${NHENTAI_DOMAIN}`,
+    let request = createRequestObject({
+      url: `${NHENTAI_DOMAIN}/language/english/popular`,
       method: "GET",
     });
 
     let data = await this.requestManager.schedule(request, 1);
 
     let popularHentai: MangaTile[] = [];
-    let newHentai: MangaTile[] = [];
     let $ = this.cheerio.load(data.data);
 
     let containerNode = $(".index-container").first();
@@ -378,6 +379,16 @@ export class NHentai extends Source {
 
     popular.items = popularHentai;
     sectionCallback(popular);
+
+    request = createRequestObject({
+      url: `${NHENTAI_DOMAIN}/language/english`,
+      method: "GET",
+    });
+
+    data = await this.requestManager.schedule(request, 1);
+
+    let newHentai: MangaTile[] = [];
+    $ = this.cheerio.load(data.data);
 
     containerNode = $(".index-container").last();
     for (let item of $(".gallery", containerNode).toArray()) {
