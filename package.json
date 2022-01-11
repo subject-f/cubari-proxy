@@ -4,7 +4,6 @@
   "private": true,
   "homepage": "https://proxy.cubari.moe/",
   "dependencies": {
-    "@craco/craco": "^6.1.2",
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
     "@testing-library/jest-dom": "^4.2.4",
@@ -21,16 +20,16 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.0",
     "remotestorage-widget": "^1.5.2",
     "remotestoragejs": "^1.2.3"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "GENERATE_SOURCEMAP=false craco build",
-    "winBuild": "set \"GENERATE_SOURCEMAP=false \" && craco build",
-    "test": "craco test",
-    "eject": "craco eject"
+    "start": "react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "winBuild": "set \"GENERATE_SOURCEMAP=false \" && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,10 +47,10 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.35",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
     "source-map-loader": "^2.0.1",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+    "tailwindcss": "^3.0.12",
     "ts-loader": "^8.1.0",
     "typescript": "^3.9.9"
   }
