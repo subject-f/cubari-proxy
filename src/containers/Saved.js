@@ -2,10 +2,14 @@ import React, { PureComponent } from "react";
 import MangaCard from "../components/MangaCard";
 import Container from "../components/Container";
 import Section from "../components/Section";
-import { globalHistoryHandler } from "../utils/remotestorage";
+import {
+  globalHistoryHandler,
+  purgePreviousCache,
+} from "../utils/remotestorage";
 import Spinner from "../components/Spinner";
 import sourcemap from "../sources/sourcemap";
 import { mangaUrlBuilder } from "../utils/compatability";
+import ScrollableCarousel from "../components/ScrollableCarousel";
 
 export default class Saved extends PureComponent {
   constructor(props) {
@@ -30,6 +34,7 @@ export default class Saved extends PureComponent {
 
   componentDidMount = () => {
     this.props.setPath("Saved");
+    purgePreviousCache();
     this.updateItems();
   };
 
@@ -42,7 +47,7 @@ export default class Saved extends PureComponent {
           ref={this.ref}
         ></Section>
         {this.state.ready ? (
-          <Container>
+          <ScrollableCarousel expandable={true} expanded={true}>
             {this.state.items.map((e) => (
               <MangaCard
                 key={`saved-${e.timestamp}-${e.slug}-${e.source}`}
@@ -55,7 +60,7 @@ export default class Saved extends PureComponent {
                 storageCallback={this.updateItems}
               ></MangaCard>
             ))}
-          </Container>
+          </ScrollableCarousel>
         ) : (
           <Spinner />
         )}

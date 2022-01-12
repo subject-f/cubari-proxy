@@ -3,6 +3,11 @@
   scrollbar-color: rgba(128, 128, 128, 0.5) transparent;
 }
 
+html {
+  overflow-y: scroll; /* Show scrollbars, bypassing Tailwind */
+  padding-right: -11px;
+}
+
 ::-webkit-scrollbar {
   width: 11px;
   height: 11px;
@@ -28,6 +33,10 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(128, 128, 128, 0.8);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 .rs-state-sign-in {

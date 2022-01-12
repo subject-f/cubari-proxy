@@ -119,6 +119,11 @@ export default class ScrollableCarousel extends PureComponent {
 
   componentDidMount = () => {
     this.observer.observe(this.componentRef.current);
+    if (this.props.expanded) {
+      this.setState({
+        expanded: true
+      });
+    }
     window.addEventListener("resize", this.scrollPositionHandler);
   };
 
