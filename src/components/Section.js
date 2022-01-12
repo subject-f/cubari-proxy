@@ -4,7 +4,7 @@ import { classNames } from "../utils/strings";
 export default class Section extends PureComponent {
   render() {
     return (
-      <section className="w-full flex-grow pt-1 sm:pt-2">
+      <section className="w-full flex-grow pt-1 sm:pt-2 px-2 md:px-3">
         <div className="w-full flex-grow">
           <h1
             className={classNames(
