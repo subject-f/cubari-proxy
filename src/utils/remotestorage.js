@@ -136,7 +136,8 @@ export const remoteStorage = (() => {
           },
           getSeries: (slug, source) => {
             return privateClient.getObject(
-              pathBuilder(SERIES_META_PATH, slug, source)
+              pathBuilder(SERIES_META_PATH, slug, source),
+              false // Disable maxAge in order to prevent negative caching
             );
           },
           removeSeries: (slug, source) => {
