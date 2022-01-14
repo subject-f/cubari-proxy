@@ -6,13 +6,13 @@ import Section from "../components/Section";
 import Spinner, { SpinIcon } from "../components/Spinner";
 import Container from "../components/Container";
 import { capitalizeFirstLetters } from "../utils/strings";
-import sourcemap from "../sources/sourcemap.js";
+import { sourceMap } from "../sources/Sources";
 import { RadioGroup } from "@headlessui/react";
 import { classNames } from "../utils/strings";
 
 export default class Discover extends PureComponent {
   state = {
-    currentSource: Object.keys(sourcemap)[0],
+    currentSource: Object.keys(sourceMap)[0],
   };
 
   componentDidMount = () => {
@@ -24,11 +24,11 @@ export default class Discover extends PureComponent {
       Object.values(this.props.discover).map((section) => section.sourceName)
     );
     let response = [];
-    for (const [sourceName, source] of Object.entries(sourcemap)) {
-      let iconFileName = source.getSourceDetails().icon;
+    for (const [sourceName, source] of Object.entries(sourceMap)) {
+      let sourceDetails = source.getSourceDetails();
       response.push({
         name: sourceName,
-        icon: require(`../sources/${sourceName}/includes/${iconFileName}`),
+        icon: `${sourceDetails.remoteBaseUrl}/includes/${sourceDetails.icon}`,
         disabled: !activeSources.has(sourceName),
       });
     }

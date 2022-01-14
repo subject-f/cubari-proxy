@@ -1,18 +1,9 @@
 import { SourceInfo } from "paperback-extensions-common";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import { Constructor } from "./types";
+import { PROXY_URL, base64UrlEncode } from "./SourceUtils";
 
-const UNSAFE_HEADERS = new Set(["cookie", "user-agent"]);
-const PROXY_URL = "https://services.f-ck.me";
-
-const base64UrlEncode = (s: string): string => {
-  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_");
-};
-
-export const convertImageUrl = (originalUrl: string): string => {
-  return `${PROXY_URL}/v1/image/${base64UrlEncode(
-    originalUrl
-  )}?source=proxy_cubari_moe`;
-};
+const UNSAFE_HEADERS = new Set(["cookie", "user-agent", "referer"]);
 
 const requestInterceptor = (req: AxiosRequestConfig) => {
   req.url = `${PROXY_URL}/v1/cors/${base64UrlEncode(
@@ -33,8 +24,6 @@ const responseInterceptor = (res: AxiosResponse) => {
 // Interceptors to preserve the requestManager within each source. Thanks Paper!
 axios.interceptors.request.use(requestInterceptor);
 axios.interceptors.response.use(responseInterceptor);
-
-type Constructor = new (...args: any[]) => {};
 
 export function CubariSourceMixin<TBase extends Constructor>(
   Base: TBase,

@@ -3,13 +3,14 @@ import { HashRouter, Link } from "react-router-dom";
 import { classNames } from "./utils/strings";
 import { Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import sourcemap from "./sources/sourcemap.js";
+import { sourceMap, initSources } from "./sources/Sources";
 import InfoModal from "./components/InfoModal.js";
 import ThemeSwitcher from "./components/ThemeSwitcher.js";
 import BlackholeMail from "./components/BlackholeMail.js";
 import Router, { navigation } from "./Router.js";
 import { purgePreviousCache } from "./utils/remotestorage";
 import update from "immutability-helper";
+import Spinner from "./components/Spinner";
 
 export default class App extends Component {
   constructor(props) {
@@ -19,8 +20,9 @@ export default class App extends Component {
       searchQuery: "",
       searchResults: new Set(),
       current: undefined,
+      sourcesReady: false,
     };
-    this.sources = sourcemap;
+    this.sources = sourceMap;
   }
 
   setPath = (path) => {
@@ -81,9 +83,16 @@ export default class App extends Component {
     );
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     purgePreviousCache();
-    this.initializeDiscoverItems();
+    await initSources();
+
+    this.setState(
+      {
+        sourcesReady: true,
+      },
+      this.initializeDiscoverItems
+    );
   };
 
   render() {
@@ -199,7 +208,15 @@ export default class App extends Component {
             </Menu.Item>
           </Transition>
         </Menu>
-        <Router app={this} />
+        {this.state.sourcesReady ? (
+          <Router app={this} />
+        ) : (
+          <div className="flex h-screen">
+            <div className="m-auto">
+              <Spinner />
+            </div>
+          </div>
+        )}
       </HashRouter>
     );
   }

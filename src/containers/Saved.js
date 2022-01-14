@@ -7,7 +7,7 @@ import {
   purgePreviousCache,
 } from "../utils/remotestorage";
 import Spinner from "../components/Spinner";
-import sourcemap from "../sources/sourcemap";
+import { sourceMap } from "../sources/Sources";
 import { mangaUrlBuilder } from "../utils/compatability";
 import ScrollableCarousel from "../components/ScrollableCarousel";
 
@@ -56,7 +56,7 @@ export default class Saved extends PureComponent {
                 coverUrl={e.coverUrl}
                 mangaTitle={e.title}
                 sourceName={e.source}
-                source={sourcemap[e.source]}
+                source={sourceMap[e.source]}
                 storageCallback={this.updateItems}
               ></MangaCard>
             ))}

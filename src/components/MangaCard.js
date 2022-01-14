@@ -6,7 +6,7 @@ import { globalHistoryHandler } from "../utils/remotestorage";
 import { mangaUrlSaver } from "../utils/compatability";
 import { SpinIcon } from "./Spinner";
 import Card from "./Card";
-import { convertImageUrl } from "../sources/CubariSource";
+import { convertImageUrl } from "../sources/SourceUtils";
 
 export default class MangaCard extends PureComponent {
   constructor(props) {
