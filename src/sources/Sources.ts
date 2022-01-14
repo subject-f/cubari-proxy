@@ -34,6 +34,14 @@ const sfwSourceMap: RawSourceMap = {
     state: {},
     slugMapper: (slug) => `https://guya.moe/read/manga/${slug}/`,
   },
+  Hachirumi: {
+    user: "Paperback-iOS",
+    repo: "extensions-promises",
+    commit: "ef94de5f68177f0c723640b4fffbe3e91dda9e74",
+    filePath: "Hachirumi",
+    state: {},
+    slugMapper: (slug) => `https://hachirumi.com/read/manga/${slug}/`,
+  },
   MangaDex: {
     user: "Paperback-iOS",
     repo: "extensions-sources",
