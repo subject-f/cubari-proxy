@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { InformationCircleIcon } from "@heroicons/react/outline";
 import Section from "./Section";
 import preval from "preval.macro";
+import Container from "./Container";
 
 // Should probably be a build var but fuck itttttt
 const DISCORD_INVITE = "https://discord.gg/SavdUC45MS";
@@ -47,7 +48,10 @@ export default class InfoModal extends PureComponent {
         onClick={this.setIsOpen(true)}
       >
         {this.state.changeAvailable ? (
-          <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 dark:bg-red-600 rounded-full"></span>
+          <Fragment>
+            <span className="animate-ping absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 dark:bg-red-600 rounded-full"></span>
+            <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-red-500 dark:bg-red-600 rounded-full"></span>
+          </Fragment>
         ) : undefined}
         <InformationCircleIcon className="h-6 w-6" aria-hidden="true" />
 
@@ -79,52 +83,60 @@ export default class InfoModal extends PureComponent {
                   {/* Ugly wrapper thing for now I guess? */}
                   <div className="-mt-2">
                     <Section text="About" />
-                    <Dialog.Description className="pb-5">
-                      While this project is related to{" "}
-                      <a
-                        className="text-blue-500 hover:text-blue-600"
-                        href="https://cubari.moe/"
-                      >
-                        cubari.moe
-                      </a>
-                      , it should be considered distinct (and will evolve
-                      independently of the main website).
-                      <br></br>
-                      Sources that have decent readers and/or no ads may be
-                      included.
-                    </Dialog.Description>
+                    <Container>
+                      <Dialog.Description>
+                        While this project is related to{" "}
+                        <a
+                          className="text-blue-500 hover:text-blue-600"
+                          href="https://cubari.moe/"
+                        >
+                          cubari.moe
+                        </a>
+                        , it should be considered distinct (and will evolve
+                        independently of the main website).
+                        <br></br>
+                        Sources that have decent readers and/or no ads may be
+                        included.
+                      </Dialog.Description>
+                    </Container>
                     <Section text="Credits" />
-                    <Dialog.Description className="pb-5">
-                      All sources are powered by Paperback's extensions.{" "}
-                      <a
-                        className="text-blue-500 hover:text-blue-600"
-                        href="https://paperback.moe/"
-                      >
-                        Check out the app if you're on iOS.
-                      </a>
-                    </Dialog.Description>
+                    <Container>
+                      <Dialog.Description>
+                        All sources are powered by Paperback's extensions.{" "}
+                        <a
+                          className="text-blue-500 hover:text-blue-600"
+                          href="https://paperback.moe/"
+                        >
+                          Check out the app if you're on iOS.
+                        </a>
+                      </Dialog.Description>
+                    </Container>
                     <Section text="Discord" />
-                    <Dialog.Description className="pb-5">
-                      Got suggestions? Either send us a message through the chat
-                      icon or{" "}
-                      <a
-                        className="text-blue-500 hover:text-blue-600"
-                        href={DISCORD_INVITE}
-                      >
-                        join our Discord.
-                      </a>
-                    </Dialog.Description>
+                    <Container>
+                      <Dialog.Description>
+                        Got suggestions? Either send us a message through the
+                        chat icon or{" "}
+                        <a
+                          className="text-blue-500 hover:text-blue-600"
+                          href={DISCORD_INVITE}
+                        >
+                          join our Discord.
+                        </a>
+                      </Dialog.Description>
+                    </Container>
                     <Section text="Changelog" />
-                    <Dialog.Description>
-                      {CHANGELOG_SERIES.map((changelog) => (
-                        <span className="block" key={changelog.abbrevHash}>
-                          <span className="text-red-400">
-                            (<code>{changelog.abbrevHash}</code>)
-                          </span>{" "}
-                          {changelog.subject}
-                        </span>
-                      ))}
-                    </Dialog.Description>
+                    <Container>
+                      <Dialog.Description>
+                        {CHANGELOG_SERIES.map((changelog) => (
+                          <span className="block" key={changelog.abbrevHash}>
+                            <span className="text-red-400">
+                              (<code>{changelog.abbrevHash}</code>)
+                            </span>{" "}
+                            {changelog.subject}
+                          </span>
+                        ))}
+                      </Dialog.Description>
+                    </Container>
                   </div>
                   <button
                     className="mt-10 bg-transparent text-black hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium"
