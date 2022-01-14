@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from "react";
 import MangaCard from "../components/MangaCard";
+import ViewMorePlaceholder from "../components/ViewMorePlaceholder";
 import ScrollableCarousel from "../components/ScrollableCarousel";
 import Section from "../components/Section";
 import Spinner, { SpinIcon } from "../components/Spinner";
@@ -20,7 +21,7 @@ export default class Discover extends PureComponent {
 
   getSourceNamesAndIcons() {
     let activeSources = new Set(
-      [...this.props.discover].map((section) => section.sourceName)
+      Object.values(this.props.discover).map((section) => section.sourceName)
     );
     let response = [];
     for (const [sourceName, source] of Object.entries(sourcemap)) {
@@ -42,7 +43,7 @@ export default class Discover extends PureComponent {
 
   render() {
     const items = [];
-    this.props.discover.forEach((section) => {
+    Object.values(this.props.discover).forEach((section) => {
       if (section.items && section.items.length) {
         let subText = section.title.split(" - ")[1];
         items.push(
@@ -53,10 +54,13 @@ export default class Discover extends PureComponent {
               key={section.id + section.title + "title"}
               text={capitalizeFirstLetters(subText)}
             />
-            <ScrollableCarousel key={section.id + section.title + "-carousel"} expandable={true}>
-              {section.items.map((item) => (
+            <ScrollableCarousel
+              key={section.id + section.title + "-carousel"}
+              expandable={true}
+            >
+              {section.items.map((item, idx) => (
                 <MangaCard
-                  key={section.id + item.id}
+                  key={`${section.sourceName}-${section.id}-${item.id}-${idx}`}
                   mangaUrlizer={section.mangaUrlizer}
                   slug={item.id}
                   coverUrl={item.image}
@@ -65,6 +69,12 @@ export default class Discover extends PureComponent {
                   source={section.source}
                 />
               ))}
+              {section.view_more && section.metadata ? (
+                <ViewMorePlaceholder
+                  onClickHandler={() => section.viewMoreHandler(section)}
+                  key={`view-more-${section.sourceName}-${section.id}-${section.items.length}`}
+                />
+              ) : undefined}
             </ScrollableCarousel>
           </Fragment>
         );
@@ -73,7 +83,7 @@ export default class Discover extends PureComponent {
 
     return (
       <Container>
-        {this.props.discover.size ? (
+        {Object.entries(this.props.discover).length ? (
           <Fragment>
             <ScrollableCarousel iconSize={4}>
               <RadioGroup

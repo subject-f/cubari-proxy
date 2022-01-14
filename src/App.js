@@ -9,12 +9,13 @@ import ThemeSwitcher from "./components/ThemeSwitcher.js";
 import BlackholeMail from "./components/BlackholeMail.js";
 import Router, { navigation } from "./Router.js";
 import { purgePreviousCache } from "./utils/remotestorage";
+import update from "immutability-helper";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      discover: new Set(),
+      discover: {},
       searchQuery: "",
       searchResults: new Set(),
       current: undefined,
@@ -44,14 +45,40 @@ export default class App extends Component {
         section.source = source;
         section.mangaUrlizer = source.getMangaUrl;
         section.sourceName = sourceName;
+        section.viewMoreHandler = this.viewMoreHandler;
+        if (section.view_more) {
+          // Initialize the section with empty metadata in order to support
+          // extensions that return null as a stop-signal
+          section.metadata = {};
+        }
         // Only update state with sections that have items
         if (section.items && section.items.length) {
-          this.setState({
-            discover: new Set(this.state.discover).add(section),
-          });
+          this.setState(
+            update(this.state, {
+              discover: { [section.title]: { $set: section } },
+            })
+          );
         }
       });
     });
+  };
+
+  viewMoreHandler = async (section) => {
+    // Takes the section object from the above which includes metadata to continue the search
+    const results = await section.source.getViewMoreItems(
+      section.id,
+      section.metadata
+    );
+    this.setState(
+      update(this.state, {
+        discover: {
+          [section.title]: {
+            items: { $push: results.results },
+            metadata: { $set: results.metadata },
+          },
+        },
+      })
+    );
   };
 
   componentDidMount = () => {

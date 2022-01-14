@@ -19,6 +19,7 @@ export default class ScrollableCarousel extends PureComponent {
       fullyRightScrolled: true,
       isButtonHovered: false,
       scrolling: false,
+      childrenLength: 0,
       itemLength: 0,
       expanded: false,
     };
@@ -53,7 +54,7 @@ export default class ScrollableCarousel extends PureComponent {
         this.ref.current.scrollWidth - SCROLL_THRESHOLD;
       if (
         fullyRightScrolled &&
-        this.state.itemLength < this.props.children.length
+        this.state.itemLength < this.state.childrenLength
       ) {
         this.setState({
           itemLength: this.state.itemLength + LOAD_BATCH_COUNT,
@@ -121,7 +122,7 @@ export default class ScrollableCarousel extends PureComponent {
     this.observer.observe(this.componentRef.current);
     if (this.props.expanded) {
       this.setState({
-        expanded: true
+        expanded: true,
       });
     }
     window.addEventListener("resize", this.scrollPositionHandler);
@@ -147,10 +148,26 @@ export default class ScrollableCarousel extends PureComponent {
     });
   };
 
+  componentDidUpdate = (prevProps) => {
+    const currLength = React.Children.toArray(this.props.children).length;
+    const prevLength = React.Children.toArray(prevProps.children).length;
+    if (this.state.childrenLength !== currLength) {
+      this.setState(
+        {
+          childrenLength: currLength,
+        },
+        this.scrollPositionHandler
+      );
+    } else if (currLength !== prevLength) {
+      this.scrollPositionHandler();
+    }
+  };
+
   render() {
     const { expanded, fullyLeftScrolled, fullyRightScrolled, isButtonHovered } =
       this.state;
     const { iconSize = 8, expandable } = this.props;
+    const children = React.Children.toArray(this.props.children);
 
     return (
       <div className="relative w-full h-full" ref={this.componentRef}>
@@ -190,14 +207,10 @@ export default class ScrollableCarousel extends PureComponent {
                 "flex mt-1 mb-1"
               )}
             >
-              {Array.isArray(this.props.children)
-                ? expanded
-                  ? this.props.children
-                  : this.props.children.slice(0, this.state.itemLength)
-                : this.props.children}
+              {expanded ? children : children.slice(0, this.state.itemLength)}
             </div>
           </div>
-        ) : this.props.children.length ? (
+        ) : children.length ? (
           <Spinner />
         ) : undefined}
         <div
