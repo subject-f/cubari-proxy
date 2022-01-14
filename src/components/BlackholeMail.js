@@ -23,28 +23,33 @@ export default class BlackholeMail extends PureComponent {
 
   handleKeyPress = (e) => {
     if (e.key === "Enter" && this.state.textValue) {
-      let payload = new URLSearchParams();
-      payload.append("text", this.state.textValue);
-      fetch(BLACKHOLE_URL, {
-        method: "POST",
-        body: payload,
-      })
-        .then((e) => e.json())
-        .then((e) => {
-          this.setState({
-            submitted: true,
-            textValue:
-              (e.success && "Successfully delivered!") ||
-              (e.error && "Failed to send.") ||
-              "No response.",
-          });
-        })
-        .catch(() => {
-          this.setState({
-            submitted: true,
-            textValue: "Failed to send.",
-          });
-        });
+      this.setState(
+        {
+          submitted: true,
+        },
+        () => {
+          const payload = new URLSearchParams();
+          payload.append("text", this.state.textValue);
+          fetch(BLACKHOLE_URL, {
+            method: "POST",
+            body: payload,
+          })
+            .then((e) => e.json())
+            .then((e) => {
+              this.setState({
+                textValue:
+                  (e.success && "Successfully delivered!") ||
+                  (e.error && "Failed to send.") ||
+                  "No response.",
+              });
+            })
+            .catch(() => {
+              this.setState({
+                textValue: "Failed to send.",
+              });
+            });
+        }
+      );
     }
   };
 
@@ -73,13 +78,16 @@ export default class BlackholeMail extends PureComponent {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 -translate-y-1"
             >
-              <Popover.Panel focus={true} className="absolute z-40 w-screen max-w-xl px-4 transform -right-24 sm:px-0 pointer-events-none">
+              <Popover.Panel
+                focus={true}
+                className="absolute z-40 w-screen max-w-xl px-4 transform -right-24 sm:px-0 pointer-events-none"
+              >
                 <div className="ml-8 overflow-hidden mt-6 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="p-4 text-black dark:text-white bg-gray-100 dark:bg-gray-800 pointer-events-auto">
                     <Section
                       text="Send us a message!"
                       textSize="text-2xl"
-                      subText="Let us know if you have any ideas, suggestions, or issues."
+                      subText="Let us know if you have any ideas, suggestions, or issues (we actually see these!)"
                       subTextSize="text-sm"
                     ></Section>
                     <input
