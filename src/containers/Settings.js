@@ -66,26 +66,28 @@ export default class Settings extends PureComponent {
           textSize="text-2xl"
           subText="For the horny"
         ></Section>
-        <div className="h-full w-full mb-5 items-center sm:items-start mt-5 flex flex-wrap place-content-center sm:place-content-start">
-          <Switch
-            checked={this.state.hentaiEnabled}
-            onChange={this.hentaiToggle}
-            className={classNames(
-              this.state.hentaiEnabled
-                ? "bg-blue-600 dark:bg-blue-500"
-                : "bg-gray-700 dark:bg-gray-200",
-              "relative inline-flex items-center h-6 rounded-full w-11 focus:outline-none"
-            )}
-          >
-            <span className="sr-only">Enable notifications</span>
-            <span
+        <Container>
+          <div className="h-full w-full mb-5 items-center sm:items-start mt-5 flex flex-wrap place-content-center sm:place-content-start">
+            <Switch
+              checked={this.state.hentaiEnabled}
+              onChange={this.hentaiToggle}
               className={classNames(
-                this.state.hentaiEnabled ? "translate-x-6" : "translate-x-1",
-                "inline-block w-4 h-4 transform bg-white dark:bg-gray-900 rounded-full"
+                this.state.hentaiEnabled
+                  ? "bg-blue-600 dark:bg-blue-500"
+                  : "bg-gray-700 dark:bg-gray-200",
+                "relative inline-flex items-center h-6 rounded-full w-11 focus:outline-none"
               )}
-            />
-          </Switch>
-        </div>
+            >
+              <span className="sr-only">Enable notifications</span>
+              <span
+                className={classNames(
+                  this.state.hentaiEnabled ? "translate-x-6" : "translate-x-1",
+                  "inline-block w-4 h-4 transform bg-white dark:bg-gray-900 rounded-full"
+                )}
+              />
+            </Switch>
+          </div>
+        </Container>
         <Section
           text="Remote Storage"
           textSize="text-2xl"
