@@ -67,6 +67,15 @@ const sfwSourceMap: RawSourceMap = {
     slugMapper: (slug) =>
       `https://cubari.moe/mk/https://mangakatana.com/manga/${slug}/`,
   },
+  AssortedScans: {
+    user: "mangadventure",
+    repo: "paperback-extensions",
+    commit: "040f32e46d17552891b94ea31faf311b1a39d6b6",
+    filePath: "AssortedScans",
+    state: {},
+    slugMapper: (slug) =>
+      `https://cubari.moe/ma/https://assortedscans.com/reader/${slug}/`
+  },
 };
 
 const sourceMap: SourceMap = {};
