@@ -69,11 +69,12 @@ export default class Card extends PureComponent {
           "transition-opacity duration-500 ease-in-out",
           !this.state.elementWidthCalculated
             ? "opacity-0"
-            : "aspect-[1/1.4] opacity-100"
+            : "opacity-100"
         )}
         style={{
           willChange: "transform",
           width: `${this.state.elementWidth}px`,
+          height: `${this.state.elementWidth * 1.4}px`
         }}
       >
         <div className="p-2 sm:p-3 md:p-4 w-full h-full">{this.props.children}</div>
