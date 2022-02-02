@@ -1,5 +1,6 @@
 import { CubariSourceMixin } from "./CubariSource";
 import cheerio from "cheerio";
+import { Base64 } from 'js-base64';
 import { CubariSource, State } from "./types";
 
 const PROXY_URL = "https://services.f-ck.me";
@@ -65,7 +66,7 @@ const loadExternalSource = async (
 };
 
 const base64UrlEncode = (s: string): string => {
-  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_");
+  return Base64.encode(s, true);
 };
 
 const convertImageUrl = (originalUrl: string): string => {

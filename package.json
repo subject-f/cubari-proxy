@@ -17,6 +17,7 @@
     "cheerio": "^1.0.0-rc.5",
     "gitlog": "^4.0.4",
     "immutability-helper": "^3.1.1",
+    "js-base64": "^3.7.2",
     "paperback-extensions-common": "^5.0.0-alpha.5",
     "preval.macro": "^5.0.0",
     "react": "^16.13.1",
