@@ -6,7 +6,7 @@ import { globalHistoryHandler } from "../utils/remotestorage";
 import { mangaUrlSaver } from "../utils/compatability";
 import { SpinIcon } from "./Spinner";
 import Card from "./Card";
-import { convertImageUrl } from "../sources/SourceUtils";
+import { convertImageUrl, resizedImageUrl } from "../sources/SourceUtils";
 
 export default class MangaCard extends PureComponent {
   constructor(props) {
@@ -192,9 +192,10 @@ export default class MangaCard extends PureComponent {
             "flex flex-row flex-wrap p-1 duration-100 ease-in-out",
             "w-full h-full"
           )}
-          data-background-image={`linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,0.75) 90%), url("${
-            this.props.coverUrl
-          }"), url("${convertImageUrl(this.props.coverUrl)}")`}
+          data-background-image={`linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,0.75) 90%), url("${resizedImageUrl(
+            convertImageUrl(this.props.coverUrl),
+            "w=300"
+          )}")`}
           onClick={this.addHistoryHandler}
           style={{ willChange: "transform" }}
         >

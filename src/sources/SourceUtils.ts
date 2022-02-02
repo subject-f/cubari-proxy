@@ -1,9 +1,12 @@
 import { CubariSourceMixin } from "./CubariSource";
 import cheerio from "cheerio";
-import { Base64 } from 'js-base64';
+import { Base64 } from "js-base64";
 import { CubariSource, State } from "./types";
 
 const PROXY_URL = "https://services.f-ck.me";
+
+const IMAGE_RESIZE_URL =
+  "https://images.weserv.nl";
 
 const getJsDelivrBaseUrl = (
   user: string,
@@ -61,7 +64,6 @@ const loadExternalSource = async (
   delete (<any>window).Sources;
   script.remove();
 
-
   return cubariSource;
 };
 
@@ -75,10 +77,15 @@ const convertImageUrl = (originalUrl: string): string => {
   )}?source=proxy_cubari_moe`;
 };
 
+const resizedImageUrl = (url: string, queryParams: string): string => {
+  return `${IMAGE_RESIZE_URL}/?url=${url}&${queryParams ?? ""}`;
+};
+
 export {
   PROXY_URL,
   loadExternalSource,
   getJsDelivrBaseUrl,
   base64UrlEncode,
   convertImageUrl,
+  resizedImageUrl,
 };
