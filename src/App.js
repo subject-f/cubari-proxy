@@ -12,6 +12,8 @@ import { purgePreviousCache } from "./utils/remotestorage";
 import update from "immutability-helper";
 import Spinner from "./components/Spinner";
 
+const DEDUP_SEARCH_MAX_TRIES = 2;
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,7 @@ export default class App extends Component {
       sourcesReady: false,
     };
     this.sources = sourceMap;
+    this.dedupSet = {};
   }
 
   setPath = (path) => {
@@ -35,6 +38,23 @@ export default class App extends Component {
     this.setState({
       searchQuery: query,
       searchResults: items,
+    });
+  };
+
+  dedupItemList = (sectionTitle, mangaTileList) => {
+    if (!(sectionTitle in this.dedupSet)) {
+      this.dedupSet[sectionTitle] = new Set();
+    }
+
+    const dedupSet = this.dedupSet[sectionTitle];
+
+    return mangaTileList.filter(({ id }) => {
+      if (dedupSet.has(id)) {
+        return false;
+      } else {
+        dedupSet.add(id);
+        return true;
+      }
     });
   };
 
@@ -52,9 +72,15 @@ export default class App extends Component {
           // Initialize the section with empty metadata in order to support
           // extensions that return null as a stop-signal
           section.metadata = {};
+          section.hasMore = true;
+        } else {
+          // Use hasMore to draw the ViewMore placeholder
+          section.hasMore = false;
         }
         // Only update state with sections that have items
         if (section.items && section.items.length) {
+          section.items = this.dedupItemList(section.title, section.items);
+
           this.setState(
             update(this.state, {
               discover: { [section.title]: { $set: section } },
@@ -66,17 +92,26 @@ export default class App extends Component {
   };
 
   viewMoreHandler = async (section) => {
-    // Takes the section object from the above which includes metadata to continue the search
-    const results = await section.source.getViewMoreItems(
-      section.id,
-      section.metadata
-    );
+    let runCount = 0;
+    let results;
+    let metadata = section.metadata;
+
+    do {
+      // Takes the section object from the above which includes metadata to continue the search
+      results = await section.source.getViewMoreItems(section.id, metadata);
+
+      metadata = results.metadata;
+      results.results = this.dedupItemList(section.title, results.results);
+      runCount++;
+    } while (!results.results.length && runCount < DEDUP_SEARCH_MAX_TRIES);
+
     this.setState(
       update(this.state, {
         discover: {
           [section.title]: {
             items: { $push: results.results },
             metadata: { $set: results.metadata },
+            hasMore: { $set: Boolean(results.results.length) },
           },
         },
       })

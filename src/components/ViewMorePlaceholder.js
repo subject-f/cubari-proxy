@@ -5,12 +5,9 @@ import Spinner from "./Spinner";
 import Card from "./Card";
 
 export default class ViewMorePlaceholder extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      triggered: false,
-    };
-  }
+  state = {
+    triggered: false,
+  };
 
   render() {
     return (

@@ -9,6 +9,7 @@ import { capitalizeFirstLetters } from "../utils/strings";
 import { sourceMap } from "../sources/Sources";
 import { RadioGroup } from "@headlessui/react";
 import { classNames } from "../utils/strings";
+import EndPlaceholder from "../components/EndPlaceholder";
 
 export default class Discover extends PureComponent {
   state = {
@@ -69,12 +70,15 @@ export default class Discover extends PureComponent {
                   source={section.source}
                 />
               ))}
-              {section.view_more && section.metadata ? (
+              {section.view_more && section.metadata && section.hasMore ? (
                 <ViewMorePlaceholder
                   onClickHandler={() => section.viewMoreHandler(section)}
+                  hasMore={section.hasMore}
                   key={`view-more-${section.sourceName}-${section.id}-${section.items.length}`}
                 />
-              ) : undefined}
+              ) : (
+                <EndPlaceholder />
+              )}
             </ScrollableCarousel>
           </Fragment>
         );
