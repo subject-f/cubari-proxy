@@ -18,7 +18,6 @@ const requestInterceptor = (req: AxiosRequestConfig) => {
 };
 
 const responseInterceptor = (res: AxiosResponse) => {
-  console.log(res);
   return res;
 };
 
