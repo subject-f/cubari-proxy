@@ -18,12 +18,24 @@ const requestInterceptor = (req: AxiosRequestConfig) => {
 };
 
 const responseInterceptor = (res: AxiosResponse) => {
+  console.log(res);
   return res;
+};
+
+const retryInterceptor = (error: any) => {
+  if (error.config && error.config.url.startsWith(`${PROXY_URL}/v1/cors`)) {
+    error.config.url = error.config.url.replace(
+      `${PROXY_URL}/v1/cors`,
+      `${PROXY_URL}/v2/cors`
+    );
+    return axios.request(error.config);
+  }
+  return Promise.reject(error);
 };
 
 // Interceptors to preserve the requestManager within each source. Thanks Paper!
 axios.interceptors.request.use(requestInterceptor);
-axios.interceptors.response.use(responseInterceptor);
+axios.interceptors.response.use(responseInterceptor, retryInterceptor);
 
 export function CubariSourceMixin<TBase extends Constructor>(
   Base: TBase,
