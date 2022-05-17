@@ -22,7 +22,12 @@ const responseInterceptor = (res: AxiosResponse) => {
 };
 
 const retryInterceptor = (error: any) => {
-  if (error.config && error.config.url.startsWith(`${PROXY_URL}/v1/cors`)) {
+  if (
+    error.config &&
+    error.config.url.startsWith(`${PROXY_URL}/v1/cors`) &&
+    error.response &&
+    error.response.status > 500
+  ) {
     error.config.url = error.config.url.replace(
       `${PROXY_URL}/v1/cors`,
       `${PROXY_URL}/v2/cors`
