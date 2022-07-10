@@ -6,9 +6,11 @@ import { PROXY_URL, base64UrlEncode } from "./SourceUtils";
 const UNSAFE_HEADERS = new Set(["cookie", "user-agent", "referer"]);
 
 const requestInterceptor = (req: AxiosRequestConfig) => {
-  req.url = `${PROXY_URL}/v1/cors/${base64UrlEncode(
-    req.url + (req.params ?? "")
-  )}?source=proxy_cubari_moe`;
+  if (!("retried" in req)) {
+    req.url = `${PROXY_URL}/v1/cors/${base64UrlEncode(
+      req.url + (req.params ?? "")
+    )}?source=proxy_cubari_moe`;
+  }
   Object.keys(req.headers).forEach((header) => {
     if (UNSAFE_HEADERS.has(header.toLowerCase())) {
       delete req.headers[header];
