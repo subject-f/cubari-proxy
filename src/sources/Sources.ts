@@ -70,7 +70,7 @@ const sfwSourceMap: RawSourceMap = {
   AssortedScans: {
     user: "mangadventure",
     repo: "paperback-extensions",
-    commit: "040f32e46d17552891b94ea31faf311b1a39d6b6",
+    commit: "40cab8f08723630e3192ad83db421ff1cb2673b4",
     filePath: "AssortedScans",
     state: {},
     slugMapper: (slug) =>
