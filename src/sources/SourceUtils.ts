@@ -5,8 +5,7 @@ import { CubariSource, State } from "./types";
 
 const PROXY_URL = "https://services.f-ck.me";
 
-const IMAGE_RESIZE_URL =
-  "https://images.weserv.nl";
+const IMAGE_RESIZE_URL = "https://wsrv.nl";
 
 const getJsDelivrBaseUrl = (
   user: string,
