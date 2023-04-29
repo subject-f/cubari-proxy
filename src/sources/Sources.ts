@@ -45,7 +45,7 @@ const sfwSourceMap: RawSourceMap = {
   MangaDex: {
     user: "funkyhippo",
     repo: "extensions-sources",
-    commit: "80659550014916b550fcf5fcf0254c3251a797b2",
+    commit: "7108837f179b5de7ba08cf0f187c0691e4704d3b",
     filePath: "primary/MangaDex",
     state: {},
     slugMapper: (slug) => `https://cubari.moe/read/mangadex/${slug}/`,
