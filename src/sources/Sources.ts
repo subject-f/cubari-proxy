@@ -84,17 +84,22 @@ const initSources = async (): Promise<void> => {
   const hentaiEnabled: string = localStorage.getItem("hentai") ?? "";
   const sources: RawSourceMap = hentaiEnabled ? nsfwSourceMap : sfwSourceMap;
   for (const [source, metadata] of Object.entries(sources)) {
-    sourceMap[source] = await loadExternalSource(
-      getJsDelivrBaseUrl(
-        metadata.user,
-        metadata.repo,
-        metadata.commit,
-        metadata.filePath
-      ),
-      source,
-      metadata.slugMapper,
-      metadata.state
-    );
+    try{
+      sourceMap[source] = await loadExternalSource(
+        getJsDelivrBaseUrl(
+          metadata.user,
+          metadata.repo,
+          metadata.commit,
+          metadata.filePath
+        ),
+        source,
+        metadata.slugMapper,
+        metadata.state
+      );
+    }catch(e) {
+      console.error('Failed to load', metadata.filePath, 'source.')
+      console.trace(e)
+    }
   }
 };
 
