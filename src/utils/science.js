@@ -1,5 +1,4 @@
 export const science = (metadata) => {
-  console.log("science");
   fetch("https://obs.f-ck.me/ingest", {
     method: "POST",
     mode: "no-cors",
