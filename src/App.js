@@ -11,6 +11,7 @@ import Router, { navigation } from "./Router.js";
 import { purgePreviousCache } from "./utils/remotestorage";
 import update from "immutability-helper";
 import Spinner from "./components/Spinner";
+import { science } from "./utils/science";
 
 const DEDUP_SEARCH_MAX_TRIES = 2;
 
@@ -32,6 +33,7 @@ export default class App extends Component {
     this.setState({
       current: path,
     });
+    science("path_change");
   };
 
   searchHandler = (query, items) => {
@@ -116,6 +118,7 @@ export default class App extends Component {
         },
       })
     );
+    science("view_more");
   };
 
   componentDidMount = async () => {
