@@ -6,7 +6,7 @@ import preval from "preval.macro";
 import Container from "./Container";
 
 // Should probably be a build var but fuck itttttt
-const DISCORD_INVITE = "https://discord.gg/SavdUC45MS";
+const DISCORD_INVITE = "https://discord.gg/wwD2xTbQxe";
 
 // We'll throw these up here since they're replaced at build time anyway
 const CHANGELOG_KEY = "changelog";
