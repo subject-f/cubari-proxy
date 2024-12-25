@@ -4,7 +4,7 @@ import "./polyfills";
 
 const nsfwSourceMap: RawSourceMap = {
   NHentai: {
-    user: "Paperback-iOS",
+    user: "funkyhippo",
     repo: "extensions-sources",
     commit: "390ee4a03ac8c842c0535a16182374cbcec83578",
     filePath: "hentai/NHentai",
@@ -14,7 +14,7 @@ const nsfwSourceMap: RawSourceMap = {
     slugMapper: (slug) => `https://cubari.moe/read/nhentai/${slug}/`,
   },
   MangaDex: {
-    user: "Paperback-iOS",
+    user: "funkyhippo",
     repo: "extensions-sources",
     commit: "390ee4a03ac8c842c0535a16182374cbcec83578",
     filePath: "primary/MangaDex",
@@ -27,20 +27,20 @@ const nsfwSourceMap: RawSourceMap = {
 
 const sfwSourceMap: RawSourceMap = {
   Guya: {
-    user: "Paperback-iOS",
-    repo: "extensions-promises",
-    commit: "79273525a655023aee5e3ffc5604cf8b6044cd34",
-    filePath: "Guya",
+    user: "TheNetsky",
+    repo: "extensions-generic",
+    commit: "69638ea07448b57652664b2c3451a00d8206e04e",
+    filePath: "guya/Guya",
     state: {},
     slugMapper: (slug) => `https://guya.moe/read/manga/${slug}/`,
   },
-  Hachirumi: {
-    user: "Paperback-iOS",
-    repo: "extensions-promises",
-    commit: "ef94de5f68177f0c723640b4fffbe3e91dda9e74",
-    filePath: "Hachirumi",
+  DankeFursLesen: {
+    user: "TheNetsky",
+    repo: "extensions-generic",
+    commit: "69638ea07448b57652664b2c3451a00d8206e04e",
+    filePath: "guya/DankeFursLesen",
     state: {},
-    slugMapper: (slug) => `https://hachirumi.com/read/manga/${slug}/`,
+    slugMapper: (slug) => `https://danke.moe/read/manga/${slug}/`,
   },
   MangaDex: {
     user: "funkyhippo",
