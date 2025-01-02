@@ -51,7 +51,7 @@ const sfwSourceMap: RawSourceMap = {
     slugMapper: (slug) => `https://cubari.moe/read/mangadex/${slug}/`,
   },
   MangaLife: {
-    user: "Paperback-iOS",
+    user: "TheNetsky",
     repo: "extensions-generic",
     commit: "31394f552f5acd4bd74a4748f7b7aedb38913699",
     filePath: "nepnep/MangaLife",
