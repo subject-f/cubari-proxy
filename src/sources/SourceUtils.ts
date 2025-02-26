@@ -1,5 +1,5 @@
 import { CubariSourceMixin } from "./CubariSource";
-import cheerio from "cheerio";
+import * as cheerio from 'cheerio';
 import { Base64 } from "js-base64";
 import { CubariSource, State } from "./types";
 

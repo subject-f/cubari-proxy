@@ -4,10 +4,10 @@ import "./polyfills";
 
 const nsfwSourceMap: RawSourceMap = {
   NHentai: {
-    user: "funkyhippo",
-    repo: "extensions-sources",
-    commit: "390ee4a03ac8c842c0535a16182374cbcec83578",
-    filePath: "hentai/NHentai",
+    user: "TheNetsky",
+    repo: "community-extensions",
+    commit: "d51f8b63205d0b0151346a56819dc17c5da9bf32",
+    filePath: "0.8/NHentai",
     state: {
       languages: "english",
     },
@@ -50,19 +50,19 @@ const sfwSourceMap: RawSourceMap = {
     state: {},
     slugMapper: (slug) => `https://cubari.moe/read/mangadex/${slug}/`,
   },
-  MangaLife: {
-    user: "TheNetsky",
-    repo: "extensions-generic",
-    commit: "31394f552f5acd4bd74a4748f7b7aedb38913699",
-    filePath: "nepnep/MangaLife",
+  WeebCentral: {
+    user: "Einlion",
+    repo: "weebcentral-mangapill-paperback-extensions",
+    commit: "9b2c95cba5ef5fccc8c4771c033ec9592a97760b",
+    filePath: "0.8/WeebCentral",
     state: {},
-    slugMapper: (slug) => `https://cubari.moe/ml/${slug}/`,
+    slugMapper: (slug) => `https://cubari.moe/read/weebcentral/${slug}/`,
   },
   MangaKatana: {
     user: "TheNetsky",
     repo: "netskys-extensions",
-    commit: "dcf18472ce4c75d5144b9f87e3697aab415570d5",
-    filePath: "0.6/MangaKatana",
+    commit: "5d2f9d095e0b22ac2f3d0a3683ea26475a380554",
+    filePath: "0.8/MangaKatana",
     state: {},
     slugMapper: (slug) =>
       `https://cubari.moe/mk/https://mangakatana.com/manga/${slug}/`,
@@ -70,7 +70,7 @@ const sfwSourceMap: RawSourceMap = {
   AssortedScans: {
     user: "mangadventure",
     repo: "paperback-extensions",
-    commit: "87ad4a6b110e4ccf25bcd4a4622153e3ca867037",
+    commit: "9b06321908e57373b3f3e60df4ce477172754623",
     filePath: "AssortedScans",
     state: {},
     slugMapper: (slug) =>

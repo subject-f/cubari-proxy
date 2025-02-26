@@ -24,9 +24,7 @@ const responseInterceptor = (res: AxiosResponse) => {
 };
 
 const retryInterceptor = (error: any) => {
-  if (
-    !error.config.retried
-  ) {
+  if (!error.config.retried) {
     error.config.url = error.config.url.replace(
       `${PROXY_URL}/v1/cors`,
       `${PROXY_URL}/v2/cors`
@@ -52,5 +50,25 @@ export function CubariSourceMixin<TBase extends Constructor>(
     getSourceDetails = () => {
       return sourceInfo;
     };
+
+    requestManager = App.createRequestManager({
+      requestsPerSecond: 5,
+      requestTimeout: 20000,
+      interceptor: {
+        interceptRequest: async (request) => {
+          
+          // extension lib will still attempt to set forbidden headers, 
+          // we can override that fn as well but browsers already attempt to block this
+          request.headers = {}
+          request.url = `${PROXY_URL}/v1/cors/${base64UrlEncode(
+            request.url + (request.param ?? "")
+          )}?source=proxy_cubari_moe`;
+          return request;
+        },
+        interceptResponse: async (response) => {
+          return response;
+        },
+      },
+    });
   };
 }

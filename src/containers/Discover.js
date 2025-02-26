@@ -63,14 +63,19 @@ export default class Discover extends PureComponent {
                 <MangaCard
                   key={`${section.sourceName}-${section.id}-${item.id}-${idx}`}
                   mangaUrlizer={section.mangaUrlizer}
-                  slug={item.id}
+                  slug={item.mangaId || item.id} // item.id exists on 0.6
                   coverUrl={item.image}
-                  mangaTitle={item.title.text}
+                  mangaTitle={item.title.text || item.title} // item.title.text exists on 0.6
                   sourceName={section.sourceName}
                   source={section.source}
                 />
               ))}
-              {section.view_more && section.metadata && section.hasMore ? (
+              {
+                // section.view_more exists on 0.6
+              }
+              {(section.containsMoreItems || section.view_more) &&
+              section.metadata &&
+              section.hasMore ? (
                 <ViewMorePlaceholder
                   onClickHandler={() => section.viewMoreHandler(section)}
                   hasMore={section.hasMore}

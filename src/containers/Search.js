@@ -41,16 +41,16 @@ export default class Search extends PureComponent {
     this.runningQueries.add(queryTask);
     let hasMore = false;
     source
-      .searchRequest({ ...queryTask.query }, queryTask.metadata)
+      .getSearchResults({ ...queryTask.query }, queryTask.metadata)
       .then((e) => {
         // This bounds check ensures that the returning query is still current
         // Otherwise it could return results to a new result as you type it in
         if (this.runningQueries.has(queryTask) && this.inputRef.current) {
           let results = (e.results || []).map((manga) => {
             manga.mangaUrlizer = source.getMangaUrl;
-            manga.slug = manga.id;
+            manga.slug = manga.mangaId || manga.id; // 0.6 compatibility
             manga.coverUrl = manga.image;
-            manga.mangaTitle = manga.title.text;
+            manga.mangaTitle = manga.title.text || manga.title; // 0.6 compatibility
             manga.source = source;
             manga.sourceName = sourceName;
             return manga;
@@ -121,7 +121,7 @@ export default class Search extends PureComponent {
           <ScrollableCarousel key={`search-${source}-carousel`} expandable={true}>
             {results.map((item) => (
               <MangaCard
-                key={"search-" + source.name + item.id}
+                key={"search-" + source.name + (item.slug)}
                 mangaUrlizer={item.mangaUrlizer}
                 slug={item.slug}
                 coverUrl={item.coverUrl}

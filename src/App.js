@@ -49,12 +49,12 @@ export default class App extends Component {
     }
 
     const dedupSet = this.dedupSet[sectionTitle];
-
-    return mangaTileList.filter(({ id }) => {
-      if (dedupSet.has(id)) {
+    return mangaTileList.filter(({ mangaId, id }) => {
+      let dedupId = mangaId || id;
+      if (dedupSet.has(dedupId)) {
         return false;
       } else {
-        dedupSet.add(id);
+        dedupSet.add(dedupId);
         return true;
       }
     });
@@ -70,7 +70,7 @@ export default class App extends Component {
         section.mangaUrlizer = source.getMangaUrl;
         section.sourceName = sourceName;
         section.viewMoreHandler = this.viewMoreHandler;
-        if (section.view_more) {
+        if (section.containsMoreItems || section.view_more) {
           // Initialize the section with empty metadata in order to support
           // extensions that return null as a stop-signal
           section.metadata = {};
