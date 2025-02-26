@@ -1,4 +1,4 @@
-export default new IntersectionObserver((entries, self) => {
+let entryIntersectionObserver = new IntersectionObserver((entries, self) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.style.backgroundImage = entry.target.dataset.backgroundImage;
@@ -6,3 +6,5 @@ export default new IntersectionObserver((entries, self) => {
     }
   });
 });
+
+export default entryIntersectionObserver;
